@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:uggiso/Widgets/AboutUsScreen.dart';
 import 'package:uggiso/Widgets/HelpCenter.dart';
 import 'package:uggiso/Widgets/HomeLandingScreen.dart';
+import 'package:uggiso/Widgets/MenuListScreen.dart';
 import 'package:uggiso/Widgets/RegisterUserScreen.dart';
 import 'package:uggiso/Widgets/SettingsScreen.dart';
 import 'package:uggiso/Widgets/VerifyOtp.dart';
@@ -29,6 +30,7 @@ class AppRoutes {
   static const String helpCenter = '/help_center';
 
   static const String aboutUs = '/about_us';
+  static const String menuList = '/menu_list';
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -50,6 +52,8 @@ class AppRoutes {
         return MaterialPageRoute(builder: (_) => const HelpCenter());
       case aboutUs:
         return MaterialPageRoute(builder: (_) => const AboutUsScreen());
+      case menuList:
+        return MaterialPageRoute(builder: (_) => const MenuListScreen());
       default:
         // If there is no such named route in the switch statement, e.g. /randomRoute
         return MaterialPageRoute(builder: (_) {

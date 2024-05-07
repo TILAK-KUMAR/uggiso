@@ -1,8 +1,24 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:uggiso/Bloc/SignUpBloc/signup_bloc.dart';
+import 'package:uggiso/Bloc/VerifyOtpBloc/VerifyOtpBloc.dart';
 import 'package:uggiso/app_routes.dart';
 
-void main() {
-  runApp(const MyApp());
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  // await Firebase.initializeApp();
+  runApp(
+    MultiBlocProvider(
+        providers: [
+          BlocProvider<SignUpBloc>(
+            create: (context) => SignUpBloc(),
+          ),
+          BlocProvider<VerifyOtpBloc>(
+            create: (context) => VerifyOtpBloc(),
+          ),
+        ], child: const MyApp()));
+
 }
 
 class MyApp extends StatelessWidget {
@@ -13,6 +29,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
+      // onBackgroundMessage: myBackgroundMessageHandler, // Add this line
+
       theme: ThemeData(
         pageTransitionsTheme: const PageTransitionsTheme(
           builders: {
@@ -24,6 +42,19 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       initialRoute: AppRoutes.initialRoute,
       onGenerateRoute: AppRoutes.generateRoute,
+     /* onLaunch: (Map<String, dynamic> message) async {
+        print('onLaunch: $message');
+        // Handle the notification
+      },
+      onResume: (Map<String, dynamic> message) async {
+        print('onResume: $message');
+        // Handle the notification
+      },*/
     );
+  }
+
+  Future<void> myBackgroundMessageHandler(Map<String, dynamic> message) async {
+    print("Handling a background message: $message");
+    // Handle the notification when the app is in the background
   }
 }

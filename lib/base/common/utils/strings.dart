@@ -38,6 +38,7 @@ class Strings{
   static const myProfile = 'My Profile';
   static const saved_address = 'Saved Address';
   static const your_orders = 'Your Orders';
+  static const orders = 'Orders';
   static const settings = 'Settings';
   static const sign_out = 'Sign out';
   static const help_center = 'Help Center';
@@ -54,6 +55,9 @@ class Strings{
   static const about_us_subtitle = 'In case we’re missing something';
   static const notification_settings_subtitle = 'Allow Notifications';
   static const delete_subtitle = 'Delete your account';
+  static const error_invalid_credientials = 'Enter a valid mobile number';
+  static const top_rated_eateries_nearby = 'TOP RATED EATERIES NEARBY';
+  static const all_hotels = 'ALL HOTELS';
 
   static const List<Map<String, dynamic>> profileItemList = [
     {'image': 'assets/ic_orders.png', 'title': your_orders},

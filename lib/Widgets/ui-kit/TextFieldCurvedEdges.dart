@@ -8,6 +8,10 @@ class TextFieldCurvedEdges extends StatelessWidget {
   final TextInputType keyboardType;
   final Color borderColor;
   final double borderRadius;
+  final TextAlign textAlign;
+  final int length;
+  final FocusNode? focusNode;
+  final ValueChanged<String>? onSubmitted;
 
   const TextFieldCurvedEdges({
     Key? key,
@@ -16,6 +20,11 @@ class TextFieldCurvedEdges extends StatelessWidget {
     required this.keyboardType,
     required this.borderColor,
     this.borderRadius = 20.0,
+    this.textAlign = TextAlign.start,
+    this.length = 100,
+    this.focusNode,
+    this.onSubmitted
+
   }): super(key: key);
 
   @override
@@ -33,8 +42,14 @@ class TextFieldCurvedEdges extends StatelessWidget {
           controller: controller,
           cursorColor: AppColors.black,
           keyboardType: keyboardType,
+          textAlign: textAlign,
+          maxLength: length,
+          maxLines: 1,
+          focusNode: focusNode,
+          onSubmitted: onSubmitted,
           decoration: const InputDecoration(
             border: InputBorder.none,
+            counterText: ''
           ),
         ),
       ),

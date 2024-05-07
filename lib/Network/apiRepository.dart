@@ -8,27 +8,18 @@ import 'package:uggiso/Model/VerifyOtpModel.dart';
 import 'package:uggiso/Model/otpModel.dart';
 import 'package:uggiso/Network/apiProvider.dart';
 
+import '../Model/GetNearByResaturantModel.dart';
+
 class ApiRepository {
   final _provider = ApiProvider();
 
   String userUrl = 'https://reqres.in/api/users?page=2';
 
-/*  Future<List<OtpModel>> getOtp() async {
-    Response response = await get(Uri.parse(userUrl));
-
-    if (response.statusCode == 200) {
-      final List result = jsonDecode(response.body)['data'];
-      return result.map((e) => OtpModel.fromJson(e)).toList();
-    } else {
-      throw Exception(response.reasonPhrase);
-    }
-  }*/
-
   Future<OtpModel> getOtp(String number) {
     return _provider.getOtp(number);
   }
 
-  Future<VerifyOtpModel> verifyOtp(String number,String otp) {
+  Future<VerifyOtpModel> verifyOtp(String? number,String otp) {
     return _provider.verifyOtp(number,otp);
   }
 
@@ -38,6 +29,10 @@ class ApiRepository {
 
   Future<RestaurantDetailsModel> getResaturantDetails(String id) {
     return _provider.getRestaurantDetails(id);
+  }
+
+  Future<GetNearByRestaurantModel> getNearbyRestaurant(String lat, String lag) {
+    return _provider.getNearByRestaurant(lat,lag);
   }
 
   Future<MenuListModel> getMenuList(String id) {

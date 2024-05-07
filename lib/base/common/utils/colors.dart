@@ -14,4 +14,5 @@ class AppColors{
   static const Color bottomColorBg = Color(0xFFF9F9F8);
   static const Color bottomTabInactiveColor = Color(0xFF474642);
   static const Color borderColor = Color(0xFFC4C5C1);
+  static const Color textGrey = Color(0xFF8C8C8C);
 }
