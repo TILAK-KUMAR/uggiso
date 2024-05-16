@@ -22,6 +22,7 @@ class _RegisterUserScreenState extends State<RegisterUserScreen> {
   final TextEditingController _nameController = TextEditingController();
   final RegisterUserBloc _registerUserBloc = RegisterUserBloc();
   String userContactNumber = '';
+  String userDeviceId = '';
 
   @override
   void initState() {
@@ -40,7 +41,7 @@ class _RegisterUserScreenState extends State<RegisterUserScreen> {
         listener: (BuildContext context, RegisterUserState state) {
           if (state is onLoadedState) {
             // Navigate to the next screen when NavigationState is emitted
-            saveUserDetails(_nameController.text,'','');
+            saveUserDetails(_nameController.text,userDeviceId,'');
             Navigator.popAndPushNamed(context, AppRoutes.homeScreen);
           } else if (state is ErrorState) {
             // isInvalidCredentials = true;
@@ -96,7 +97,7 @@ class _RegisterUserScreenState extends State<RegisterUserScreen> {
                           Navigator.popAndPushNamed(context, AppRoutes.homeScreen);
                           _registerUserBloc.add(
                               OnRegisterButtonClicked(name:_nameController.text,number:userContactNumber,
-                              deviceId: "TilaksDevice",token: "FcmTokenId"));
+                              deviceId:userDeviceId,token: "FcmTokenId"));
                         },
                         cornerRadius: 6.0,
                         buttonColor: AppColors.appPrimaryColor,
@@ -116,6 +117,8 @@ class _RegisterUserScreenState extends State<RegisterUserScreen> {
     final prefs = await SharedPreferences.getInstance();
     setState(() {
       userContactNumber = prefs.getString('mobile_number') ?? '';
+      userDeviceId = prefs.getString('device_id') ?? '';
+
     });
   }
   void saveUserDetails(String name,String deviceId, String token ) async {

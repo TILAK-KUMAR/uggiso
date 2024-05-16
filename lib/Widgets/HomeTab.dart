@@ -6,7 +6,6 @@ import 'package:uggiso/Bloc/HomeBloc/HomeState.dart';
 import 'package:uggiso/Model/GetNearByResaturantModel.dart';
 import 'package:uggiso/Widgets/ui-kit/RoundedContainer.dart';
 import 'package:uggiso/base/common/utils/colors.dart';
-
 import '../app_routes.dart';
 import '../base/common/utils/fonts.dart';
 import '../base/common/utils/strings.dart';
