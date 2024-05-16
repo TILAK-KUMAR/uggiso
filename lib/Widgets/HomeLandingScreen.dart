@@ -1,9 +1,7 @@
-import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:uggiso/Widgets/CategoriesTab.dart';
 import 'package:uggiso/Widgets/FavoriteTab.dart';
 import 'package:uggiso/Widgets/HomeTab.dart';
-import 'package:uggiso/Widgets/NotificationsTab.dart';
+import 'package:uggiso/Widgets/OrdersTab.dart';
 import 'package:uggiso/Widgets/ProfileTab.dart';
 import 'package:uggiso/base/common/utils/colors.dart';
 import 'package:uggiso/base/common/utils/strings.dart';
@@ -21,22 +19,22 @@ class _HomeLandingScreenState extends State<HomeLandingScreen> {
   static const List _imagePaths = [
     'assets/ic_home.png',
     'assets/ic_heart.png',
-    'assets/ic_bell.png',
     'assets/ic_person.png',
+    'assets/ic_orders.png',
   ];
 
   final List<String> text = [
     Strings.home,
     Strings.favorite,
-    Strings.notifications,
     Strings.profile,
+    Strings.orders,
   ];
 
   static List<Widget> _widgetOptions = <Widget>[
     HomeTab(),
     FavoriteTab(),
-    NotificationsTab(),
-    ProfileTab()
+    ProfileTab(),
+    OrdersTab()
   ];
 
   void _onItemTapped(int index) {
@@ -51,7 +49,7 @@ class _HomeLandingScreenState extends State<HomeLandingScreen> {
       body: Center(
         child: _widgetOptions.elementAt(_selectedIndex),
       ),
-      floatingActionButton:Container(
+   /*   floatingActionButton:Container(
         padding: EdgeInsets.all(18),
         width: 64,
         height: 64,
@@ -68,7 +66,7 @@ class _HomeLandingScreenState extends State<HomeLandingScreen> {
           ),
         ),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,*/
       bottomNavigationBar: BottomAppBar(
         shape: CircularNotchedRectangle(),
         child: Container(

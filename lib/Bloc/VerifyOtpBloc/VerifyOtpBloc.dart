@@ -11,6 +11,7 @@ class VerifyOtpBloc extends Bloc<VerifyOtpEvent, VerifyOtpState> {
     on<OnButtonClicked>((event,emit) async{
 
       try{
+
         emit(LoadingState()) ;
         await _apiRepository.verifyOtp(event.number,event.otp);
         emit(onLoadedState());

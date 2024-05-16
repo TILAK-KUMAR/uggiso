@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:uggiso/Model/AddFavoriteMenuModel.dart';
+import 'package:uggiso/Model/GetNearByResaturantModel.dart';
 import 'package:uggiso/Model/MenuListModel.dart';
 import 'package:uggiso/Model/RegisterUserModel.dart';
 import 'package:uggiso/Model/RestaurantDetailsModel.dart';
@@ -24,7 +25,8 @@ class ApiProvider {
     }
   }
 
-  Future<VerifyOtpModel> verifyOtp(String number,String otp) async {
+  Future<VerifyOtpModel> verifyOtp(String? number,String otp) async {
+    print('this is rewuest : $number and $otp');
     try {
       Response response = await _dio.post('${_url}${Constants.verifyOtp}',data: {
         "phoneNumber":number,
@@ -95,6 +97,22 @@ class ApiProvider {
     } catch (error, stacktrace) {
       print("Exception occured: $error stackTrace: $stacktrace");
       return AddFavoriteMenuModel.withError("Data not found / Connection issue");
+    }
+  }
+
+  Future<GetNearByRestaurantModel> getNearByRestaurant(String lat,String lag) async {
+    print('calling api : $lat and $lag');
+    try {
+      Response response = await _dio.post('${_url}${Constants.restaurantNearBy}',data: {
+          "lat":lat,
+          "lag":lag
+      });
+      print("${response.data}");
+
+      return GetNearByRestaurantModel.fromJson(response.data);
+    } catch (error, stacktrace) {
+      print("Exception occured: $error stackTrace: $stacktrace");
+      return GetNearByRestaurantModel.withError("Data not found / Connection issue");
     }
   }
 }

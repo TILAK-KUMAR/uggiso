@@ -44,8 +44,9 @@ class Payload {
   String? description;
   String? menuType;
   bool? veg;
-  int? price;
+  double? price;
   bool? bestSeller;
+  String? ratings;
 
   Payload(
       {this.menuId,
@@ -56,7 +57,7 @@ class Payload {
         this.menuType,
         this.veg,
         this.price,
-        this.bestSeller});
+        this.bestSeller,this.ratings});
 
   Payload.fromJson(Map<String, dynamic> json) {
     menuId = json['menuId'];
@@ -68,6 +69,7 @@ class Payload {
     veg = json['veg'];
     price = json['price'];
     bestSeller = json['bestSeller'];
+    ratings = json['ratings'];
   }
 
   Map<String, dynamic> toJson() {
@@ -81,6 +83,7 @@ class Payload {
     data['veg'] = this.veg;
     data['price'] = this.price;
     data['bestSeller'] = this.bestSeller;
+    data['ratings'] = this.ratings;
     return data;
   }
 }

@@ -38,6 +38,7 @@ class Strings{
   static const myProfile = 'My Profile';
   static const saved_address = 'Saved Address';
   static const your_orders = 'Your Orders';
+  static const orders = 'Orders';
   static const settings = 'Settings';
   static const sign_out = 'Sign out';
   static const help_center = 'Help Center';
@@ -54,6 +55,33 @@ class Strings{
   static const about_us_subtitle = 'In case we’re missing something';
   static const notification_settings_subtitle = 'Allow Notifications';
   static const delete_subtitle = 'Delete your account';
+  static const error_invalid_credientials = 'Enter a valid mobile number';
+  static const top_rated_eateries_nearby = 'TOP RATED EATERIES NEARBY';
+  static const all_hotels = 'ALL HOTELS';
+  static const card_holder_name  = 'Card Holder Name';
+  static const card_number  = 'Card Number';
+  static const expiration_date  = 'Expiration Date';
+  static const cvv  = 'CVV';
+  static const save_my_credentials  = 'Save my Credentials';
+  static const wallet  = 'Wallet';
+  static const save_wallet  = 'Save Wallet';
+  static const pay_by_upi_app  = 'Pay by any UPI App';
+  static const preferred_payment  = 'Preferred Payment';
+  static const more_payment_options  = 'More Payment Options';
+  static const menu  = 'Menu';
+  static const veg  = 'veg';
+  static const non_veg  = 'Non-veg';
+  static const bestseller  = 'Best seller';
+  static const add  = 'ADD';
+  static const payment_options  = 'Payment Options';
+  static const credit_debit_cards  = 'Credit & Debit Cards';
+  static const add_new_upi_id  = 'Add new UPI ID';
+  static const cash_on_delivery  = 'Cash On Delivery';
+  static const net_banking  = 'Net Banking';
+  static const google_pay  = 'Google Pay';
+  static const phone_pay_upi  = 'PhonePe UPI';
+  static const proceed_this_payment_option  = 'Proceed with this option';
+  static const you_need_to_have_upi_id  = 'You need to have a registered UPI ID';
 
   static const List<Map<String, dynamic>> profileItemList = [
     {'image': 'assets/ic_orders.png', 'title': your_orders},
@@ -75,5 +103,16 @@ class Strings{
     { 'title': app_version,'subtitle':appVersion},
     {'title': open_source_libraries,'subtitle':''},
     {'title': licences_registrations,'subtitle':''},
+  ];
+  static const List<String> hotel_distance_list = ['Street Hotel',
+    'Food Truck',
+    'Family Restaurant',
+    'Bar and Restaurant'
+  ];
+
+  static const List<String> timing_period_list = ['Street Hotel',
+    'Food Truck',
+    'Family Restaurant',
+    'Bar and Restaurant'
   ];
 }

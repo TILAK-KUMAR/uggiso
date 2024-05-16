@@ -14,7 +14,4 @@ class LoadingState extends SignUpState {}
 
 class onLoadedState extends SignUpState {}
 
-class ErrorState extends SignUpState {
-  final String? message;
-  const ErrorState(this.message);
-}
+class ErrorState extends SignUpState {}
