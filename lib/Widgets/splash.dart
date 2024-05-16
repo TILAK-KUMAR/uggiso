@@ -68,7 +68,7 @@ class _SplashScreenState extends State<SplashScreen> {
     });
     print('this is device imei : ${imeiNo}');
     Timer(Duration(seconds: 3),
-            () => Navigator.popAndPushNamed(context, AppRoutes.homeScreen)
+            () => Navigator.popAndPushNamed(context, AppRoutes.paymentOptions)
     );
   }
 

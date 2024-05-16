@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:uggiso/Bloc/HomeBloc/HomeBloc.dart';
 import 'package:uggiso/Bloc/HomeBloc/HomeEvent.dart';
 import 'package:uggiso/Bloc/HomeBloc/HomeState.dart';
+import 'package:uggiso/Model/GetNearByResaturantModel.dart';
 import 'package:uggiso/Widgets/ui-kit/RoundedContainer.dart';
 import 'package:uggiso/base/common/utils/colors.dart';
 
@@ -33,25 +34,31 @@ class _HomeTabState extends State<HomeTab> {
     return BlocProvider(
       create: (context) => _homeBloc,
 
-      child: BlocListener<HomeBloc,HomeState>(
-        listener: (BuildContext context, HomeState state) {
+      child: BlocBuilder<HomeBloc,HomeState>(
+        builder: (BuildContext context, HomeState state){
           if (state is onLoadedHotelState) {
             // Navigate to the next screen when NavigationState is emitted
             // saveNumber(_mobileController.text);
-            Navigator.pushNamed(context, AppRoutes.verifyOtp);
+            print('this is state data : ${state.data.payload}');
+            return SafeArea(child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                HomeHeaderContainer(),
+                GetNearByHotels(state.data.payload),
+                // HomeScreen()
+              ],
+            ));
+            // Navigator.pushNamed(context, AppRoutes.verifyOtp);
           } else if (state is ErrorState) {
             // isInvalidCredentials = true;
+            return Container();
+          }
+          else{
+            return Container();
           }
         },
-        child: SafeArea(child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            HomeHeaderContainer(),
-            GetNearByHotels(),
-            // HomeScreen()
-          ],
-        )),
+
       ),
     );
   }
@@ -62,7 +69,7 @@ class _HomeTabState extends State<HomeTab> {
     width: MediaQuery.of(context).size.width,
   );
 
-  Widget GetNearByHotels() => Padding(
+  Widget GetNearByHotels(List<Payload>? payload) => Padding(
     padding: const EdgeInsets.symmetric(horizontal: 8.0,vertical: 8.0),
     child: Column(
       mainAxisAlignment: MainAxisAlignment.start,
@@ -81,12 +88,12 @@ class _HomeTabState extends State<HomeTab> {
           width: MediaQuery.of(context).size.width,
           height: MediaQuery.of(context).size.height*0.2,
           child: ListView.builder(
-            itemCount: 5,
+            itemCount: payload?.length,
               scrollDirection: Axis.horizontal,
               itemBuilder: (BuildContext context, int index){
             return Padding(
               padding: const EdgeInsets.all(8.0),
-              child: NearByHotelCard("hello hotel",'pure veg'),
+              child: NearByHotelCard(payload?[index].restaurantName,payload?[index].restaurantMenuType),
             );
           }),
         ),
@@ -106,7 +113,7 @@ class _HomeTabState extends State<HomeTab> {
     ),
   );
 
-  Widget NearByHotelCard(String name,String foodType) =>RoundedContainer(
+  Widget NearByHotelCard(String? name,String? foodType) =>RoundedContainer(
       width: MediaQuery.of(context).size.width*0.8,
       height: MediaQuery.of(context).size.height*0.15,
       borderWidth: 2, cornerRadius: 7,
@@ -131,9 +138,9 @@ class _HomeTabState extends State<HomeTab> {
               children: [
                 SizedBox(height: 18.0,),
 
-                Text(name,
+                Text(name ?? "",
                   style:AppFonts.title.copyWith(color: AppColors.bottomTabInactiveColor),),
-                Text(foodType, style:AppFonts.smallText.copyWith(color: AppColors.textGrey),),
+                foodType==null?Text(''):Text(foodType!, style:AppFonts.smallText.copyWith(color: AppColors.textGrey),),
                 Expanded(
                   child: Align(
                     alignment: Alignment.bottomLeft,

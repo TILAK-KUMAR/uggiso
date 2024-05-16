@@ -29,6 +29,8 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
+        <meta-data android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyB8UoTxemF5no_Va1aJn4x8s10VsFlLQHA"/>
 
         <service
             android:name="com.example.myapp.PushNotificationService"

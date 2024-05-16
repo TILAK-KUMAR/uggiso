@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:uggiso/Widgets/AboutUsScreen.dart';
+import 'package:uggiso/Widgets/AddCard.dart';
 import 'package:uggiso/Widgets/HelpCenter.dart';
 import 'package:uggiso/Widgets/HomeLandingScreen.dart';
 import 'package:uggiso/Widgets/MenuListScreen.dart';
@@ -9,6 +10,9 @@ import 'package:uggiso/Widgets/VerifyOtp.dart';
 import 'package:uggiso/widgets/IntroLandingScreen.dart';
 import 'package:uggiso/widgets/SignUpScreen.dart';
 import 'package:uggiso/widgets/splash.dart';
+
+import 'Widgets/CreateOrder.dart';
+import 'Widgets/PaymentOptionsScreen.dart';
 
 class AppRoutes {
   static const String initialRoute = '/';
@@ -30,7 +34,14 @@ class AppRoutes {
   static const String helpCenter = '/help_center';
 
   static const String aboutUs = '/about_us';
+
   static const String menuList = '/menu_list';
+
+  static const String saveCard = '/save_card';
+
+  static const String createOrder = '/create_order';
+
+  static const String paymentOptions = '/payment_options';
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -54,6 +65,12 @@ class AppRoutes {
         return MaterialPageRoute(builder: (_) => const AboutUsScreen());
       case menuList:
         return MaterialPageRoute(builder: (_) => const MenuListScreen());
+      case saveCard:
+        return MaterialPageRoute(builder: (_) => const AddCard());
+      case createOrder:
+        return MaterialPageRoute(builder: (_) => const CreateOrder());
+      case paymentOptions:
+        return MaterialPageRoute(builder: (_) => const PaymentOptionsScreen());
       default:
         // If there is no such named route in the switch statement, e.g. /randomRoute
         return MaterialPageRoute(builder: (_) {
