@@ -6,6 +6,8 @@ import 'package:uggiso/app_routes.dart';
 import 'package:uggiso/base/common/utils/LocationManager.dart';
 import 'package:uggiso/base/common/utils/colors.dart';
 
+import 'MenuListScreen.dart';
+
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
 
@@ -40,15 +42,18 @@ class _SplashScreenState extends State<SplashScreen> {
   void getDeviceId()async{
     final prefs = await SharedPreferences.getInstance();
     deviceId = await DeviceUuid().getUUID();
+    print('this is device id : $deviceId');
     LocationInfo _location = await LocationManager.getCurrentPosition();
 
     prefs.setString('device_id', deviceId!);
     prefs.setDouble('user_longitude', _location.longitude);
     prefs.setDouble('user_latitude', _location.latitude);
 
-    Timer(Duration(seconds: 3),
-            () => Navigator.popAndPushNamed(context, AppRoutes.homeScreen)
-    );
+    Navigator.popAndPushNamed(context, AppRoutes.menuList);
+
+    /*Timer(Duration(seconds: 3),
+            () =>
+    );*/
   }
 
 

@@ -115,4 +115,11 @@ class Strings{
     'Family Restaurant',
     'Bar and Restaurant'
   ];
+
+  static const List<String> distance_type = ['5.0 KM',
+    '10.0 KM',
+    '15.0 KM',
+    '20.0 KM',
+    '25.0 KM'
+  ];
 }

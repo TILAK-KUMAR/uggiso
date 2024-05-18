@@ -49,7 +49,7 @@ dependencies:
   gap: ^3.0.1
   google_maps_flutter: ^2.5.3
   device_uuid: ^0.0.4
-  geolocator: ^12.0.0
+  geolocator: ^11.1.0
   geocoding: ^3.0.0
 
 dev_dependencies:

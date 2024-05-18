@@ -10,17 +10,18 @@ import 'base/common/utils/colors.dart';
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
-  SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky, overlays: [SystemUiOverlay.bottom]);
+  SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky, overlays: [SystemUiOverlay.bottom],);
 
-  /*SystemChrome.setSystemUIOverlayStyle(
-    const SystemUiOverlayStyle(
-      statusBarColor: AppColors.appPrimaryColor,
-      statusBarIconBrightness: Brightness.light,
-      systemNavigationBarColor: Colors.transparent,
-      systemNavigationBarIconBrightness: Brightness.light,
-
-    ),
-  );*/
+  // SystemChrome.setSystemUIOverlayStyle(
+  //   const SystemUiOverlayStyle(
+  //     statusBarBrightness: Brightness.light,
+  //     statusBarColor: AppColors.white,
+  //     statusBarIconBrightness: Brightness.light,
+  //     systemNavigationBarColor: Colors.transparent,
+  //     systemNavigationBarIconBrightness: Brightness.light,
+  //
+  //   ),
+  // );
   // await Firebase.initializeApp();
   runApp(
     MultiBlocProvider(

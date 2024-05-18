@@ -9,6 +9,7 @@ class RoundedContainer extends StatelessWidget {
   final double borderWidth;
   final Color borderColor;
   final Color color;
+  final double padding;
 
   const RoundedContainer(
       {Key? key,
@@ -18,13 +19,14 @@ class RoundedContainer extends StatelessWidget {
       required this.cornerRadius,
       this.borderColor = AppColors.borderColor,
       this.color = Colors.transparent,
-      this.borderWidth = 1.0})
+      this.borderWidth = 1.0,
+      this.padding = 8.0})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(8.0),
+      padding: EdgeInsets.all(padding),
       height: height,
       width: width,
       child: child,

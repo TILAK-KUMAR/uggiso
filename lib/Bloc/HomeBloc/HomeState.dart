@@ -18,4 +18,7 @@ class onLoadedHotelState extends HomeState {
   onLoadedHotelState(this.data);
 }
 
-class ErrorState extends HomeState {}
+class ErrorState extends HomeState {
+  final String message;
+  ErrorState(this.message);
+}

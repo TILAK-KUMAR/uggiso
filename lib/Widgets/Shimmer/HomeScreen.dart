@@ -8,13 +8,12 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final delay = 100;
+    final delay = 30;
 
     return SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Container(
-            height: MediaQuery.of(context).size.height,
             child: Column(
               children: [
                 Row(
@@ -25,7 +24,7 @@ class HomeScreen extends StatelessWidget {
                         width: MediaQuery.of(context).size.width*0.3,
                         radius: 4,
                         millisecondsDelay: delay,
-                        fadeTheme:FadeTheme.light
+                        fadeTheme:FadeTheme.light,
                     ),
                     FadeShimmer(
                         height: MediaQuery.of(context).size.height*0.1,
