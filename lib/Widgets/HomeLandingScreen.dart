@@ -46,40 +46,18 @@ class _HomeLandingScreenState extends State<HomeLandingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.white,
       body: Center(
         child: _widgetOptions.elementAt(_selectedIndex),
       ),
-   /*   floatingActionButton:Container(
-        padding: EdgeInsets.all(18),
-        width: 64,
-        height: 64,
-        decoration: BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage(
-                'assets/ic_rectangle.png',
-              ),
-            )
-        ),
-        child: Center(
-          child: Image.asset(
-            'assets/ic_categories.png',
-          ),
-        ),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,*/
       bottomNavigationBar: BottomAppBar(
-        shape: CircularNotchedRectangle(),
-        child: Container(
-          height: 70,
-          child:  Padding(
-            padding: const EdgeInsets.symmetric(horizontal:8.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: List.generate(_imagePaths.length, (index) {
-                return buildNavBarItem(index);
-              }),
-            ),
-          ),
+        height: 60,
+        color: AppColors.white,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: List.generate(_imagePaths.length, (index) {
+            return buildNavBarItem(index);
+          }),
         ),
       ),
     );
@@ -91,7 +69,7 @@ class _HomeLandingScreenState extends State<HomeLandingScreen> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          Image.asset(_imagePaths[index],height: 24,width: 24,
+          Image.asset(_imagePaths[index],height: 18,width: 18,
             color: _selectedIndex == index ? AppColors.appPrimaryColor : AppColors.bottomTabInactiveColor,
           ),
           SizedBox(height: 4.0,),

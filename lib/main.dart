@@ -6,8 +6,21 @@ import 'package:uggiso/Bloc/SignUpBloc/signup_bloc.dart';
 import 'package:uggiso/Bloc/VerifyOtpBloc/VerifyOtpBloc.dart';
 import 'package:uggiso/app_routes.dart';
 
+import 'base/common/utils/colors.dart';
+
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky, overlays: [SystemUiOverlay.bottom]);
+
+  /*SystemChrome.setSystemUIOverlayStyle(
+    const SystemUiOverlayStyle(
+      statusBarColor: AppColors.appPrimaryColor,
+      statusBarIconBrightness: Brightness.light,
+      systemNavigationBarColor: Colors.transparent,
+      systemNavigationBarIconBrightness: Brightness.light,
+
+    ),
+  );*/
   // await Firebase.initializeApp();
   runApp(
     MultiBlocProvider(
@@ -28,7 +41,6 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: [SystemUiOverlay.bottom]);
     return MaterialApp(
       title: 'Flutter Demo',
       // onBackgroundMessage: myBackgroundMessageHandler, // Add this line
