@@ -21,7 +21,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    getDeviceId();
+    checkUserLoggedStatus();
   }
 
   @override
@@ -39,9 +39,16 @@ class _SplashScreenState extends State<SplashScreen> {
         child: Image.asset('assets/uggiso_splash.png', width: 200, height: 200)
     );
   }
+
+  void checkUserLoggedStatus(){
+
+    getDeviceId();
+
+  }
   void getDeviceId()async{
     final prefs = await SharedPreferences.getInstance();
     deviceId = await DeviceUuid().getUUID();
+    bool? _isUserLoggedIn = false;
     print('this is device id : $deviceId');
     LocationInfo _location = await LocationManager.getCurrentPosition();
 
@@ -49,7 +56,15 @@ class _SplashScreenState extends State<SplashScreen> {
     prefs.setDouble('user_longitude', _location.longitude);
     prefs.setDouble('user_latitude', _location.latitude);
 
-    Navigator.popAndPushNamed(context, AppRoutes.menuList);
+    _isUserLoggedIn = prefs.getBool('is_user_logged_in');
+    if(_isUserLoggedIn==null || _isUserLoggedIn ==false){
+      Navigator.popAndPushNamed(context, AppRoutes.homeScreen);
+
+    }
+    else{
+      Navigator.popAndPushNamed(context, AppRoutes.introLanding);
+
+    }
 
     /*Timer(Duration(seconds: 3),
             () =>
