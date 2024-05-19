@@ -19,7 +19,7 @@ class _ProfileTabState extends State<ProfileTab> {
     return Scaffold(
       backgroundColor: AppColors.textFieldBg,
       appBar: AppBar(
-        elevation: 2.0,
+        elevation: 0,
         leading: Container(),
         backgroundColor: AppColors.textFieldBg,
         title: const Text(

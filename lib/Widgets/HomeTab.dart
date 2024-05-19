@@ -7,6 +7,7 @@ import 'package:uggiso/Bloc/HomeBloc/HomeEvent.dart';
 import 'package:uggiso/Bloc/HomeBloc/HomeState.dart';
 import 'package:uggiso/Model/GetNearByResaturantModel.dart';
 import 'package:uggiso/Widgets/Shimmer/HomeScreen.dart';
+import 'package:uggiso/Widgets/ui-kit/HotelListGrid.dart';
 import 'package:uggiso/Widgets/ui-kit/RoundedContainer.dart';
 import 'package:uggiso/Widgets/ui-kit/TextFieldCurvedEdges.dart';
 import 'package:uggiso/base/common/utils/colors.dart';
@@ -26,6 +27,7 @@ class _HomeTabState extends State<HomeTab> {
   double latitude = 0.0;
   double longitude = 0.0;
   String selectedDistance = '5.0 KM';
+  bool _isShowMaps = false;
   TextEditingController userlocationController = TextEditingController();
   TextEditingController userDistanceController = TextEditingController();
 
@@ -41,6 +43,7 @@ class _HomeTabState extends State<HomeTab> {
     return BlocProvider(
       create: (context) => _homeBloc,
       child: Scaffold(
+        backgroundColor: AppColors.textFieldBorderColor,
         appBar: AppBar(
           backgroundColor: AppColors.appPrimaryColor,
           leading: Container(),
@@ -57,6 +60,32 @@ class _HomeTabState extends State<HomeTab> {
             )
           ],
         ),
+        floatingActionButton: FloatingActionButton(
+          backgroundColor: AppColors.appPrimaryColor,
+          onPressed: () {
+            setState(() {
+              if (_isShowMaps) {
+                _isShowMaps = false;
+              } else {
+                _isShowMaps = true;
+              }
+            });
+            // Navigator.pushNamed(context, AppRoutes.createOrder);
+          },
+          tooltip: 'Increment',
+          elevation: 8.0,
+          child: _isShowMaps
+              ? Icon(
+                  Icons.location_on,
+                  color: AppColors.white,
+                  size: 32,
+                )
+              : Icon(
+                  Icons.list_alt_rounded,
+                  color: AppColors.white,
+                  size: 32,
+                ),
+        ),
         body: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -66,10 +95,12 @@ class _HomeTabState extends State<HomeTab> {
               builder: (BuildContext context, HomeState state) {
                 if (state is onLoadedHotelState) {
                   print('this is state data : ${state.data.payload}');
-                  return GetNearByHotels(state.data.payload);
+                  // return GetNearByHotels(state.data.payload);
+                  return Expanded(child: HotelListGrid(state.data.payload));
                   // Navigator.pushNamed(context, AppRoutes.verifyOtp);
                 } else if (state is ErrorState) {
                   // isInvalidCredentials =
+
                   return Expanded(
                     child: Column(
                       children: [
@@ -121,7 +152,7 @@ class _HomeTabState extends State<HomeTab> {
             children: [
               Gap(12),
               RoundedContainer(
-                color: AppColors.white,
+                  color: AppColors.white,
                   borderColor: AppColors.white,
                   width: MediaQuery.of(context).size.width,
                   height: MediaQuery.of(context).size.height * 0.05,
@@ -134,21 +165,22 @@ class _HomeTabState extends State<HomeTab> {
                         'Current Location',
                         style: AppFonts.title,
                       ),
-                      Text(
-                        'Change',style: AppFonts.smallText.copyWith(color: AppColors.appPrimaryColor),
+                      InkWell(
+                        onTap: () {
+                          getNearByRestaurants(latitude, longitude);
+                        },
+                        child: Text(
+                          'Change',
+                          style: AppFonts.smallText
+                              .copyWith(color: AppColors.appPrimaryColor),
+                        ),
                       ),
                     ],
                   )),
               Gap(12),
               RoundedContainer(
-                  width: MediaQuery
-                      .of(context)
-                      .size
-                      .width,
-                  height: MediaQuery
-                      .of(context)
-                      .size
-                      .height * 0.05,
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height * 0.05,
                   color: AppColors.white,
                   cornerRadius: 8,
                   padding: 0,
@@ -159,10 +191,7 @@ class _HomeTabState extends State<HomeTab> {
                     ),
                     padding: const EdgeInsets.symmetric(horizontal: 18),
                     value: selectedDistance,
-                    menuMaxHeight: MediaQuery
-                        .of(context)
-                        .size
-                        .height * 0.4,
+                    menuMaxHeight: MediaQuery.of(context).size.height * 0.4,
                     icon: Image.asset(
                       'assets/ic_dropdown_arrow.png',
                       width: 12.0,
@@ -331,7 +360,10 @@ class _HomeTabState extends State<HomeTab> {
       latitude = prefs.getDouble('user_latitude') ?? 0.0;
       longitude = prefs.getDouble('user_longitude') ?? 0.0;
     });
-    _homeBloc
-        .add(OnInitilised(lat: latitude.toString(), lag: longitude.toString()));
+    getNearByRestaurants(latitude, longitude);
+  }
+
+  getNearByRestaurants(double lat, double lag) {
+    _homeBloc.add(OnInitilised(lat: '37.4219983', lag: '-122.084'));
   }
 }

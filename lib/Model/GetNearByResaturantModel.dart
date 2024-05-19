@@ -44,8 +44,8 @@ class Payload {
   String? phoneNumber;
   String? address;
   String? landmark;
-  String? latitude;
-  String? longitude;
+  double? latitude;
+  double? longitude;
   String? city;
   String? state;
   String? accountNumber;

@@ -17,9 +17,9 @@ class _OrdersTabState extends State<OrdersTab> {
     return Scaffold(
       backgroundColor: AppColors.textFieldBg,
       appBar: AppBar(
-        elevation: 2.0,
+        elevation: 0,
         leading: Container(),
-        backgroundColor: AppColors.textFieldBg,
+        backgroundColor: AppColors.appPrimaryColor,
         title: const Text(
           Strings.your_orders,
           style: AppFonts.appBarText,

@@ -46,7 +46,7 @@ class Payload {
   bool? veg;
   double? price;
   bool? bestSeller;
-  String? ratings;
+  double? ratings;
 
   Payload(
       {this.menuId,

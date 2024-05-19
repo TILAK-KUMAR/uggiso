@@ -41,7 +41,7 @@ class _RegisterUserScreenState extends State<RegisterUserScreen> {
         listener: (BuildContext context, RegisterUserState state) {
           if (state is onLoadedState) {
             // Navigate to the next screen when NavigationState is emitted
-            saveUserDetails(_nameController.text,userDeviceId,'');
+            saveUserDetails(_nameController.text,userDeviceId,'',state.userId);
             Navigator.popAndPushNamed(context, AppRoutes.homeScreen);
           } else if (state is ErrorState) {
             // isInvalidCredentials = true;
@@ -94,7 +94,6 @@ class _RegisterUserScreenState extends State<RegisterUserScreen> {
                         height: 40.0,
                         text: Strings.submit,
                         onPressed: () {
-                          Navigator.popAndPushNamed(context, AppRoutes.homeScreen);
                           _registerUserBloc.add(
                               OnRegisterButtonClicked(name:_nameController.text,number:userContactNumber,
                               deviceId:userDeviceId,token: "FcmTokenId"));
@@ -121,11 +120,13 @@ class _RegisterUserScreenState extends State<RegisterUserScreen> {
 
     });
   }
-  void saveUserDetails(String name,String deviceId, String token ) async {
+  void saveUserDetails(String name,String deviceId, String token, String userId ) async {
     final prefs = await SharedPreferences.getInstance();
     prefs.setString('user_name', name);
     prefs.setString('device_id', deviceId);
     prefs.setString('fcm_token', token);
+    prefs.setString('userId', userId);
+    prefs.setBool('is_user_logged_in', true);
   }
 
   @override

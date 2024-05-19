@@ -4,9 +4,12 @@ import 'package:uggiso/Bloc/RegisterUserBloc/RegisterUserState.dart';
 import 'package:uggiso/Network/NetworkError.dart';
 import 'package:uggiso/Network/apiRepository.dart';
 
+import '../../Model/RegisterUserModel.dart';
+
 class RegisterUserBloc extends Bloc<RegisterUserEvent, RegisterUserState> {
   RegisterUserBloc() : super(InitialState()){
     final ApiRepository _apiRepository = ApiRepository();
+    late RegisterUserModel data;
 
     on<OnRegisterButtonClicked>((event,emit) async{
 
@@ -14,9 +17,14 @@ class RegisterUserBloc extends Bloc<RegisterUserEvent, RegisterUserState> {
         emit(LoadingState()) ;
         if(event.name.isNotEmpty) {
           //String name,String number,String userType,String deviceId,String token
-          await _apiRepository.registerUser(event.name,event.number,
+         data =  await _apiRepository.registerUser(event.name,event.number,
               'CUSTOMER',event.deviceId,event.token);
-          emit(onLoadedState());
+         if(data.payload!=null ||data.payload?.userId!=null){
+           emit(onLoadedState(data.payload!.userId!));
+         }
+         else{
+           emit(ErrorState(''));
+         }
         }
         else{
           emit(ErrorState(''));

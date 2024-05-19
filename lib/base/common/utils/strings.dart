@@ -3,6 +3,7 @@ class Strings{
 
   static const appName = 'Uggiso';
   static const appVersion = 'v1.0.0';
+  static const searchKey = 'AIzaSyB8UoTxemF5no_Va1aJn4x8s10VsFlLQHA';
   static const ordering_made_easy = 'Ordering Made Easy!';
   static const get_ready_to_explore = 'Get Ready to explore delicious dishes from your favourite restaurants';
   static const easy_secure_payment = 'Easy & Secure Payment';
@@ -82,6 +83,16 @@ class Strings{
   static const phone_pay_upi  = 'PhonePe UPI';
   static const proceed_this_payment_option  = 'Proceed with this option';
   static const you_need_to_have_upi_id  = 'You need to have a registered UPI ID';
+  static const select_time_slot  = 'Select Time slot';
+  static const order_details  = 'Order Details';
+  static const bill_details  = 'Bill Details';
+  static const item_total  = 'Item Total';
+  static const gst_charges  = 'Gst & Restaurant Charges';
+  static const to_pay  = 'TO PAY';
+  static const payment_methods  = 'Payment Methods';
+  static const note  = 'Note : ';
+  static const note_desc  = 'If you cancel the order within 60 Sec of placing your oreder, a 100% refund will be issued. No refund for cancellations made after 60 seconds.';
+  static const payment_successful = 'Payment successful';
 
   static const List<Map<String, dynamic>> profileItemList = [
     {'image': 'assets/ic_orders.png', 'title': your_orders},
@@ -121,5 +132,12 @@ class Strings{
     '15.0 KM',
     '20.0 KM',
     '25.0 KM'
+  ];
+
+  static const List<String> time_slot = ['10-15 min',
+    '15-20 min',
+    '20-25 min',
+    '25-30 min',
+    '30-45 min'
   ];
 }

@@ -14,9 +14,8 @@ class ApiProvider {
 
   Future<OtpModel> getOtp(String number) async {
     try {
-      Response response = await _dio.post('${_url}${Constants.getOtp}',data: {
-        "phoneNumber": number
-      });
+      Response response = await _dio
+          .post('${_url}${Constants.getOtp}', data: {"phoneNumber": number});
       print("${response.data}");
       return OtpModel.fromJson(response.data);
     } catch (error, stacktrace) {
@@ -25,13 +24,11 @@ class ApiProvider {
     }
   }
 
-  Future<VerifyOtpModel> verifyOtp(String? number,String otp) async {
+  Future<VerifyOtpModel> verifyOtp(String? number, String otp) async {
     print('this is rewuest : $number and $otp');
     try {
-      Response response = await _dio.post('${_url}${Constants.verifyOtp}',data: {
-        "phoneNumber":number,
-        "otp":otp
-      });
+      Response response = await _dio.post('${_url}${Constants.verifyOtp}',
+          data: {"phoneNumber": number, "otp": otp});
       print("${response.data}");
 
       return VerifyOtpModel.fromJson(response.data);
@@ -41,9 +38,11 @@ class ApiProvider {
     }
   }
 
-  Future<RegisterUserModel> registerUser(String name,String number,String userType,String deviceId,String token) async {
+  Future<RegisterUserModel> registerUser(String name, String number,
+      String userType, String deviceId, String token) async {
     try {
-      Response response = await _dio.post('${_url}${Constants.registerUser}',data: {
+      Response response =
+          await _dio.post('${_url}${Constants.registerUser}', data: {
         "name": name,
         "phoneNumber": number,
         "userType": userType,
@@ -61,13 +60,15 @@ class ApiProvider {
 
   Future<RestaurantDetailsModel> getRestaurantDetails(String id) async {
     try {
-      Response response = await _dio.get('${_url}${Constants.restaurantDetails}$id');
+      Response response =
+          await _dio.get('${_url}${Constants.restaurantDetails}$id');
       print("${response.data}");
 
       return RestaurantDetailsModel.fromJson(response.data);
     } catch (error, stacktrace) {
       print("Exception occured: $error stackTrace: $stacktrace");
-      return RestaurantDetailsModel.withError("Data not found / Connection issue");
+      return RestaurantDetailsModel.withError(
+          "Data not found / Connection issue");
     }
   }
 
@@ -83,36 +84,36 @@ class ApiProvider {
     }
   }
 
-  Future<AddFavoriteMenuModel> addFavMenu(String userId,String menuId) async {
+  Future<AddFavoriteMenuModel> addFavMenu(String userId, String menuId) async {
     try {
-      Response response = await _dio.post('${_url}${Constants.addFavMenu}',data: {
-        {
-          "userId":userId,
-          "menuId":menuId
-        }
+      Response response =
+          await _dio.post('${_url}${Constants.addFavMenu}', data: {
+        {"userId": userId, "menuId": menuId}
       });
       print("${response.data}");
 
       return AddFavoriteMenuModel.fromJson(response.data);
     } catch (error, stacktrace) {
       print("Exception occured: $error stackTrace: $stacktrace");
-      return AddFavoriteMenuModel.withError("Data not found / Connection issue");
+      return AddFavoriteMenuModel.withError(
+          "Data not found / Connection issue");
     }
   }
 
-  Future<GetNearByRestaurantModel> getNearByRestaurant(String lat,String lag) async {
+  Future<GetNearByRestaurantModel> getNearByRestaurant(
+      String lat, String lag) async {
     print('calling api : $lat and $lag');
     try {
-      Response response = await _dio.post('${_url}${Constants.restaurantNearBy}',data: {
-          "lat":lat,
-          "lag":lag
-      });
+      Response response = await _dio.post(
+          '${_url}${Constants.restaurantNearBy}',
+          data: {"lat": lat, "lag": lag, "distance": 5.0});
       print("${response.data}");
 
       return GetNearByRestaurantModel.fromJson(response.data);
     } catch (error, stacktrace) {
       print("Exception occured: $error stackTrace: $stacktrace");
-      return GetNearByRestaurantModel.withError("Data not found / Connection issue");
+      return GetNearByRestaurantModel.withError(
+          "Data not found / Connection issue");
     }
   }
 }
