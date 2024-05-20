@@ -58,6 +58,7 @@ class Payload {
   String? restaurantMenuType;
   String? restaurantSize;
   String? createdDate;
+  double? ratings;
 
   Payload(
       {this.restaurantId,
@@ -79,7 +80,8 @@ class Payload {
         this.restaurantStatus,
         this.restaurantMenuType,
         this.restaurantSize,
-        this.createdDate});
+        this.createdDate,
+      this.ratings});
 
   Payload.fromJson(Map<String, dynamic> json) {
     restaurantId = json['restaurantId'];
@@ -102,6 +104,7 @@ class Payload {
     restaurantMenuType = json['restaurantMenuType'];
     restaurantSize = json['restaurantSize'];
     createdDate = json['createdDate'];
+    ratings = json['ratings'];
   }
 
   Map<String, dynamic> toJson() {
@@ -126,6 +129,7 @@ class Payload {
     data['restaurantMenuType'] = this.restaurantMenuType;
     data['restaurantSize'] = this.restaurantSize;
     data['createdDate'] = this.createdDate;
+    data['ratings'] = this.ratings;
     return data;
   }
 }

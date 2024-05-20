@@ -26,7 +26,7 @@ class _HomeTabState extends State<HomeTab> {
   final HomeBloc _homeBloc = HomeBloc();
   double latitude = 0.0;
   double longitude = 0.0;
-  String selectedDistance = '5.0 KM';
+  double selectedDistance = 5.0;
   bool _isShowMaps = false;
   TextEditingController userlocationController = TextEditingController();
   TextEditingController userDistanceController = TextEditingController();
@@ -96,7 +96,22 @@ class _HomeTabState extends State<HomeTab> {
                 if (state is onLoadedHotelState) {
                   print('this is state data : ${state.data.payload}');
                   // return GetNearByHotels(state.data.payload);
-                  return Expanded(child: HotelListGrid(state.data.payload));
+                  return Expanded(
+                      child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Gap(24),
+                        const Text(
+                          Strings.near_by_restaurants,
+                          style: AppFonts.subHeader,
+                        ),
+                        const Gap(12),
+                        HotelListGrid(state.data.payload),
+                      ],
+                    ),
+                  ));
                   // Navigator.pushNamed(context, AppRoutes.verifyOtp);
                 } else if (state is ErrorState) {
                   // isInvalidCredentials =
@@ -167,7 +182,8 @@ class _HomeTabState extends State<HomeTab> {
                       ),
                       InkWell(
                         onTap: () {
-                          getNearByRestaurants(latitude, longitude);
+                          getNearByRestaurants(
+                              latitude, longitude, selectedDistance);
                         },
                         child: Text(
                           'Change',
@@ -197,15 +213,17 @@ class _HomeTabState extends State<HomeTab> {
                       width: 12.0,
                       height: 12.0,
                     ),
-                    items: Strings.distance_type.map((String value) {
+                    items: Strings.distance_type.map((double value) {
                       return DropdownMenuItem(
                         value: value,
-                        child: Text(value),
+                        child: Text('${value} KM'),
                       );
                     }).toList(),
-                    onChanged: (String? newValue) {
+                    onChanged: (double? newValue) {
                       setState(() {
                         selectedDistance = newValue!;
+                        getNearByRestaurants(
+                            latitude, longitude, selectedDistance);
                       });
                     },
                   )),
@@ -360,10 +378,11 @@ class _HomeTabState extends State<HomeTab> {
       latitude = prefs.getDouble('user_latitude') ?? 0.0;
       longitude = prefs.getDouble('user_longitude') ?? 0.0;
     });
-    getNearByRestaurants(latitude, longitude);
+    getNearByRestaurants(latitude, longitude, selectedDistance);
   }
 
-  getNearByRestaurants(double lat, double lag) {
-    _homeBloc.add(OnInitilised(lat: '37.4219983', lag: '-122.084'));
+  getNearByRestaurants(double lat, double lag, double distance) {
+    _homeBloc.add(
+        OnInitilised(lat: '37.4219983', lag: '-122.084', distance: distance));
   }
 }

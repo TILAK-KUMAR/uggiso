@@ -33,11 +33,11 @@ class _FavoriteTabState extends State<FavoriteTab> with SingleTickerProviderStat
     return DefaultTabController(
       length: 3,
       child: Scaffold(
-          backgroundColor: AppColors.white,
+
           appBar: AppBar(
             elevation: 0.0,
             leading: Container(),
-            backgroundColor: AppColors.white,
+            backgroundColor: AppColors.appPrimaryColor,
             title: const Text(
               Strings.favorite,
               style: AppFonts.appBarText,
@@ -50,19 +50,23 @@ class _FavoriteTabState extends State<FavoriteTab> with SingleTickerProviderStat
                 child: Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20.0),
-                    color: AppColors.grey,
+                    color: AppColors.appPrimaryColor,
                   ),
                   child: TabBar(
                     controller: _tabController,
                     indicator: BoxDecoration(
                       borderRadius: BorderRadius.circular(20.0),
-                      color: AppColors.appPrimaryColor,
+                      color: AppColors.white,
                     ),
                     labelStyle: AppFonts.appBarText,
                     labelColor: AppColors.textColor,
                     tabs: [
-                      Tab(text: Strings.hotels,),
-                      Tab(text: Strings.dishes),
+                      Container(
+                        width: MediaQuery.of(context).size.width*0.4,
+                          child: Tab(text: Strings.hotels,)),
+                      Container(
+                          width: MediaQuery.of(context).size.width*0.4,
+                          child: Tab(text: Strings.dishes)),
                     ],
                   ),
                 ),

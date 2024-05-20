@@ -21,7 +21,7 @@ class _ProfileTabState extends State<ProfileTab> {
       appBar: AppBar(
         elevation: 0,
         leading: Container(),
-        backgroundColor: AppColors.textFieldBg,
+        backgroundColor: AppColors.appPrimaryColor,
         title: const Text(
           Strings.myProfile,
           style: AppFonts.appBarText,

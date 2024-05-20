@@ -51,7 +51,7 @@ class _HomeLandingScreenState extends State<HomeLandingScreen> {
         child: _widgetOptions.elementAt(_selectedIndex),
       ),
       bottomNavigationBar: BottomAppBar(
-        height: 60,
+        height: MediaQuery.of(context).size.height*0.08,
         color: AppColors.white,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,

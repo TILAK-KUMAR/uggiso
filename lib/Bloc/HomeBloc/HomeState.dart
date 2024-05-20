@@ -18,6 +18,11 @@ class onLoadedHotelState extends HomeState {
   onLoadedHotelState(this.data);
 }
 
+class onFavHotelAddedState extends HomeState {
+  final String result;
+  onFavHotelAddedState(this.result);
+}
+
 class ErrorState extends HomeState {
   final String message;
   ErrorState(this.message);

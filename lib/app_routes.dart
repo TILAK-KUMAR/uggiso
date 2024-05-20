@@ -74,7 +74,12 @@ class AppRoutes {
         final args = settings.arguments as MenuListArgs;
         return MaterialPageRoute(
             builder: (_) => MenuListScreen(
-                restaurantId: args.restaurantId, restaurantName: args.name));
+                  restaurantId: args.restaurantId,
+                  restaurantName: args.name,
+                  foodType: args.foodType,
+                  ratings: args.ratings,
+                  landmark: args.landmark,
+                ));
       case saveCard:
         return MaterialPageRoute(builder: (_) => const AddCard());
       case createOrder:

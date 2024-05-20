@@ -58,6 +58,7 @@ class Strings{
   static const delete_subtitle = 'Delete your account';
   static const error_invalid_credientials = 'Enter a valid mobile number';
   static const top_rated_eateries_nearby = 'TOP RATED EATERIES NEARBY';
+  static const near_by_restaurants = 'NEAR BY RESTAURANTS';
   static const all_hotels = 'ALL HOTELS';
   static const card_holder_name  = 'Card Holder Name';
   static const card_number  = 'Card Number';
@@ -127,11 +128,11 @@ class Strings{
     'Bar and Restaurant'
   ];
 
-  static const List<String> distance_type = ['5.0 KM',
-    '10.0 KM',
-    '15.0 KM',
-    '20.0 KM',
-    '25.0 KM'
+  static const List<double> distance_type = [5.0,
+    10.0,
+    15.0,
+    20.0,
+    25.0
   ];
 
   static const List<String> time_slot = ['10-15 min',

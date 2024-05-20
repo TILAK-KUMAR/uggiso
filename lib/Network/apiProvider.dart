@@ -8,6 +8,9 @@ import 'package:uggiso/Model/VerifyOtpModel.dart';
 import 'package:uggiso/Model/otpModel.dart';
 import 'package:uggiso/Network/constants.dart';
 
+import '../Model/GetFavMenuModel.dart';
+import '../Model/GetFavRestaurantModel.dart';
+
 class ApiProvider {
   final Dio _dio = Dio();
   final String _url = Constants.baseUrl;
@@ -99,14 +102,32 @@ class ApiProvider {
           "Data not found / Connection issue");
     }
   }
+  Future<String> addFavRestaurant(String userId, String restId) async {
+    try {
+      Response response =
+      await _dio.post('${_url}${Constants.addFavRestaurant}', data: {
+        "userId": userId, "restaurantId": restId
+      });
+      print("${response.data}");
+      if(response.statusCode==200) {
+        return 'Success';
+      }
+      else{
+        return 'error';
+      }
+    } catch (error, stacktrace) {
+      print("Exception occured: $error stackTrace: $stacktrace");
+      return 'error';
+    }
+  }
 
   Future<GetNearByRestaurantModel> getNearByRestaurant(
-      String lat, String lag) async {
+      String lat, String lag,double distance) async {
     print('calling api : $lat and $lag');
     try {
       Response response = await _dio.post(
           '${_url}${Constants.restaurantNearBy}',
-          data: {"lat": lat, "lag": lag, "distance": 5.0});
+          data: {"lat": lat, "lag": lag, "distance": distance});
       print("${response.data}");
 
       return GetNearByRestaurantModel.fromJson(response.data);
@@ -114,6 +135,31 @@ class ApiProvider {
       print("Exception occured: $error stackTrace: $stacktrace");
       return GetNearByRestaurantModel.withError(
           "Data not found / Connection issue");
+    }
+  }
+
+  Future<GetNearByRestaurantModel> getFavHotelList(String userId) async {
+    try {
+
+      Response response = await _dio.get('${_url}${Constants.getFavRestaurant}$userId');
+      print("${response.data}");
+
+      return GetNearByRestaurantModel.fromJson(response.data);
+    } catch (error, stacktrace) {
+      print("Exception occured: $error stackTrace: $stacktrace");
+      return GetNearByRestaurantModel.withError("Data not found / Connection issue");
+    }
+  }
+
+  Future<GetFavMenuModel> getFavMenuList(String userId) async {
+    try {
+      Response response = await _dio.get('${_url}${Constants.getFavMenu}$userId');
+      print("${response.data}");
+
+      return GetFavMenuModel.fromJson(response.data);
+    } catch (error, stacktrace) {
+      print("Exception occured: $error stackTrace: $stacktrace");
+      return GetFavMenuModel.withError("Data not found / Connection issue");
     }
   }
 }

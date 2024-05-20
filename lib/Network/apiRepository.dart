@@ -8,6 +8,8 @@ import 'package:uggiso/Model/VerifyOtpModel.dart';
 import 'package:uggiso/Model/otpModel.dart';
 import 'package:uggiso/Network/apiProvider.dart';
 
+import '../Model/GetFavMenuModel.dart';
+import '../Model/GetFavRestaurantModel.dart';
 import '../Model/GetNearByResaturantModel.dart';
 
 class ApiRepository {
@@ -31,8 +33,8 @@ class ApiRepository {
     return _provider.getRestaurantDetails(id);
   }
 
-  Future<GetNearByRestaurantModel> getNearbyRestaurant(String lat, String lag) {
-    return _provider.getNearByRestaurant(lat,lag);
+  Future<GetNearByRestaurantModel> getNearbyRestaurant(String lat, String lag, double distance) {
+    return _provider.getNearByRestaurant(lat,lag,distance);
   }
 
   Future<MenuListModel> getMenuList(String? id) {
@@ -41,6 +43,18 @@ class ApiRepository {
 
   Future<AddFavoriteMenuModel> addFavMenu(String userId, String menuId) {
     return _provider.addFavMenu(userId,menuId);
+  }
+
+  Future<String> addFavHotel(String userId, String restId) {
+    return _provider.addFavRestaurant(userId,restId);
+  }
+
+  Future<GetNearByRestaurantModel> getFavHotel(String restId) {
+    return _provider.getFavHotelList(restId);
+  }
+
+  Future<GetFavMenuModel> getFavMenu(String menuId) {
+    return _provider.getFavMenuList(menuId);
   }
 
 

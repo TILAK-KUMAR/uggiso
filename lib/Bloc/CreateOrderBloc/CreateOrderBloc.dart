@@ -14,7 +14,7 @@ class CreateOrderBloc extends Bloc<CreateOrderEvent, CreateOrderState> {
     on<ObPaymentClicked>((event, emit) async {
       try {
         emit(LoadingHotelState());
-        data = await _apiRepository.getNearbyRestaurant(event.lat, event.lag);
+        // data = await _apiRepository.getNearbyRestaurant(event.lat, event.lag,event.);
         if(data.payload == null){
           emit(ErrorState(data.message.toString()));
         }
