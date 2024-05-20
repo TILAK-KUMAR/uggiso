@@ -4,6 +4,7 @@ import 'package:uggiso/Model/GetNearByResaturantModel.dart';
 import 'package:uggiso/Widgets/ui-kit/RoundedContainer.dart';
 import 'package:uggiso/base/common/utils/colors.dart';
 import '../../app_routes.dart';
+import '../../base/common/utils/MenuListArgs.dart';
 import '../../base/common/utils/fonts.dart';
 
 class HotelListGrid extends StatelessWidget {
@@ -37,7 +38,7 @@ class HotelListGrid extends StatelessWidget {
       height: MediaQuery.of(c).size.height * 0.35,
       cornerRadius: 8,
       child: InkWell(
-        onTap: ()=>Navigator.pushNamed(c, AppRoutes.menuList,arguments: item?.restaurantId),
+        onTap: ()=>Navigator.pushNamed(c, AppRoutes.menuList,arguments: MenuListArgs(restaurantId:item!.restaurantId,name:item!.restaurantName)),
         child: Stack(
           children: [
             Image.asset(

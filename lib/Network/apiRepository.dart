@@ -35,8 +35,8 @@ class ApiRepository {
     return _provider.getNearByRestaurant(lat,lag);
   }
 
-  Future<MenuListModel> getMenuList(String id) {
-    return _provider.getMenuList(id);
+  Future<MenuListModel> getMenuList(String? id) {
+    return _provider.getMenuList(id!);
   }
 
   Future<AddFavoriteMenuModel> addFavMenu(String userId, String menuId) {

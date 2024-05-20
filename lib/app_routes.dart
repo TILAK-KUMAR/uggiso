@@ -15,6 +15,7 @@ import 'package:uggiso/widgets/splash.dart';
 
 import 'Widgets/CreateOrder.dart';
 import 'Widgets/PaymentOptionsScreen.dart';
+import 'base/common/utils/MenuListArgs.dart';
 
 class AppRoutes {
   static const String initialRoute = '/';
@@ -70,8 +71,10 @@ class AppRoutes {
       case aboutUs:
         return MaterialPageRoute(builder: (_) => const AboutUsScreen());
       case menuList:
-        final String restaurantId = settings.arguments as String;
-        return MaterialPageRoute(builder: (_) => MenuListScreen(restaurantId:restaurantId));
+        final args = settings.arguments as MenuListArgs;
+        return MaterialPageRoute(
+            builder: (_) => MenuListScreen(
+                restaurantId: args.restaurantId, restaurantName: args.name));
       case saveCard:
         return MaterialPageRoute(builder: (_) => const AddCard());
       case createOrder:

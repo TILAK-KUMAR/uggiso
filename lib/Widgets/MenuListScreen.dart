@@ -12,9 +12,10 @@ import '../base/common/utils/colors.dart';
 import '../base/common/utils/fonts.dart';
 
 class MenuListScreen extends StatefulWidget {
-  final String restaurantId;
+  final String? restaurantId;
+  final String? restaurantName;
 
-  const MenuListScreen({super.key, required String this.restaurantId});
+  const MenuListScreen({super.key, required this.restaurantId,required this.restaurantName});
 
   @override
   State<MenuListScreen> createState() => _MenuListScreenState();
@@ -103,11 +104,11 @@ class _MenuListScreenState extends State<MenuListScreen> {
                 child: Column(
                   children: [
                     const Gap(24),
-                    Text(
-                      'hotel name',
+                    widget.restaurantName!=''?Text(
+                      widget.restaurantName!,
                       style: AppFonts.appBarText
                           .copyWith(fontWeight: FontWeight.w600),
-                    ),
+                    ):Container(),
                     const Gap(12),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -485,7 +486,7 @@ class _MenuListScreenState extends State<MenuListScreen> {
     );
   }
 
-  void loadData(String restId) {
+  void loadData(String? restId) {
     _menuListBloc.add(onInitialised(id: restId));
   }
 }
