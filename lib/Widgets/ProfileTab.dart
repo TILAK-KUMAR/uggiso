@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uggiso/Widgets/ui-kit/ProfileHeader.dart';
 import 'package:uggiso/Widgets/ui-kit/RoundedContainer.dart';
 import 'package:uggiso/app_routes.dart';
@@ -14,6 +15,16 @@ class ProfileTab extends StatefulWidget {
 }
 
 class _ProfileTabState extends State<ProfileTab> {
+  String userName = '';
+  String userNumber = '';
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getUserName();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,36 +42,38 @@ class _ProfileTabState extends State<ProfileTab> {
       body: Column(
         children: [
           ProfileHeader(
-            userName: 'Tilak RK',
-            mail: 'iamtilakrk@gmail.com',
+            userName: userName,
+            mail: userNumber,
             address: 'Varthur Bangalore',
             imageUrl: 'assets/ic_person.png',
-
           ),
-          SizedBox(height: 20,),
-
+          SizedBox(
+            height: 20,
+          ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            child: RoundedContainer(width: MediaQuery
-                .of(context)
-                .size
-                .width,
-                height: MediaQuery
-                    .of(context)
-                    .size
-                    .height * 0.08,
+            child: RoundedContainer(
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height * 0.08,
                 child: Row(
                   children: [
-                    SizedBox(width: 16.0,),
-                    Text("Refer Your Friends", style: AppFonts.title.copyWith(
-                        color: AppColors.textColor),)
+                    SizedBox(
+                      width: 16.0,
+                    ),
+                    Text(
+                      "Refer Your Friends",
+                      style:
+                          AppFonts.title.copyWith(color: AppColors.textColor),
+                    )
                   ],
                 ),
                 color: AppColors.appSecondaryColor,
                 borderColor: AppColors.textFieldBorderColor,
                 cornerRadius: 8),
           ),
-          SizedBox(height: 30,),
+          SizedBox(
+            height: 30,
+          ),
           Expanded(
             child: ListView.builder(
               itemCount: Strings.profileItemList.length,
@@ -80,23 +93,25 @@ class _ProfileTabState extends State<ProfileTab> {
     );
   }
 
-  Widget ListContainerItem(String icon, String text) =>
-      Padding(
+  Widget ListContainerItem(String icon, String text) => Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 2.0),
-        child: RoundedContainer(width: MediaQuery
-            .of(context)
-            .size
-            .width,
-            height: MediaQuery
-                .of(context)
-                .size
-                .height * 0.08,
+        child: RoundedContainer(
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height * 0.08,
             child: Row(
               children: [
-                Image.asset(icon, height: 24, width: 24,),
-                SizedBox(width: 16.0,),
-                Text(text,
-                  style: AppFonts.title.copyWith(color: AppColors.textColor),)
+                Image.asset(
+                  icon,
+                  height: 24,
+                  width: 24,
+                ),
+                SizedBox(
+                  width: 16.0,
+                ),
+                Text(
+                  text,
+                  style: AppFonts.title.copyWith(color: AppColors.textColor),
+                )
               ],
             ),
             color: AppColors.white,
@@ -106,19 +121,27 @@ class _ProfileTabState extends State<ProfileTab> {
 
   goToNextPage(int index) {
     switch (index) {
-      case 0 :
+      case 0:
         return 'Unknown';
 
-      case 1 :
+      case 1:
         return Navigator.pushNamed(context, AppRoutes.settingsScreen);
-      case 2 :
+      case 2:
         return Navigator.popAndPushNamed(context, AppRoutes.signupScreen);
 
-      case 3 :
+      case 3:
         return 'Unknown';
 
-      default :
+      default:
         return 'Unknown';
     }
+  }
+
+  void getUserName() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      userNumber = prefs.getString('mobile_number') ?? '';
+      userName = prefs.getString('user_name') ?? '';
+    });
   }
 }

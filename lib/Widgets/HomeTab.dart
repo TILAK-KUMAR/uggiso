@@ -27,7 +27,7 @@ class _HomeTabState extends State<HomeTab> {
   double latitude = 0.0;
   double longitude = 0.0;
   double selectedDistance = 5.0;
-  bool _isShowMaps = false;
+  bool _isShowMaps = true;
   TextEditingController userlocationController = TextEditingController();
   TextEditingController userDistanceController = TextEditingController();
 
@@ -383,6 +383,6 @@ class _HomeTabState extends State<HomeTab> {
 
   getNearByRestaurants(double lat, double lag, double distance) {
     _homeBloc.add(
-        OnInitilised(lat: '37.4219983', lag: '-122.084', distance: distance));
+        OnInitilised(lat: latitude.toString(), lag: longitude.toString(), distance: distance));
   }
 }
