@@ -18,10 +18,15 @@ class _HelpCenterState extends State<HelpCenter> {
       appBar: AppBar(
         elevation: 2.0,
         leading: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 16.0),
-          child: InkWell(
-              child: Image.asset('assets/ic_back_arrow.png',
-                  height: 12, width: 12)),
+          padding: const EdgeInsets.symmetric(vertical: 8.0),
+          child: IconButton(
+            iconSize: 18,
+            icon: Image.asset('assets/ic_back_arrow.png'),
+            onPressed: () {
+              Navigator.pop(context);
+
+            },
+          )
         ),
         backgroundColor: AppColors.white,
         title: const Text(

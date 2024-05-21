@@ -10,8 +10,15 @@ import 'fonts.dart';
 class MenuItemCard extends StatefulWidget {
   final Payload listData;
   final int itemLength;
+  final VoidCallback onItemAdded;
+  final VoidCallback onEmptyCart;
 
-  const MenuItemCard({required this.listData, required this.itemLength});
+  const MenuItemCard({
+    required this.listData,
+    required this.itemLength,
+    required this.onItemAdded,
+    required this.onEmptyCart,
+  });
 
   @override
   _MenuItemCardState createState() => _MenuItemCardState();
@@ -20,7 +27,6 @@ class MenuItemCard extends StatefulWidget {
 class _MenuItemCardState extends State<MenuItemCard> {
   int _orderCount = 0;
   List<GlobalKey<_MenuItemCardState>> _itemKeys = [];
-
 
   @override
   Widget build(BuildContext context) {
@@ -38,9 +44,17 @@ class _MenuItemCardState extends State<MenuItemCard> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  '${widget.listData.menuName}',
-                  style: AppFonts.title,
+                Row(
+                  children: [
+                    widget.listData.restaurantMenuType=='VEG'?Image.asset('assets/ic_veg.png',height: 12,
+                      width: 12,):Image.asset('assets/ic_non_veg.png',height: 12,
+                      width: 12,),
+                    Gap(4),
+                    Text(
+                      '${widget.listData.menuName}',
+                      style: AppFonts.title,
+                    ),
+                  ],
                 ),
                 const Gap(4),
                 Text(
@@ -51,18 +65,18 @@ class _MenuItemCardState extends State<MenuItemCard> {
                 widget.listData.ratings == null
                     ? Container()
                     : Row(
-                  children: [
-                    Image.asset(
-                      'assets/ic_star.png',
-                      width: 12,
-                      height: 12,
-                    ),
-                    const Gap(4),
-                    Text('${widget.listData.ratings.toString()}',
-                        style: AppFonts.smallText
-                            .copyWith(fontWeight: FontWeight.w500)),
-                  ],
-                ),
+                        children: [
+                          Image.asset(
+                            'assets/ic_star.png',
+                            width: 12,
+                            height: 12,
+                          ),
+                          const Gap(4),
+                          Text('${widget.listData.ratings.toString()}',
+                              style: AppFonts.smallText
+                                  .copyWith(fontWeight: FontWeight.w500)),
+                        ],
+                      ),
               ],
             ),
             Container(
@@ -76,9 +90,9 @@ class _MenuItemCardState extends State<MenuItemCard> {
                       borderColor: AppColors.appPrimaryColor,
                       child: Center(
                           child: Image.asset(
-                            'assets/ic_no_image.png',
-                            fit: BoxFit.fill,
-                          ))),
+                        'assets/ic_no_image.png',
+                        fit: BoxFit.fill,
+                      ))),
                   Positioned(
                     top: MediaQuery.of(context).size.height *
                         0.08, // Adjust this value as needed
@@ -90,54 +104,60 @@ class _MenuItemCardState extends State<MenuItemCard> {
                         color: AppColors.white,
                         child: _orderCount == 0
                             ? Center(
-                            child: InkWell(
-                                onTap: () {
-                                  setState(() {
-                                    _orderCount = 1;
-                                  });
-                                },
-                                child: Text(
-                                  Strings.add,
-                                  style: AppFonts.smallText.copyWith(
-                                      color: AppColors.appPrimaryColor),
-                                )))
+                                child: InkWell(
+                                    onTap: () {
+                                      setState(() {
+                                        _orderCount = 1;
+                                      });
+
+                                      widget.onItemAdded();
+                                    },
+                                    child: Text(
+                                      Strings.add,
+                                      style: AppFonts.smallText.copyWith(
+                                          color: AppColors.appPrimaryColor),
+                                    )))
                             : Row(
-                          mainAxisAlignment:
-                          MainAxisAlignment.spaceBetween,
-                          children: [
-                            Gap(6),
-                            InkWell(
-                              onTap: () {
-                                setState(() {
-                                  _orderCount++;
-                                });
-                              },
-                              child: Icon(
-                                Icons.add,
-                                color: AppColors.appPrimaryColor,
-                                size: 18,
-                              ),
-                            ),
-                            Text(
-                              '${_orderCount.toString()}',
-                              style: AppFonts.smallText.copyWith(
-                                  color: AppColors.appPrimaryColor),
-                            ),
-                            Gap(6),
-                            InkWell(
-                              onTap: () {
-                                setState(() {
-                                  _orderCount--;
-                                });
-                              },
-                              child: Icon(
-                                Icons.remove,
-                                color: AppColors.appPrimaryColor,
-                                size: 18,
-                              ),
-                            ),
-                          ],
-                        )),
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Gap(6),
+                                  InkWell(
+                                    onTap: () {
+                                      setState(() {
+                                        _orderCount++;
+                                      });
+                                    },
+                                    child: Icon(
+                                      Icons.add,
+                                      color: AppColors.appPrimaryColor,
+                                      size: 18,
+                                    ),
+                                  ),
+                                  Text(
+                                    '${_orderCount.toString()}',
+                                    style: AppFonts.smallText.copyWith(
+                                        color: AppColors.appPrimaryColor),
+                                  ),
+                                  Gap(6),
+                                  InkWell(
+                                    onTap: () {
+                                      setState(() {
+                                        _orderCount--;
+
+                                      });
+                                      if(_orderCount==0){
+                                        widget.onEmptyCart();
+                                      }
+                                    },
+                                    child: Icon(
+                                      Icons.remove,
+                                      color: AppColors.appPrimaryColor,
+                                      size: 18,
+                                    ),
+                                  ),
+                                ],
+                              )),
                   ),
                 ],
               ),

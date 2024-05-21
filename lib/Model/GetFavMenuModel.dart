@@ -45,7 +45,7 @@ class FavMenuPayload {
   String? description;
   String? menuType;
   String? restaurantMenuType;
-  int? price;
+  double? price;
   bool? bestSeller;
   double? ratings;
 

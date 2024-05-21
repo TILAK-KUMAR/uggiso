@@ -19,7 +19,7 @@ class _FavoriteTabState extends State<FavoriteTab> with SingleTickerProviderStat
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 3, vsync: this);
+    _tabController = TabController(length: 2, vsync: this);
   }
 
   @override

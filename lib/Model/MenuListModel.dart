@@ -43,6 +43,7 @@ class Payload {
   String? photo;
   String? description;
   String? menuType;
+  String? restaurantMenuType;
   bool? veg;
   double? price;
   bool? bestSeller;
@@ -55,6 +56,7 @@ class Payload {
         this.photo,
         this.description,
         this.menuType,
+        this.restaurantMenuType,
         this.veg,
         this.price,
         this.bestSeller,this.ratings});
@@ -66,6 +68,7 @@ class Payload {
     photo = json['photo'];
     description = json['description'];
     menuType = json['menuType'];
+    restaurantMenuType = json['restaurantMenuType'];
     veg = json['veg'];
     price = json['price'];
     bestSeller = json['bestSeller'];
@@ -80,6 +83,7 @@ class Payload {
     data['photo'] = this.photo;
     data['description'] = this.description;
     data['menuType'] = this.menuType;
+    data['restaurantMenuType'] = this.restaurantMenuType;
     data['veg'] = this.veg;
     data['price'] = this.price;
     data['bestSeller'] = this.bestSeller;

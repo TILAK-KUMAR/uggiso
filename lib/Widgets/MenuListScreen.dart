@@ -19,9 +19,13 @@ class MenuListScreen extends StatefulWidget {
   final double? ratings;
   final String? landmark;
 
-  const MenuListScreen({super.key, required this.restaurantId,
-    required this.restaurantName, required this.foodType,
-    required this.ratings, required this.landmark});
+  const MenuListScreen(
+      {super.key,
+      required this.restaurantId,
+      required this.restaurantName,
+      required this.foodType,
+      required this.ratings,
+      required this.landmark});
 
   @override
   State<MenuListScreen> createState() => _MenuListScreenState();
@@ -31,7 +35,8 @@ class _MenuListScreenState extends State<MenuListScreen> {
   bool _isVeg = false;
   bool _isNonVeg = false;
   bool _isbestSeller = false;
-  int _orderCount = 0;
+  bool _showButton = false;
+  int _totalItemCount = 0;
   final MenuListBloc _menuListBloc = MenuListBloc();
 
   @override
@@ -49,13 +54,17 @@ class _MenuListScreenState extends State<MenuListScreen> {
       appBar: AppBar(
         elevation: 0.0,
         leading: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 16.0),
-          child: InkWell(
-              child: Image.asset('assets/ic_back_arrow.png',
-                  height: 12, width: 12)),
-        ),
+            padding: const EdgeInsets.symmetric(vertical: 8.0),
+            child: IconButton(
+              iconSize: 18,
+              icon: Image.asset('assets/ic_back_arrow.png'),
+              onPressed: () {
+                Navigator.pop(context);
+
+              },
+            )),
         backgroundColor: AppColors.white,
-        actions: [
+        /*actions: [
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8.0),
             child: IconButton(
@@ -73,23 +82,24 @@ class _MenuListScreenState extends State<MenuListScreen> {
                 width: 24,
                 height: 24,
               )),
-        ],
+        ],*/
         centerTitle: true,
       ),
-      floatingActionButton: _orderCount > 0
+      floatingActionButton: _showButton
           ? FloatingActionButton.extended(
-        backgroundColor: AppColors.appPrimaryColor,
-
-        onPressed: () {
-          Navigator.pushNamed(context, AppRoutes.createOrder);
-        },
-        tooltip: 'Increment',
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10.0),
-        ),
-        label: Text(
-          'Added ${_orderCount} items\n CONTINUE', style: AppFonts.title,),
-      )
+              backgroundColor: AppColors.appPrimaryColor,
+              onPressed: () {
+                Navigator.pushNamed(context, AppRoutes.createOrder);
+              },
+              tooltip: 'Increment',
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+              label: Text(
+                'CONTINUE',
+                style: AppFonts.title,
+              ),
+            )
           : Container(),
       body: BlocProvider(
         create: (context) => _menuListBloc,
@@ -97,10 +107,7 @@ class _MenuListScreenState extends State<MenuListScreen> {
           child: Column(
             children: [
               Container(
-                height: MediaQuery
-                    .of(context)
-                    .size
-                    .height * 0.3,
+                height: MediaQuery.of(context).size.height * 0.3,
                 width: double.infinity,
                 decoration: const BoxDecoration(
                   image: DecorationImage(
@@ -112,85 +119,82 @@ class _MenuListScreenState extends State<MenuListScreen> {
                 child: Column(
                   children: [
                     const Gap(24),
-                    widget.restaurantName != '' ? Text(
-                      widget.restaurantName!,
-                      style: AppFonts.appBarText
-                          .copyWith(fontWeight: FontWeight.w600),
-                    ) : Container(),
-                    const Gap(12),
-                    widget.foodType == 'VEG' ? Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Image.asset(
-                          'assets/ic_veg.png',
-                          height: 12,
-                          width: 12,
-                        ),
-                        const Gap(4),
-                        Text(
-                          'Veg',
-                          style: AppFonts.title
-                              .copyWith(fontWeight: FontWeight.w500),
-                        ),
-                      ],
-                    ) : Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Image.asset(
-                          'assets/ic_non_veg.png',
-                          height: 12,
-                          width: 12,
-                        ),
-                        const Gap(4),
-                        Text(
-                          'Non Veg',
-                          style: AppFonts.title
-                              .copyWith(fontWeight: FontWeight.w500),
-                        ),
-                      ],
-                    ),
-                    const Gap(24),
-                    widget.ratings == null ? Container() : RoundedContainer(
-                      width: MediaQuery
-                          .of(context)
-                          .size
-                          .width * 0.15,
-                      height: MediaQuery
-                          .of(context)
-                          .size
-                          .height * 0.04,
-                      cornerRadius: 20,
-                      color: AppColors.white,
-                      borderColor: AppColors.appPrimaryColor,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text('4.3',
-                              style: AppFonts.title
-                                  .copyWith(fontWeight: FontWeight.w500)),
-                          Image.asset(
-                            'assets/ic_star.png',
-                            width: 18,
-                            height: 18,
+                    widget.restaurantName != ''
+                        ? Text(
+                            widget.restaurantName!,
+                            style: AppFonts.appBarText
+                                .copyWith(fontWeight: FontWeight.w600),
                           )
-                        ],
-                      ),
-                    ),
+                        : Container(),
+                    const Gap(12),
+                    widget.foodType == 'VEG'
+                        ? Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Image.asset(
+                                'assets/ic_veg.png',
+                                height: 12,
+                                width: 12,
+                              ),
+                              const Gap(4),
+                              Text(
+                                'Veg',
+                                style: AppFonts.title
+                                    .copyWith(fontWeight: FontWeight.w500),
+                              ),
+                            ],
+                          )
+                        : Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Image.asset(
+                                'assets/ic_non_veg.png',
+                                height: 12,
+                                width: 12,
+                              ),
+                              const Gap(4),
+                              Text(
+                                'Non Veg',
+                                style: AppFonts.title
+                                    .copyWith(fontWeight: FontWeight.w500),
+                              ),
+                            ],
+                          ),
+                    const Gap(24),
+                    widget.ratings == null
+                        ? Container()
+                        : RoundedContainer(
+                            width: MediaQuery.of(context).size.width * 0.15,
+                            height: MediaQuery.of(context).size.height * 0.04,
+                            cornerRadius: 20,
+                            color: AppColors.white,
+                            borderColor: AppColors.appPrimaryColor,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Text('4.3',
+                                    style: AppFonts.title
+                                        .copyWith(fontWeight: FontWeight.w500)),
+                                Image.asset(
+                                  'assets/ic_star.png',
+                                  width: 18,
+                                  height: 18,
+                                )
+                              ],
+                            ),
+                          ),
                     const Gap(24),
                     RoundedContainer(
-                      width: MediaQuery
-                          .of(context)
-                          .size
-                          .width * 0.8,
-                      height: MediaQuery
-                          .of(context)
-                          .size
-                          .height * 0.05,
+                      width: MediaQuery.of(context).size.width * 0.8,
+                      height: MediaQuery.of(context).size.height * 0.05,
                       cornerRadius: 8,
                       color: AppColors.white,
                       borderColor: AppColors.appPrimaryColor,
-                      child: Text(widget.landmark!, style: AppFonts.subHeader,),
+                      child: Text(
+                        widget.landmark!,
+                        style: AppFonts.subHeader,
+                      ),
                     )
                   ],
                 ),
@@ -210,14 +214,8 @@ class _MenuListScreenState extends State<MenuListScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Container(
-                          width: MediaQuery
-                              .of(context)
-                              .size
-                              .width * 0.3,
-                          height: MediaQuery
-                              .of(context)
-                              .size
-                              .height * 0.003,
+                          width: MediaQuery.of(context).size.width * 0.3,
+                          height: MediaQuery.of(context).size.height * 0.003,
                           color: AppColors.appPrimaryColor,
                         ),
                         const Gap(12),
@@ -239,14 +237,8 @@ class _MenuListScreenState extends State<MenuListScreen> {
                         ),
                         const Gap(12),
                         Container(
-                          width: MediaQuery
-                              .of(context)
-                              .size
-                              .width * 0.3,
-                          height: MediaQuery
-                              .of(context)
-                              .size
-                              .height * 0.003,
+                          width: MediaQuery.of(context).size.width * 0.3,
+                          height: MediaQuery.of(context).size.height * 0.003,
                           color: AppColors.appPrimaryColor,
                         ),
                       ],
@@ -266,18 +258,12 @@ class _MenuListScreenState extends State<MenuListScreen> {
                               });
                             },
                             child: RoundedContainer(
-                                width: MediaQuery
-                                    .of(context)
-                                    .size
-                                    .width * 0.2,
+                                width: MediaQuery.of(context).size.width * 0.2,
                                 height:
-                                MediaQuery
-                                    .of(context)
-                                    .size
-                                    .height * 0.05,
+                                    MediaQuery.of(context).size.height * 0.05,
                                 cornerRadius: 20,
                                 color:
-                                _isVeg ? AppColors.grey : AppColors.white,
+                                    _isVeg ? AppColors.grey : AppColors.white,
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
@@ -305,15 +291,9 @@ class _MenuListScreenState extends State<MenuListScreen> {
                               });
                             },
                             child: RoundedContainer(
-                                width: MediaQuery
-                                    .of(context)
-                                    .size
-                                    .width * 0.3,
+                                width: MediaQuery.of(context).size.width * 0.3,
                                 height:
-                                MediaQuery
-                                    .of(context)
-                                    .size
-                                    .height * 0.05,
+                                    MediaQuery.of(context).size.height * 0.05,
                                 cornerRadius: 20,
                                 color: _isNonVeg
                                     ? AppColors.grey
@@ -345,15 +325,9 @@ class _MenuListScreenState extends State<MenuListScreen> {
                               });
                             },
                             child: RoundedContainer(
-                                width: MediaQuery
-                                    .of(context)
-                                    .size
-                                    .width * 0.3,
+                                width: MediaQuery.of(context).size.width * 0.3,
                                 height:
-                                MediaQuery
-                                    .of(context)
-                                    .size
-                                    .height * 0.05,
+                                    MediaQuery.of(context).size.height * 0.05,
                                 cornerRadius: 20,
                                 color: _isbestSeller
                                     ? AppColors.grey
@@ -378,34 +352,49 @@ class _MenuListScreenState extends State<MenuListScreen> {
                       builder: (context, state) {
                         if (state is FetchingState) {
                           return Container(
-                              width: MediaQuery
-                                  .of(context)
-                                  .size
-                                  .width,
-                              height: MediaQuery
-                                  .of(context)
-                                  .size
-                                  .height,
+                              width: MediaQuery.of(context).size.width,
+                              height: MediaQuery.of(context).size.height,
                               color: AppColors.white,
                               child: Center(
                                   child: CircularProgressIndicator(
-                                    color: AppColors.appPrimaryColor,
-                                  )));
+                                color: AppColors.appPrimaryColor,
+                              )));
                         } else if (state is FetchedListsState) {
                           return state.data?.length == 0
                               ? Center(child: Text('No Items Found'))
                               : Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 12.0),
-                            child: ListView.builder(
-                                itemCount: state.data?.length,
-                                shrinkWrap: true,
-                                physics: NeverScrollableScrollPhysics(),
-                                itemBuilder:
-                                    (BuildContext context, int index) {
-                                  return MenuItemCard(listData: state.data![index],itemLength: state.data!.length,);
-                                }),
-                          );
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 12.0),
+                                  child: ListView.builder(
+                                      itemCount: state.data?.length,
+                                      shrinkWrap: true,
+                                      physics: NeverScrollableScrollPhysics(),
+                                      itemBuilder:
+                                          (BuildContext context, int index) {
+                                        return MenuItemCard(
+                                          listData: state.data![index],
+                                          itemLength: state.data!.length,
+                                          onItemAdded: () {
+                                            setState(() {
+                                              _totalItemCount++;
+                                              _showButton = true;
+                                            });
+                                            print(
+                                                'this is total item added : $_totalItemCount');
+                                          },
+                                          onEmptyCart: () {
+                                            setState(() {
+                                              _totalItemCount--;
+                                              if (_totalItemCount == 0)
+                                                _showButton = false;
+                                            });
+
+                                            print(
+                                                'this is total item delete : $_totalItemCount');
+                                          },
+                                        );
+                                      }),
+                                );
                         }
                         return Container();
                       },
@@ -419,7 +408,6 @@ class _MenuListScreenState extends State<MenuListScreen> {
       ),
     );
   }
-
 
   void loadData(String? restId) {
     _menuListBloc.add(onInitialised(id: restId));
