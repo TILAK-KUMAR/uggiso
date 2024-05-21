@@ -69,7 +69,7 @@ class _FavRestaurantTabState extends State<FavRestaurantTab> {
         userId = prefs.getString('userId') ?? '';
       });
       print('this is user id : $userId');
-       _favouritesBloc.add(OnGetFavHotel(userId:'b3c54fd0-0659-480b-9def-1cd5ca2432ab'));
+       _favouritesBloc.add(OnGetFavHotel(userId:userId));
 
   }
 }

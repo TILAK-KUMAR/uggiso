@@ -19,15 +19,15 @@ class RegisterUserBloc extends Bloc<RegisterUserEvent, RegisterUserState> {
           //String name,String number,String userType,String deviceId,String token
          data =  await _apiRepository.registerUser(event.name,event.number,
               'CUSTOMER',event.deviceId,event.token);
-         if(data.payload!=null ||data.payload?.userId!=null){
+         if(data.payload!=null ||data.payload?.userId!=null && data.statusCode==200){
            emit(onLoadedState(data.payload!.userId!));
          }
          else{
-           emit(ErrorState(''));
+           emit(ErrorState(data.message));
          }
         }
         else{
-          emit(ErrorState(''));
+          emit(ErrorState('Enter Valid Credentials'));
         }
 
       } on NetworkError {

@@ -44,7 +44,7 @@ class _RegisterUserScreenState extends State<RegisterUserScreen> {
             saveUserDetails(_nameController.text,userDeviceId,'',state.userId);
             Navigator.popAndPushNamed(context, AppRoutes.homeScreen);
           } else if (state is ErrorState) {
-            // isInvalidCredentials = true;
+
           }
         },
         child: Scaffold(
