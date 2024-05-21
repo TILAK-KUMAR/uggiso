@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:uggiso/base/common/utils/strings.dart';
-
 import '../../../Model/MenuListModel.dart';
 import '../../../Widgets/ui-kit/RoundedContainer.dart';
 import 'colors.dart';
@@ -26,7 +25,6 @@ class MenuItemCard extends StatefulWidget {
 
 class _MenuItemCardState extends State<MenuItemCard> {
   int _orderCount = 0;
-  List<GlobalKey<_MenuItemCardState>> _itemKeys = [];
 
   @override
   Widget build(BuildContext context) {

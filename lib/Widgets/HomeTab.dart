@@ -31,6 +31,7 @@ class _HomeTabState extends State<HomeTab> {
   TextEditingController userlocationController = TextEditingController();
   TextEditingController userDistanceController = TextEditingController();
 
+
   @override
   void initState() {
     // TODO: implement initState
@@ -182,8 +183,10 @@ class _HomeTabState extends State<HomeTab> {
                       ),
                       InkWell(
                         onTap: () {
-                          getNearByRestaurants(
-                              latitude, longitude, selectedDistance);
+                          Navigator.pushNamed(context, AppRoutes.searchScreen);
+
+                          /*getNearByRestaurants(
+                              latitude, longitude, selectedDistance);*/
                         },
                         child: Text(
                           'Change',
@@ -385,4 +388,13 @@ class _HomeTabState extends State<HomeTab> {
     _homeBloc.add(
         OnInitilised(lat: latitude.toString(), lag: longitude.toString(), distance: distance));
   }
+
+  void callback(double lat, double lng, String name) {
+    // Handle the callback data here
+    print('Received lat: $lat, lng: $lng, name: $name');
+    // Do whatever you need to do with the received data
+  }
 }
+
+
+typedef void PlaceCallback(double lat, double lng, String name);
