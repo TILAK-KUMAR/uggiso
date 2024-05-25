@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:uggiso/Bloc/MenuListBloc/MenuListBloc.dart';
 import 'package:uggiso/Bloc/MenuListBloc/MenuListState.dart';
-import 'package:uggiso/Model/MenuListModel.dart';
 import 'package:uggiso/Widgets/ui-kit/RoundedContainer.dart';
 import 'package:uggiso/base/common/utils/strings.dart';
 import '../Bloc/MenuListBloc/MenuListEvent.dart';
@@ -38,6 +37,8 @@ class _MenuListScreenState extends State<MenuListScreen> {
   bool _showButton = false;
   int _totalItemCount = 0;
   final MenuListBloc _menuListBloc = MenuListBloc();
+  final List cartItems = [];
+  Map<String, Map<String, dynamic>> uniqueMenuMap = {};
 
   @override
   void initState() {
@@ -53,6 +54,7 @@ class _MenuListScreenState extends State<MenuListScreen> {
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       appBar: AppBar(
         elevation: 0.0,
+        title: Text(widget.restaurantName!,style: AppFonts.appBarText,),
         leading: Padding(
             padding: const EdgeInsets.symmetric(vertical: 8.0),
             child: IconButton(
@@ -89,9 +91,19 @@ class _MenuListScreenState extends State<MenuListScreen> {
           ? FloatingActionButton.extended(
               backgroundColor: AppColors.appPrimaryColor,
               onPressed: () {
-                Navigator.pushNamed(context, AppRoutes.createOrder);
+
+                List<Map<String, dynamic>> uniqueMenuList=[];
+                uniqueMenuMap.clear();
+                for (var menu in cartItems) {
+                  var menuId = menu['menuId'];
+                  if (!uniqueMenuMap.containsKey(menuId) ||
+                      menu['quantity'] > uniqueMenuMap[menuId]!['quantity']) {
+                    uniqueMenuMap[menuId] = menu;
+                  }
+                }
+                uniqueMenuList = uniqueMenuMap.values.toList();
+                Navigator.pushNamed(context, AppRoutes.createOrder,arguments: uniqueMenuList);
               },
-              tooltip: 'Increment',
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10.0),
               ),
@@ -379,19 +391,43 @@ class _MenuListScreenState extends State<MenuListScreen> {
                                               _totalItemCount++;
                                               _showButton = true;
                                             });
+                                            cartItems.add({
+                                              'menuId': state.data![index].menuId.toString(),
+                                              'menuName': state.data![index].menuName.toString(),
+                                              'menuType': state.data![index].menuType.toString(),
+                                              'price': state.data![index].price!,
+                                              'quantity':1
+                                            });
+                                            print('this is the list added :${cartItems}');
                                             print(
                                                 'this is total item added : $_totalItemCount');
                                           },
-                                          onEmptyCart: () {
+                                          onEmptyCart: (value) {
                                             setState(() {
                                               _totalItemCount--;
                                               if (_totalItemCount == 0)
                                                 _showButton = false;
                                             });
+                                            cartItems.removeWhere((item) => item['menuId'] == value);
+                                            print('this is the list deleted :${cartItems}');
+                                            print('this is calback value : $value');
 
                                             print(
                                                 'this is total item delete : $_totalItemCount');
                                           },
+                                          onQuantityChanged: (int value){
+                                            cartItems.add({
+                                              'menuId': state.data![index].menuId.toString(),
+                                              'menuName': state.data![index].menuName.toString(),
+                                              'menuType': state.data![index].menuType.toString(),
+                                              'price': state.data![index].price!,
+                                              'quantity':value
+                                            });
+
+                                            print('this is the list added :${cartItems}');
+
+                                          },
+
                                         );
                                       }),
                                 );

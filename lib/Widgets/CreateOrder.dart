@@ -10,7 +10,8 @@ import '../base/common/utils/colors.dart';
 import 'ui-kit/RoundedContainer.dart';
 
 class CreateOrder extends StatefulWidget {
-  const CreateOrder({super.key});
+  final List<Map<String, dynamic>> orderlist;
+  const CreateOrder({Key? key, required this.orderlist}) : super(key: key);
 
   @override
   State<CreateOrder> createState() => _CreateOrderState();
@@ -19,6 +20,13 @@ class CreateOrder extends StatefulWidget {
 class _CreateOrderState extends State<CreateOrder> {
   String selectedSlot = '10-15 min';
   final CreateOrderBloc _createOrderBloc = CreateOrderBloc();
+
+  @override
+  void initState() {
+
+    print('this is checkout list : ${widget.orderlist}');
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

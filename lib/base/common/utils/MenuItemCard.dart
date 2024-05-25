@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:uggiso/Model/AddMenuItemToCart.dart';
 import 'package:uggiso/base/common/utils/strings.dart';
 import '../../../Model/MenuListModel.dart';
 import '../../../Widgets/ui-kit/RoundedContainer.dart';
+import 'Cart.dart';
 import 'colors.dart';
 import 'fonts.dart';
 
@@ -10,13 +12,15 @@ class MenuItemCard extends StatefulWidget {
   final Payload listData;
   final int itemLength;
   final VoidCallback onItemAdded;
-  final VoidCallback onEmptyCart;
+  final ValueChanged<String> onEmptyCart;
+  final ValueChanged<int> onQuantityChanged;
 
   const MenuItemCard({
     required this.listData,
     required this.itemLength,
     required this.onItemAdded,
     required this.onEmptyCart,
+    required this.onQuantityChanged,
   });
 
   @override
@@ -25,6 +29,7 @@ class MenuItemCard extends StatefulWidget {
 
 class _MenuItemCardState extends State<MenuItemCard> {
   int _orderCount = 0;
+  final Cart cart = Cart();
 
   @override
   Widget build(BuildContext context) {
@@ -109,6 +114,11 @@ class _MenuItemCardState extends State<MenuItemCard> {
                                       });
 
                                       widget.onItemAdded();
+                                     /* cart.addItem(AddMenuItemToCart(
+                                          menuId: widget.listData.menuId.toString(),
+                                          menuName: widget.listData.menuName.toString(),
+                                          menuType: widget.listData.menuType.toString(),
+                                          price: widget.listData.price!));*/
                                     },
                                     child: Text(
                                       Strings.add,
@@ -123,15 +133,29 @@ class _MenuItemCardState extends State<MenuItemCard> {
                                   InkWell(
                                     onTap: () {
                                       setState(() {
-                                        _orderCount++;
+                                        _orderCount--;
+
                                       });
+                                      if(_orderCount==0){
+                                        widget.onEmptyCart(widget.listData.menuId.toString());
+                                        cart.removeItem(AddMenuItemToCart(
+                                          menuId: widget.listData.menuId.toString(),
+                                          menuName: widget.listData.menuName.toString(),
+                                          menuType: widget.listData.menuType.toString(),
+                                          price: widget.listData.price!));
+                                      }
+                                      else{
+                                        widget.onQuantityChanged(_orderCount);
+
+                                      }
                                     },
                                     child: Icon(
-                                      Icons.add,
+                                      Icons.remove,
                                       color: AppColors.appPrimaryColor,
                                       size: 18,
                                     ),
                                   ),
+
                                   Text(
                                     '${_orderCount.toString()}',
                                     style: AppFonts.smallText.copyWith(
@@ -141,19 +165,22 @@ class _MenuItemCardState extends State<MenuItemCard> {
                                   InkWell(
                                     onTap: () {
                                       setState(() {
-                                        _orderCount--;
-
+                                        _orderCount++;
                                       });
-                                      if(_orderCount==0){
-                                        widget.onEmptyCart();
-                                      }
+                                      widget.onQuantityChanged(_orderCount);
+                                     /* cart.addItem(AddMenuItemToCart(
+                                          menuId: widget.listData.menuId.toString(),
+                                          menuName: widget.listData.menuName.toString(),
+                                          menuType: widget.listData.menuType.toString(),
+                                          price: widget.listData.price!));*/
                                     },
                                     child: Icon(
-                                      Icons.remove,
+                                      Icons.add,
                                       color: AppColors.appPrimaryColor,
                                       size: 18,
                                     ),
                                   ),
+
                                 ],
                               )),
                   ),
