@@ -1,4 +1,3 @@
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -6,23 +5,10 @@ import 'package:uggiso/Bloc/SignUpBloc/signup_bloc.dart';
 import 'package:uggiso/Bloc/VerifyOtpBloc/VerifyOtpBloc.dart';
 import 'package:uggiso/app_routes.dart';
 
-import 'base/common/utils/colors.dart';
-
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky, overlays: [SystemUiOverlay.bottom],);
 
-  // SystemChrome.setSystemUIOverlayStyle(
-  //   const SystemUiOverlayStyle(
-  //     statusBarBrightness: Brightness.light,
-  //     statusBarColor: AppColors.white,
-  //     statusBarIconBrightness: Brightness.light,
-  //     systemNavigationBarColor: Colors.transparent,
-  //     systemNavigationBarIconBrightness: Brightness.light,
-  //
-  //   ),
-  // );
-  // await Firebase.initializeApp();
   runApp(
     MultiBlocProvider(
         providers: [
