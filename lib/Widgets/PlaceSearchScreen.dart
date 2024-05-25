@@ -9,7 +9,7 @@ import 'package:uggiso/base/common/utils/strings.dart';
 import 'HomeTab.dart';
 
 class PlaceSearchScreen extends StatefulWidget {
-  final PlaceCallback callback;
+  final Function(double,double) callback;
 
 
   const PlaceSearchScreen({
@@ -70,7 +70,7 @@ class _PlaceSearchScreenState extends State<PlaceSearchScreen> {
                     print("placeDetails lat==>" + prediction.lat.toString());
                     print("placeDetails  lag==>" + prediction.lng.toString());
                     print("placeDetails  name==>" + prediction.description.toString());
-                    widget.callback(prediction.lat as double, prediction.lng as double, prediction.description.toString());
+                    widget.callback(prediction.lat as double, prediction.lng as double);
 
                     // widget.callback(prediction.lat,prediction.lng,)
                     setState(() {
@@ -82,10 +82,6 @@ class _PlaceSearchScreenState extends State<PlaceSearchScreen> {
                   itemClick: (prediction) {
                     print("Selected: " + prediction.lat.toString());
                     print("Selected: " + prediction.lng.toString());
-                    /* setState(() {
-                    _center = LatLng(prediction.lat as double, prediction.lng as double);
-                    _mapController.animateCamera(CameraUpdate.newLatLng(_center));
-                  });*/
                   },
                 )),
           ),

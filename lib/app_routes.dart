@@ -46,7 +46,6 @@ class AppRoutes {
 
   static const String paymentOptions = '/payment_options';
 
-  static const String searchScreen = '/search_screen';
 
   static const String paymentSuccessScreen = '/payment_success_screen';
 
@@ -83,11 +82,10 @@ class AppRoutes {
       case saveCard:
         return MaterialPageRoute(builder: (_) => const AddCard());
       case createOrder:
-        return MaterialPageRoute(builder: (_) => const CreateOrder());
+        final List<Map<String, dynamic>> uniqueMenuList = settings.arguments as List<Map<String, dynamic>>;
+        return MaterialPageRoute(builder: (_) => CreateOrder(orderlist: uniqueMenuList));
       case paymentOptions:
         return MaterialPageRoute(builder: (_) => const PaymentOptionsScreen());
-      case searchScreen:
-        return MaterialPageRoute(builder: (_) => const PlaceSearchScreen());
       case paymentSuccessScreen:
         return MaterialPageRoute(builder: (_) => const PaymentSuccessScreen());
       default:

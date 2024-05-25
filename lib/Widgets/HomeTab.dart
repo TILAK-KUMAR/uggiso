@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
+import 'package:google_places_flutter/google_places_flutter.dart';
+import 'package:google_search_place/google_search_place.dart';
+import 'package:google_search_place/model/prediction.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uggiso/Bloc/HomeBloc/HomeBloc.dart';
 import 'package:uggiso/Bloc/HomeBloc/HomeEvent.dart';
@@ -28,9 +31,11 @@ class _HomeTabState extends State<HomeTab> {
   double longitude = 0.0;
   double selectedDistance = 5.0;
   bool _isShowMaps = true;
+  bool _showPlaceSearchWidget = false;
+  String currentLocation = 'Current Location';
   TextEditingController userlocationController = TextEditingController();
   TextEditingController userDistanceController = TextEditingController();
-
+  TextEditingController _placeSearchEditingController = TextEditingController();
 
   @override
   void initState() {
@@ -71,17 +76,16 @@ class _HomeTabState extends State<HomeTab> {
                 _isShowMaps = true;
               }
             });
-            // Navigator.pushNamed(context, AppRoutes.createOrder);
           },
           tooltip: 'Increment',
           elevation: 8.0,
           child: _isShowMaps
-              ? Icon(
+              ? const Icon(
                   Icons.location_on,
                   color: AppColors.white,
                   size: 32,
                 )
-              : Icon(
+              : const Icon(
                   Icons.list_alt_rounded,
                   color: AppColors.white,
                   size: 32,
@@ -96,7 +100,6 @@ class _HomeTabState extends State<HomeTab> {
               builder: (BuildContext context, HomeState state) {
                 if (state is onLoadedHotelState) {
                   print('this is state data : ${state.data.payload}');
-                  // return GetNearByHotels(state.data.payload);
                   return Expanded(
                       child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 12.0),
@@ -127,7 +130,7 @@ class _HomeTabState extends State<HomeTab> {
                           height: 100,
                           fit: BoxFit.fitWidth,
                         ),
-                        Gap(20),
+                        const Gap(20),
                         Container(
                           child: Center(
                             child: Text(
@@ -140,7 +143,7 @@ class _HomeTabState extends State<HomeTab> {
                     ),
                   );
                 } else if (state is LoadingHotelState) {
-                  return HomeScreen();
+                  return const HomeScreen();
                 } else {
                   return Container();
                 }
@@ -166,37 +169,40 @@ class _HomeTabState extends State<HomeTab> {
           padding: const EdgeInsets.symmetric(horizontal: 24.0),
           child: Column(
             children: [
-              Gap(12),
-              RoundedContainer(
-                  color: AppColors.white,
-                  borderColor: AppColors.white,
-                  width: MediaQuery.of(context).size.width,
-                  height: MediaQuery.of(context).size.height * 0.05,
-                  cornerRadius: 8,
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'Current Location',
-                        style: AppFonts.title,
-                      ),
-                      InkWell(
-                        onTap: () {
-                          Navigator.pushNamed(context, AppRoutes.searchScreen);
-
-                          /*getNearByRestaurants(
+              const Gap(12),
+              _showPlaceSearchWidget
+                  ? PlaceSearchWidget()
+                  : RoundedContainer(
+                      color: AppColors.white,
+                      borderColor: AppColors.white,
+                      width: MediaQuery.of(context).size.width,
+                      height: MediaQuery.of(context).size.height * 0.05,
+                      cornerRadius: 8,
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            '$currentLocation',
+                            style: AppFonts.title,
+                          ),
+                          InkWell(
+                            onTap: () {
+                              setState(() {
+                                _showPlaceSearchWidget = true;
+                              });
+                              /*getNearByRestaurants(
                               latitude, longitude, selectedDistance);*/
-                        },
-                        child: Text(
-                          'Change',
-                          style: AppFonts.smallText
-                              .copyWith(color: AppColors.appPrimaryColor),
-                        ),
-                      ),
-                    ],
-                  )),
-              Gap(12),
+                            },
+                            child: Text(
+                              'Change',
+                              style: AppFonts.smallText
+                                  .copyWith(color: AppColors.appPrimaryColor),
+                            ),
+                          ),
+                        ],
+                      )),
+              const Gap(12),
               RoundedContainer(
                   width: MediaQuery.of(context).size.width,
                   height: MediaQuery.of(context).size.height * 0.05,
@@ -235,146 +241,6 @@ class _HomeTabState extends State<HomeTab> {
         ),
       );
 
-  Widget GetNearByHotels(List<Payload>? payload) => Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  Strings.top_rated_eateries_nearby,
-                  style: AppFonts.title.copyWith(color: AppColors.textGrey),
-                ),
-                Text(
-                  Strings.view_all,
-                  style: AppFonts.smallText.copyWith(color: AppColors.textGrey),
-                ),
-              ],
-            ),
-            SizedBox(
-              height: 12.0,
-            ),
-            Container(
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height * 0.2,
-              child: ListView.builder(
-                  itemCount: payload?.length,
-                  scrollDirection: Axis.horizontal,
-                  itemBuilder: (BuildContext context, int index) {
-                    return Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: NearByHotelCard(payload?[index].restaurantName,
-                          payload?[index].restaurantMenuType),
-                    );
-                  }),
-            ),
-            SizedBox(
-              height: 12.0,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  Strings.categories,
-                  style: AppFonts.title.copyWith(
-                    color: AppColors.textGrey,
-                  ),
-                ),
-                Text(
-                  Strings.view_all,
-                  style: AppFonts.smallText.copyWith(color: AppColors.textGrey),
-                ),
-              ],
-            ),
-          ],
-        ),
-      );
-
-  Widget NearByHotelCard(String? name, String? foodType) => RoundedContainer(
-      width: MediaQuery.of(context).size.width * 0.8,
-      height: MediaQuery.of(context).size.height * 0.15,
-      borderWidth: 2,
-      cornerRadius: 7,
-      child: Row(
-        children: [
-          GestureDetector(
-            onTap: () {
-              Navigator.pushNamed(context, AppRoutes.menuList);
-            },
-            child: RoundedContainer(
-                width: MediaQuery.of(context).size.width * 0.3,
-                height: MediaQuery.of(context).size.height * 0.15,
-                color: AppColors.borderColor,
-                cornerRadius: 10,
-                child: Image.asset('assets/ic_no_hotel.png')),
-          ),
-          SizedBox(
-            width: 10.0,
-          ),
-          Container(
-            width: MediaQuery.of(context).size.width * 0.42,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(
-                  height: 18.0,
-                ),
-                Text(
-                  name ?? "",
-                  style: AppFonts.title
-                      .copyWith(color: AppColors.bottomTabInactiveColor),
-                ),
-                foodType == null
-                    ? Text('')
-                    : Text(
-                        foodType!,
-                        style: AppFonts.smallText
-                            .copyWith(color: AppColors.textGrey),
-                      ),
-                Expanded(
-                  child: Align(
-                    alignment: Alignment.bottomLeft,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          children: [
-                            Image.asset(
-                              'assets/ic_marker.png',
-                              height: 18,
-                              width: 18,
-                            ),
-                            SizedBox(
-                              width: 8.0,
-                            ),
-                            Text('2km'),
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            Image.asset(
-                              'assets/ic_star.png',
-                              height: 12,
-                              width: 12,
-                            ),
-                            Text('4.5',
-                                style: AppFonts.smallText
-                                    .copyWith(color: AppColors.textGrey)),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                )
-              ],
-            ),
-          )
-        ],
-      ));
-
   getUserCurrentLocation() async {
     final prefs = await SharedPreferences.getInstance();
     setState(() {
@@ -386,15 +252,69 @@ class _HomeTabState extends State<HomeTab> {
 
   getNearByRestaurants(double lat, double lag, double distance) {
     _homeBloc.add(
-        OnInitilised(lat: latitude.toString(), lag: longitude.toString(), distance: distance));
+        OnInitilised(lat: '12.900740', lag: '77.764267', distance: distance));
   }
 
-  void callback(double lat, double lng, String name) {
-    // Handle the callback data here
-    print('Received lat: $lat, lng: $lng, name: $name');
-    // Do whatever you need to do with the received data
-  }
+  Widget PlaceSearchWidget() => RoundedContainer(
+        color: AppColors.white,
+        borderColor: AppColors.white,
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height * 0.05,
+        cornerRadius: 8,
+        padding: 0,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Flexible(
+              flex: 3,
+              child: SearchPlaceAutoCompletedTextField(
+                  googleAPIKey: Strings.searchKey,
+                  countries: ['in'],
+                  inputDecoration: InputDecoration(
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide.none, // No border
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                  ),
+                  controller: _placeSearchEditingController,
+                  itmOnTap: (Prediction prediction) {
+                    _placeSearchEditingController.text =
+                        prediction.description ?? "";
+
+                    _placeSearchEditingController.selection =
+                        TextSelection.fromPosition(TextPosition(
+                            offset: prediction.description?.length ?? 0));
+                  },
+                  getPlaceDetailWithLatLng: (Prediction prediction) {
+                    _placeSearchEditingController.text =
+                        prediction.description ?? "";
+
+                    _placeSearchEditingController.selection =
+                        TextSelection.fromPosition(TextPosition(
+                            offset: prediction.description?.length ?? 0));
+
+                    // Get search place latitude and longitude
+                    debugPrint("${prediction.lat} ${prediction.lng}");
+
+                    // Get place Detail
+                    debugPrint("Place Detail : ${prediction.placeDetails}");
+                  }),
+            ),
+            Flexible(
+              flex: 1,
+                child: IconButton(
+              icon: const Icon(
+                Icons.close,
+                size: 12,
+              ),
+              onPressed: () {
+                setState(() {
+                  _showPlaceSearchWidget = false;
+                  _placeSearchEditingController.clear();
+                });
+              },
+            ))
+          ],
+        ),
+      );
 }
-
-
-typedef void PlaceCallback(double lat, double lng, String name);

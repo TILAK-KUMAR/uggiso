@@ -131,7 +131,7 @@ class HotelListGrid extends StatelessWidget {
                       BlocBuilder<HomeBloc, HomeState>(
                           builder: (BuildContext context, HomeState state) {
                         if (state is LoadingHotelState) {
-                          return Container(child: Center(child: CircularProgressIndicator(color: AppColors.appPrimaryColor,),),);
+                          return CircularProgressIndicator(color: AppColors.appPrimaryColor,);
                         } else if (state is onFavHotelAddedState) {
                           return IconButton(
                               onPressed: () {},
