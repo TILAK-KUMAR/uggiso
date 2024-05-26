@@ -33,8 +33,8 @@ class ApiRepository {
     return _provider.getRestaurantDetails(id);
   }
 
-  Future<GetNearByRestaurantModel> getNearbyRestaurant(String lat, String lag, double distance) {
-    return _provider.getNearByRestaurant(lat,lag,distance);
+  Future<GetNearByRestaurantModel> getNearbyRestaurant(String userId,String lat, String lag, double distance) {
+    return _provider.getNearByRestaurant(userId,lat,lag,distance);
   }
 
   Future<MenuListModel> getMenuList(String? id) {

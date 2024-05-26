@@ -44,8 +44,8 @@ class Payload {
   String? phoneNumber;
   String? address;
   String? landmark;
-  double? latitude;
-  double? longitude;
+  double? lat;
+  double? lng;
   String? city;
   String? state;
   String? accountNumber;
@@ -59,6 +59,9 @@ class Payload {
   String? restaurantSize;
   String? createdDate;
   double? ratings;
+  double? duration;
+  double? distance;
+  bool? favourite;
 
   Payload(
       {this.restaurantId,
@@ -67,8 +70,8 @@ class Payload {
         this.phoneNumber,
         this.address,
         this.landmark,
-        this.latitude,
-        this.longitude,
+        this.lat,
+        this.lng,
         this.city,
         this.state,
         this.accountNumber,
@@ -81,7 +84,11 @@ class Payload {
         this.restaurantMenuType,
         this.restaurantSize,
         this.createdDate,
-      this.ratings});
+      this.ratings,
+      this.duration,
+      this.distance,
+      this.favourite,
+      });
 
   Payload.fromJson(Map<String, dynamic> json) {
     restaurantId = json['restaurantId'];
@@ -90,8 +97,8 @@ class Payload {
     phoneNumber = json['phoneNumber'];
     address = json['address'];
     landmark = json['landmark'];
-    latitude = json['latitude'];
-    longitude = json['longitude'];
+    lat = json['lat'];
+    lng = json['lng'];
     city = json['city'];
     state = json['state'];
     accountNumber = json['accountNumber'];
@@ -105,6 +112,9 @@ class Payload {
     restaurantSize = json['restaurantSize'];
     createdDate = json['createdDate'];
     ratings = json['ratings'];
+    duration = json['duration'];
+    distance = json['distance'];
+    favourite = json['favourite'];
   }
 
   Map<String, dynamic> toJson() {
@@ -115,8 +125,8 @@ class Payload {
     data['phoneNumber'] = this.phoneNumber;
     data['address'] = this.address;
     data['landmark'] = this.landmark;
-    data['latitude'] = this.latitude;
-    data['longitude'] = this.longitude;
+    data['lat'] = this.lat;
+    data['lng'] = this.lng;
     data['city'] = this.city;
     data['state'] = this.state;
     data['accountNumber'] = this.accountNumber;
@@ -130,6 +140,9 @@ class Payload {
     data['restaurantSize'] = this.restaurantSize;
     data['createdDate'] = this.createdDate;
     data['ratings'] = this.ratings;
+    data['duration'] = this.duration;
+    data['distance'] = this.distance;
+    data['favourite'] = this.favourite;
     return data;
   }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:google_places_flutter/google_places_flutter.dart';
 import 'package:google_search_place/google_search_place.dart';
 import 'package:google_search_place/model/prediction.dart';
@@ -13,6 +14,7 @@ import 'package:uggiso/Widgets/Shimmer/HomeScreen.dart';
 import 'package:uggiso/Widgets/ui-kit/HotelListGrid.dart';
 import 'package:uggiso/Widgets/ui-kit/RoundedContainer.dart';
 import 'package:uggiso/Widgets/ui-kit/TextFieldCurvedEdges.dart';
+import 'package:uggiso/base/common/utils/GetHotelListinMap.dart';
 import 'package:uggiso/base/common/utils/colors.dart';
 import '../app_routes.dart';
 import '../base/common/utils/fonts.dart';
@@ -30,12 +32,14 @@ class _HomeTabState extends State<HomeTab> {
   double latitude = 0.0;
   double longitude = 0.0;
   double selectedDistance = 5.0;
+  String userId = '';
   bool _isShowMaps = true;
   bool _showPlaceSearchWidget = false;
   String currentLocation = 'Current Location';
   TextEditingController userlocationController = TextEditingController();
   TextEditingController userDistanceController = TextEditingController();
   TextEditingController _placeSearchEditingController = TextEditingController();
+
 
   @override
   void initState() {
@@ -81,15 +85,15 @@ class _HomeTabState extends State<HomeTab> {
           elevation: 8.0,
           child: _isShowMaps
               ? const Icon(
-                  Icons.location_on,
-                  color: AppColors.white,
-                  size: 32,
-                )
+            Icons.location_on,
+            color: AppColors.white,
+            size: 32,
+          )
               : const Icon(
-                  Icons.list_alt_rounded,
-                  color: AppColors.white,
-                  size: 32,
-                ),
+            Icons.list_alt_rounded,
+            color: AppColors.white,
+            size: 32,
+          ),
         ),
         body: Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -102,20 +106,21 @@ class _HomeTabState extends State<HomeTab> {
                   print('this is state data : ${state.data.payload}');
                   return Expanded(
                       child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Gap(24),
-                        const Text(
-                          Strings.near_by_restaurants,
-                          style: AppFonts.subHeader,
+                        padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Gap(24),
+                            const Text(
+                              Strings.near_by_restaurants,
+                              style: AppFonts.subHeader,
+                            ),
+                            const Gap(12),
+                            _isShowMaps ? HotelListGrid(
+                                state.data.payload):GetHotelListinMap(state.data.payload) ,
+                          ],
                         ),
-                        const Gap(12),
-                        HotelListGrid(state.data.payload),
-                      ],
-                    ),
-                  ));
+                      ));
                   // Navigator.pushNamed(context, AppRoutes.verifyOtp);
                 } else if (state is ErrorState) {
                   // isInvalidCredentials =
@@ -123,7 +128,10 @@ class _HomeTabState extends State<HomeTab> {
                   return Expanded(
                     child: Column(
                       children: [
-                        Gap(MediaQuery.of(context).size.height * 0.2),
+                        Gap(MediaQuery
+                            .of(context)
+                            .size
+                            .height * 0.2),
                         Image.asset(
                           'assets/ic_no_hotel.png',
                           width: 100,
@@ -155,9 +163,16 @@ class _HomeTabState extends State<HomeTab> {
     );
   }
 
-  Widget HomeHeaderContainer() => Container(
-        height: MediaQuery.of(context).size.height * 0.16,
-        width: MediaQuery.of(context).size.width,
+  Widget HomeHeaderContainer() =>
+      Container(
+        height: MediaQuery
+            .of(context)
+            .size
+            .height * 0.16,
+        width: MediaQuery
+            .of(context)
+            .size
+            .width,
         decoration: const BoxDecoration(
           color: AppColors.appPrimaryColor,
           borderRadius: BorderRadius.only(
@@ -173,39 +188,51 @@ class _HomeTabState extends State<HomeTab> {
               _showPlaceSearchWidget
                   ? PlaceSearchWidget()
                   : RoundedContainer(
-                      color: AppColors.white,
-                      borderColor: AppColors.white,
-                      width: MediaQuery.of(context).size.width,
-                      height: MediaQuery.of(context).size.height * 0.05,
-                      cornerRadius: 8,
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            '$currentLocation',
-                            style: AppFonts.title,
-                          ),
-                          InkWell(
-                            onTap: () {
-                              setState(() {
-                                _showPlaceSearchWidget = true;
-                              });
-                              /*getNearByRestaurants(
+                  color: AppColors.white,
+                  borderColor: AppColors.white,
+                  width: MediaQuery
+                      .of(context)
+                      .size
+                      .width,
+                  height: MediaQuery
+                      .of(context)
+                      .size
+                      .height * 0.05,
+                  cornerRadius: 8,
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        '$currentLocation',
+                        style: AppFonts.title,
+                      ),
+                      InkWell(
+                        onTap: () {
+                          setState(() {
+                            _showPlaceSearchWidget = true;
+                          });
+                          /*getNearByRestaurants(
                               latitude, longitude, selectedDistance);*/
-                            },
-                            child: Text(
-                              'Change',
-                              style: AppFonts.smallText
-                                  .copyWith(color: AppColors.appPrimaryColor),
-                            ),
-                          ),
-                        ],
-                      )),
+                        },
+                        child: Text(
+                          'Change',
+                          style: AppFonts.smallText
+                              .copyWith(color: AppColors.appPrimaryColor),
+                        ),
+                      ),
+                    ],
+                  )),
               const Gap(12),
               RoundedContainer(
-                  width: MediaQuery.of(context).size.width,
-                  height: MediaQuery.of(context).size.height * 0.05,
+                  width: MediaQuery
+                      .of(context)
+                      .size
+                      .width,
+                  height: MediaQuery
+                      .of(context)
+                      .size
+                      .height * 0.05,
                   color: AppColors.white,
                   cornerRadius: 8,
                   padding: 0,
@@ -216,7 +243,10 @@ class _HomeTabState extends State<HomeTab> {
                     ),
                     padding: const EdgeInsets.symmetric(horizontal: 18),
                     value: selectedDistance,
-                    menuMaxHeight: MediaQuery.of(context).size.height * 0.4,
+                    menuMaxHeight: MediaQuery
+                        .of(context)
+                        .size
+                        .height * 0.4,
                     icon: Image.asset(
                       'assets/ic_dropdown_arrow.png',
                       width: 12.0,
@@ -231,7 +261,7 @@ class _HomeTabState extends State<HomeTab> {
                     onChanged: (double? newValue) {
                       setState(() {
                         selectedDistance = newValue!;
-                        getNearByRestaurants(
+                        getNearByRestaurants(userId,
                             latitude, longitude, selectedDistance);
                       });
                     },
@@ -246,20 +276,29 @@ class _HomeTabState extends State<HomeTab> {
     setState(() {
       latitude = prefs.getDouble('user_latitude') ?? 0.0;
       longitude = prefs.getDouble('user_longitude') ?? 0.0;
+      userId = prefs.getString('userId') ?? '';
+
     });
-    getNearByRestaurants(latitude, longitude, selectedDistance);
+    getNearByRestaurants(userId,latitude, longitude, selectedDistance);
   }
 
-  getNearByRestaurants(double lat, double lag, double distance) {
+  getNearByRestaurants(String userId,double lat, double lag, double distance) {
     _homeBloc.add(
-        OnInitilised(lat: '12.900740', lag: '77.764267', distance: distance));
+        OnInitilised(userId:userId,lat: '12.900740', lag: '77.764267', distance: distance));
   }
 
-  Widget PlaceSearchWidget() => RoundedContainer(
+  Widget PlaceSearchWidget() =>
+      RoundedContainer(
         color: AppColors.white,
         borderColor: AppColors.white,
-        width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height * 0.05,
+        width: MediaQuery
+            .of(context)
+            .size
+            .width,
+        height: MediaQuery
+            .of(context)
+            .size
+            .height * 0.05,
         cornerRadius: 8,
         padding: 0,
         child: Row(
@@ -301,19 +340,19 @@ class _HomeTabState extends State<HomeTab> {
                   }),
             ),
             Flexible(
-              flex: 1,
+                flex: 1,
                 child: IconButton(
-              icon: const Icon(
-                Icons.close,
-                size: 12,
-              ),
-              onPressed: () {
-                setState(() {
-                  _showPlaceSearchWidget = false;
-                  _placeSearchEditingController.clear();
-                });
-              },
-            ))
+                  icon: const Icon(
+                    Icons.close,
+                    size: 12,
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      _showPlaceSearchWidget = false;
+                      _placeSearchEditingController.clear();
+                    });
+                  },
+                ))
           ],
         ),
       );

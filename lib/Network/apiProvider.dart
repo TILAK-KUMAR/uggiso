@@ -122,12 +122,12 @@ class ApiProvider {
   }
 
   Future<GetNearByRestaurantModel> getNearByRestaurant(
-      String lat, String lag,double distance) async {
+      String userId,String lat, String lag,double distance) async {
     print('calling api : $lat and $lag');
     try {
       Response response = await _dio.post(
           '${_url}${Constants.restaurantNearBy}',
-          data: {"lat": lat, "lng": lag, "distance": distance});
+          data: {"useerId":userId,"lat": lat, "lng": lag, "distance": distance});
       print("${response.data}");
 
       return GetNearByRestaurantModel.fromJson(response.data);

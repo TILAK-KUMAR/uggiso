@@ -1,4 +1,4 @@
-package com.uggiso.customer.uggiso
+package com.uggiso.customer
 
 import io.flutter.embedding.android.FlutterActivity
 

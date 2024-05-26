@@ -1,12 +1,9 @@
-import 'dart:async';
 import 'package:device_uuid/device_uuid.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uggiso/app_routes.dart';
 import 'package:uggiso/base/common/utils/LocationManager.dart';
 import 'package:uggiso/base/common/utils/colors.dart';
-
-import 'MenuListScreen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});

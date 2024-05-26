@@ -9,8 +9,9 @@ class OnInitilised extends HomeEvent {
   final String lat;
   final String lag;
   final double distance;
+  final String userId;
 
-  const OnInitilised({required this.lat,required this.lag,required this.distance});
+  const OnInitilised({required this.userId,required this.lat,required this.lag,required this.distance});
   @override
   List<Object> get props => [lat,lag];
 
