@@ -45,6 +45,21 @@ class _VerifyOtpState extends State<VerifyOtp> {
     focusNode_2 = FocusNode();
     focusNode_3 = FocusNode();
     focusNode_4 = FocusNode();
+    otpController_1.addListener(() {
+      if (otpController_1.text.isNotEmpty) {
+        FocusScope.of(context).requestFocus(focusNode_2);
+      }
+    });
+    otpController_2.addListener(() {
+      if (otpController_2.text.isNotEmpty) {
+        FocusScope.of(context).requestFocus(focusNode_3);
+      }
+    });
+    otpController_3.addListener(() {
+      if (otpController_3.text.isNotEmpty) {
+        FocusScope.of(context).requestFocus(focusNode_4);
+      }
+    });
     startTimer();
     getUserNumber();
   }
@@ -72,6 +87,12 @@ class _VerifyOtpState extends State<VerifyOtp> {
             Navigator.popAndPushNamed(context, AppRoutes.registerUser);
           } else if (state is ErrorState) {
             // isInvalidCredentials = true;
+          }
+          else if(state is onResendOTPSuccessState){
+            otpController_1.clear();
+            otpController_2.clear();
+            otpController_3.clear();
+            otpController_4.clear();
           }
         },
       )
@@ -128,6 +149,7 @@ class _VerifyOtpState extends State<VerifyOtp> {
                   width: 48.0,
                   child: TextFieldCurvedEdges(
                     controller: otpController_2,
+                    focusNode: focusNode_2,
                     backgroundColor: AppColors.appSecondaryColor,
                     keyboardType: TextInputType.number,
                     borderColor: AppColors.textFieldBorderColor,
@@ -141,6 +163,7 @@ class _VerifyOtpState extends State<VerifyOtp> {
                   width: 48.0,
                   child: TextFieldCurvedEdges(
                     controller: otpController_3,
+                    focusNode: focusNode_3,
                     backgroundColor: AppColors.appSecondaryColor,
                     keyboardType: TextInputType.number,
                     borderColor: AppColors.textFieldBorderColor,
@@ -154,6 +177,7 @@ class _VerifyOtpState extends State<VerifyOtp> {
                   width: 48.0,
                   child: TextFieldCurvedEdges(
                     controller: otpController_4,
+                    focusNode: focusNode_4,
                     backgroundColor: AppColors.appSecondaryColor,
                     keyboardType: TextInputType.number,
                     borderColor: AppColors.textFieldBorderColor,
@@ -174,6 +198,9 @@ class _VerifyOtpState extends State<VerifyOtp> {
                 alignment: Alignment.centerRight,
                 child: isResendButtonEnable
                     ? InkWell(
+                  onTap: (){
+                    _verifyOtpBloc.add(OnResendOtpButtonClicked(number: userContactNumber));
+                  },
                         child: RoundedContainer(
                           width: 100,
                           height: 40,

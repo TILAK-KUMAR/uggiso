@@ -14,6 +14,8 @@ class LoadingState extends VerifyOtpState {}
 
 class onLoadedState extends VerifyOtpState {}
 
+class onResendOTPSuccessState extends VerifyOtpState {}
+
 class ErrorState extends VerifyOtpState {
   final String? message;
   const ErrorState(this.message);

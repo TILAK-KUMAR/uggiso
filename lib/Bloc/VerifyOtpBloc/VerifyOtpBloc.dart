@@ -22,22 +22,22 @@ class VerifyOtpBloc extends Bloc<VerifyOtpEvent, VerifyOtpState> {
     });
 
 
-   /* on<OnResendOtpButtonClicked>((event,emit) async{
+    on<OnResendOtpButtonClicked>((event,emit) async{
 
       try{
         emit(LoadingState()) ;
         if(event.number.isNotEmpty && event.number.length == 10) {
           await _apiRepository.getOtp(event.number);
-          emit(onLoadedState());
+          emit(onResendOTPSuccessState());
         }
         else{
           print('this is error');
-          emit(ErrorState());
+          emit(ErrorState('unable to resend'));
         }
 
       } on NetworkError {
         print('this is network error');
       }
-    });*/
+    });
   }
 }

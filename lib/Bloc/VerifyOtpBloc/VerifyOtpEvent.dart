@@ -17,3 +17,15 @@ class OnButtonClicked extends VerifyOtpEvent {
   @override
   String toString() => 'OnButtonClicked { number: $number , otp: $otp}';
 }
+
+class OnResendOtpButtonClicked extends VerifyOtpEvent {
+  final String number;
+
+  const OnResendOtpButtonClicked({required this.number});
+
+  @override
+  List<Object> get props => [number];
+
+  @override
+  String toString() => 'OnButtonClicked { number: $number }';
+}
