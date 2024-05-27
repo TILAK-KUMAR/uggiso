@@ -19,21 +19,19 @@ class _HomeLandingScreenState extends State<HomeLandingScreen> {
   static const List _imagePaths = [
     'assets/ic_home.png',
     'assets/ic_heart.png',
-    'assets/ic_person.png',
     'assets/ic_orders.png',
   ];
 
   final List<String> text = [
     Strings.home,
     Strings.favorite,
-    Strings.profile,
     Strings.orders,
   ];
 
   static List<Widget> _widgetOptions = <Widget>[
     HomeTab(),
     FavoriteTab(),
-    ProfileTab(),
+    // ProfileTab(),
     OrdersTab()
   ];
 

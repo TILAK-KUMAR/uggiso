@@ -13,4 +13,5 @@ class Constants{
   static String getFavMenu = 'favmenu/';
   static String getFavRestaurant = 'favrestaurant/';
   static String createOrder = 'order/create';
+  static String myOrders = 'order/myorders/';
 }

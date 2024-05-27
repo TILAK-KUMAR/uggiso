@@ -4,6 +4,7 @@ import 'package:gap/gap.dart';
 import 'package:uggiso/Bloc/MenuListBloc/MenuListBloc.dart';
 import 'package:uggiso/Bloc/MenuListBloc/MenuListState.dart';
 import 'package:uggiso/Widgets/ui-kit/RoundedContainer.dart';
+import 'package:uggiso/base/common/utils/CreateOrderArgs.dart';
 import 'package:uggiso/base/common/utils/strings.dart';
 import '../Bloc/MenuListBloc/MenuListEvent.dart';
 import '../app_routes.dart';
@@ -102,7 +103,7 @@ class _MenuListScreenState extends State<MenuListScreen> {
                   }
                 }
                 uniqueMenuList = uniqueMenuMap.values.toList();
-                Navigator.pushNamed(context, AppRoutes.createOrder,arguments: uniqueMenuList);
+                Navigator.pushNamed(context, AppRoutes.createOrder,arguments: CreateOrderArgs(orderlist: uniqueMenuList, restaurantId: widget.restaurantId));
               },
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10.0),

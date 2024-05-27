@@ -6,8 +6,8 @@ abstract class HomeEvent extends Equatable {
 }
 
 class OnInitilised extends HomeEvent {
-  final String lat;
-  final String lag;
+  final double lat;
+  final double lag;
   final double distance;
   final String userId;
 

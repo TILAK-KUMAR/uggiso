@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart';
 import 'package:uggiso/Model/AddFavoriteMenuModel.dart';
 import 'package:uggiso/Model/MenuListModel.dart';
+import 'package:uggiso/Model/MyOrdersModel.dart';
 import 'package:uggiso/Model/RegisterUserModel.dart';
 import 'package:uggiso/Model/RestaurantDetailsModel.dart';
 import 'package:uggiso/Model/VerifyOtpModel.dart';
@@ -11,6 +12,7 @@ import 'package:uggiso/Network/apiProvider.dart';
 import '../Model/GetFavMenuModel.dart';
 import '../Model/GetFavRestaurantModel.dart';
 import '../Model/GetNearByResaturantModel.dart';
+import '../Model/OrderCheckoutModel.dart';
 
 class ApiRepository {
   final _provider = ApiProvider();
@@ -33,7 +35,7 @@ class ApiRepository {
     return _provider.getRestaurantDetails(id);
   }
 
-  Future<GetNearByRestaurantModel> getNearbyRestaurant(String userId,String lat, String lag, double distance) {
+  Future<GetNearByRestaurantModel> getNearbyRestaurant(String userId,double lat, double lag, double distance) {
     return _provider.getNearByRestaurant(userId,lat,lag,distance);
   }
 
@@ -57,12 +59,16 @@ class ApiRepository {
     return _provider.getFavMenuList(menuId);
   }
 
-  Future<GetNearByRestaurantModel> createOrder(String restaurantId,String customerId,
+  Future<OrderCheckoutModel> createOrder(String restaurantId,String customerId,
       List menuData,String orderType,String paymentType,
       String orderStatus,int totalAmount,String comments,
       String timeSlot,String transMode,String fcmToken) {
     return _provider.createOrder(restaurantId,customerId,menuData,orderType,paymentType,orderStatus,
     totalAmount,comments,timeSlot,transMode,fcmToken);
+  }
+
+  Future<MyOrdersModel> getMyOrders(String userId) {
+    return _provider.getMyOrders(userId);
   }
 
 

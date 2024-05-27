@@ -1,13 +1,11 @@
 import 'package:bloc/bloc.dart';
 import 'package:uggiso/Bloc/CreateOrderBloc/CreateOrderEvent.dart';
 import 'package:uggiso/Bloc/CreateOrderBloc/CreateOrderState.dart';
+import 'package:uggiso/Model/OrderCheckoutModel.dart';
 import 'package:uggiso/Network/NetworkError.dart';
 import 'package:uggiso/Network/apiRepository.dart';
-
-import '../../Model/GetNearByResaturantModel.dart';
-
 class CreateOrderBloc extends Bloc<CreateOrderEvent, CreateOrderState> {
-  late GetNearByRestaurantModel data;
+  late OrderCheckoutModel data;
   CreateOrderBloc() : super(InitialState()) {
     final ApiRepository _apiRepository = ApiRepository();
 

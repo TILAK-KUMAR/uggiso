@@ -1,19 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:google_places_flutter/google_places_flutter.dart';
 import 'package:google_search_place/google_search_place.dart';
 import 'package:google_search_place/model/prediction.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uggiso/Bloc/HomeBloc/HomeBloc.dart';
 import 'package:uggiso/Bloc/HomeBloc/HomeEvent.dart';
 import 'package:uggiso/Bloc/HomeBloc/HomeState.dart';
-import 'package:uggiso/Model/GetNearByResaturantModel.dart';
 import 'package:uggiso/Widgets/Shimmer/HomeScreen.dart';
 import 'package:uggiso/Widgets/ui-kit/HotelListGrid.dart';
 import 'package:uggiso/Widgets/ui-kit/RoundedContainer.dart';
-import 'package:uggiso/Widgets/ui-kit/TextFieldCurvedEdges.dart';
 import 'package:uggiso/base/common/utils/GetHotelListinMap.dart';
 import 'package:uggiso/base/common/utils/colors.dart';
 import '../app_routes.dart';
@@ -56,7 +52,18 @@ class _HomeTabState extends State<HomeTab> {
         backgroundColor: AppColors.textFieldBorderColor,
         appBar: AppBar(
           backgroundColor: AppColors.appPrimaryColor,
-          leading: Container(),
+          leading: IconButton(
+            onPressed:(){
+              Navigator.pushNamed(context, AppRoutes.profileScreen);
+
+            },
+            icon:Image.asset(
+              'assets/ic_person.png',
+              width: 24, // Adjust width as needed
+              height: 24,
+              color: AppColors.white,// Adjust height as needed
+            ),
+          ),
           elevation: 0,
           actions: [
             Padding(
@@ -203,17 +210,19 @@ class _HomeTabState extends State<HomeTab> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        '$currentLocation',
-                        style: AppFonts.title,
+                      Flexible(
+                        flex: 3,
+                        child: Text(
+                          '$currentLocation',
+                          style: AppFonts.title,
+
+                        ),
                       ),
                       InkWell(
                         onTap: () {
                           setState(() {
                             _showPlaceSearchWidget = true;
                           });
-                          /*getNearByRestaurants(
-                              latitude, longitude, selectedDistance);*/
                         },
                         child: Text(
                           'Change',
@@ -282,9 +291,9 @@ class _HomeTabState extends State<HomeTab> {
     getNearByRestaurants(userId,latitude, longitude, selectedDistance);
   }
 
-  getNearByRestaurants(String userId,double lat, double lag, double distance) {
+  getNearByRestaurants(String userId,double lat, double lng, double distance) {
     _homeBloc.add(
-        OnInitilised(userId:userId,lat: '12.900740', lag: '77.764267', distance: distance));
+        OnInitilised(userId:userId,lat: lat, lag: lng, distance: distance));
   }
 
   Widget PlaceSearchWidget() =>
@@ -308,7 +317,9 @@ class _HomeTabState extends State<HomeTab> {
               flex: 3,
               child: SearchPlaceAutoCompletedTextField(
                   googleAPIKey: Strings.searchKey,
+                  textStyle: AppFonts.title,
                   countries: ['in'],
+                  isLatLngRequired: true,
                   inputDecoration: InputDecoration(
                     border: OutlineInputBorder(
                       borderSide: BorderSide.none, // No border
@@ -317,12 +328,17 @@ class _HomeTabState extends State<HomeTab> {
                   ),
                   controller: _placeSearchEditingController,
                   itmOnTap: (Prediction prediction) {
-                    _placeSearchEditingController.text =
-                        prediction.description ?? "";
+                    setState(() {
+                      _placeSearchEditingController.text = prediction.description!;
+                      currentLocation = _placeSearchEditingController.text;
+                      _showPlaceSearchWidget = false;
+
+                    });
 
                     _placeSearchEditingController.selection =
                         TextSelection.fromPosition(TextPosition(
                             offset: prediction.description?.length ?? 0));
+
                   },
                   getPlaceDetailWithLatLng: (Prediction prediction) {
                     _placeSearchEditingController.text =
@@ -333,8 +349,9 @@ class _HomeTabState extends State<HomeTab> {
                             offset: prediction.description?.length ?? 0));
 
                     // Get search place latitude and longitude
-                    debugPrint("${prediction.lat} ${prediction.lng}");
+                    debugPrint("====>${prediction.lat} ${prediction.lng}");
 
+                    getNearByRestaurants(userId,double.parse(prediction.lat.toString()), double.parse(prediction.lng.toString()), selectedDistance);
                     // Get place Detail
                     debugPrint("Place Detail : ${prediction.placeDetails}");
                   }),

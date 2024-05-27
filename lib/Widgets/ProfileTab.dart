@@ -31,7 +31,17 @@ class _ProfileTabState extends State<ProfileTab> {
       backgroundColor: AppColors.textFieldBg,
       appBar: AppBar(
         elevation: 0,
-        leading: Container(),
+        leading: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 8.0),
+          child: IconButton(
+            iconSize: 18,
+            icon: Image.asset('assets/ic_back_arrow.png'),
+            onPressed: () {
+              Navigator.pop(context);
+
+            },
+          ),
+        ),
         backgroundColor: AppColors.appPrimaryColor,
         title: const Text(
           Strings.myProfile,

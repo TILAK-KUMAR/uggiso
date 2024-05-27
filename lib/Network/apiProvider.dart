@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:uggiso/Model/AddFavoriteMenuModel.dart';
 import 'package:uggiso/Model/GetNearByResaturantModel.dart';
 import 'package:uggiso/Model/MenuListModel.dart';
+import 'package:uggiso/Model/MyOrdersModel.dart';
 import 'package:uggiso/Model/RegisterUserModel.dart';
 import 'package:uggiso/Model/RestaurantDetailsModel.dart';
 import 'package:uggiso/Model/VerifyOtpModel.dart';
@@ -10,6 +11,7 @@ import 'package:uggiso/Network/constants.dart';
 
 import '../Model/GetFavMenuModel.dart';
 import '../Model/GetFavRestaurantModel.dart';
+import '../Model/OrderCheckoutModel.dart';
 
 class ApiProvider {
   final Dio _dio = Dio();
@@ -122,7 +124,7 @@ class ApiProvider {
   }
 
   Future<GetNearByRestaurantModel> getNearByRestaurant(
-      String userId,String lat, String lag,double distance) async {
+      String userId,double lat, double lag,double distance) async {
     print('calling api : $lat and $lag');
     try {
       Response response = await _dio.post(
@@ -163,11 +165,14 @@ class ApiProvider {
     }
   }
 
-  Future<GetNearByRestaurantModel> createOrder(
+  Future<OrderCheckoutModel> createOrder(
       String restaurantId,String customerId,
       List menuData,String orderType,String paymentType,
       String orderStatus,int totalAmount,String comments,
       String timeSlot,String transMode,String fcmToken) async {
+    print('this is request data :{ restaurantId: $restaurantId,"customerId": $customerId,"menus": $menuData'
+        ',"orderType":$orderType,"paymentType": $paymentType,"orderStatus": $orderStatus,"totalAmount": $totalAmount'
+        ',"comments": $comments,"timeSlot": $timeSlot,"transMode":$transMode,"fcmToken":$fcmToken');
     try {
       Response response = await _dio.post(
           '${_url}${Constants.createOrder}',
@@ -180,17 +185,29 @@ class ApiProvider {
             "orderStatus": orderStatus,
             "totalAmount": totalAmount,
             "comments": comments,
-            "timeSlot": timeSlot,
+            "timeSlot": null,
             "transMode":transMode,
             "fcmToken":fcmToken
           });
       print("${response.data}");
 
-      return GetNearByRestaurantModel.fromJson(response.data);
+      return OrderCheckoutModel.fromJson(response.data);
     } catch (error, stacktrace) {
       print("Exception occured: $error stackTrace: $stacktrace");
-      return GetNearByRestaurantModel.withError(
+      return OrderCheckoutModel.withError(
           "Data not found / Connection issue");
+    }
+  }
+
+  Future<MyOrdersModel> getMyOrders(String userId) async {
+    try {
+      Response response = await _dio.get('${_url}${Constants.myOrders}$userId');
+      print("${response.data}");
+
+      return MyOrdersModel.fromJson(response.data);
+    } catch (error, stacktrace) {
+      print("Exception occured: $error stackTrace: $stacktrace");
+      return MyOrdersModel.withError("Data not found / Connection issue");
     }
   }
 }

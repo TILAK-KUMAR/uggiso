@@ -6,14 +6,17 @@ import 'package:uggiso/Widgets/HomeLandingScreen.dart';
 import 'package:uggiso/Widgets/MenuListScreen.dart';
 import 'package:uggiso/Widgets/PaymentSuccessScreen.dart';
 import 'package:uggiso/Widgets/PlaceSearchScreen.dart';
+import 'package:uggiso/Widgets/ProfileTab.dart';
 import 'package:uggiso/Widgets/RegisterUserScreen.dart';
 import 'package:uggiso/Widgets/SettingsScreen.dart';
 import 'package:uggiso/Widgets/VerifyOtp.dart';
+import 'package:uggiso/base/common/utils/CreateOrderArgs.dart';
 import 'package:uggiso/widgets/IntroLandingScreen.dart';
 import 'package:uggiso/widgets/SignUpScreen.dart';
 import 'package:uggiso/widgets/splash.dart';
 
 import 'Widgets/CreateOrder.dart';
+import 'Widgets/OrderSuccessScreen.dart';
 import 'Widgets/PaymentOptionsScreen.dart';
 import 'base/common/utils/MenuListArgs.dart';
 
@@ -46,8 +49,11 @@ class AppRoutes {
 
   static const String paymentOptions = '/payment_options';
 
-
   static const String paymentSuccessScreen = '/payment_success_screen';
+
+  static const String orderSuccessScreen = '/order_success_screen';
+
+  static const String profileScreen = '/profile_screen';
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -82,12 +88,19 @@ class AppRoutes {
       case saveCard:
         return MaterialPageRoute(builder: (_) => const AddCard());
       case createOrder:
-        final List<Map<String, dynamic>> uniqueMenuList = settings.arguments as List<Map<String, dynamic>>;
-        return MaterialPageRoute(builder: (_) => CreateOrder(orderlist: uniqueMenuList));
+        final create_order_args = settings.arguments as CreateOrderArgs;
+        return MaterialPageRoute(builder: (_) => CreateOrder(orderlist: create_order_args.orderlist,
+          restaurantId: create_order_args.restaurantId));
       case paymentOptions:
         return MaterialPageRoute(builder: (_) => const PaymentOptionsScreen());
       case paymentSuccessScreen:
         return MaterialPageRoute(builder: (_) => const PaymentSuccessScreen());
+
+      case orderSuccessScreen:
+        return MaterialPageRoute(builder: (_) => const OrderSuccessScreen());
+
+      case profileScreen:
+        return MaterialPageRoute(builder: (_) => const ProfileTab());
       default:
         // If there is no such named route in the switch statement, e.g. /randomRoute
         return MaterialPageRoute(builder: (_) {

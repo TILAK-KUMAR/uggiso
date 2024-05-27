@@ -1,6 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:uggiso/Model/GetNearByResaturantModel.dart';
-import 'package:uggiso/Model/otpModel.dart';
+import 'package:uggiso/Model/OrderCheckoutModel.dart';
 
 abstract class CreateOrderState extends Equatable {
   const CreateOrderState();
@@ -14,7 +13,7 @@ class InitialState extends CreateOrderState {}
 class LoadingHotelState extends CreateOrderState {}
 
 class onLoadedHotelState extends CreateOrderState {
-  final GetNearByRestaurantModel data;
+  final OrderCheckoutModel data;
   onLoadedHotelState(this.data);
 }
 

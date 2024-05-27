@@ -57,6 +57,7 @@ class _VerifyOtpState extends State<VerifyOtp> {
 
         child: Scaffold(
             backgroundColor: AppColors.white,
+            resizeToAvoidBottomInset: true,
             appBar: AppBar(
               leading: Container(),
               backgroundColor: AppColors.white,
