@@ -398,9 +398,7 @@ class _MenuListScreenState extends State<MenuListScreen> {
                                               'price': state.data![index].price!,
                                               'quantity':1
                                             });
-                                            print('this is the list added :${cartItems}');
-                                            print(
-                                                'this is total item added : $_totalItemCount');
+
                                           },
                                           onEmptyCart: (value) {
                                             setState(() {
@@ -409,11 +407,7 @@ class _MenuListScreenState extends State<MenuListScreen> {
                                                 _showButton = false;
                                             });
                                             cartItems.removeWhere((item) => item['menuId'] == value);
-                                            print('this is the list deleted :${cartItems}');
-                                            print('this is calback value : $value');
 
-                                            print(
-                                                'this is total item delete : $_totalItemCount');
                                           },
                                           onQuantityChanged: (int value){
                                             cartItems.add({
@@ -423,9 +417,6 @@ class _MenuListScreenState extends State<MenuListScreen> {
                                               'price': state.data![index].price!,
                                               'quantity':value
                                             });
-
-                                            print('this is the list added :${cartItems}');
-
                                           },
 
                                         );

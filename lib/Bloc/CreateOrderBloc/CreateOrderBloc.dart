@@ -11,11 +11,14 @@ class CreateOrderBloc extends Bloc<CreateOrderEvent, CreateOrderState> {
   CreateOrderBloc() : super(InitialState()) {
     final ApiRepository _apiRepository = ApiRepository();
 
-    on<ObPaymentClicked>((event, emit) async {
+    on<OnPaymentClicked>((event, emit) async {
       try {
         emit(LoadingHotelState());
-        // data = await _apiRepository.getNearbyRestaurant(event.lat, event.lag,event.);
+        data = await _apiRepository.createOrder(event.restaurantId, event.customerId,
+            event.menuData,event.orderType,event.paymentType,event.orderStatus,event.totalAmount,
+        event.comments,event.timeSlot,event.transMode,event.fcmToken);
         if(data.payload == null){
+
           emit(ErrorState(data.message.toString()));
         }
         else{

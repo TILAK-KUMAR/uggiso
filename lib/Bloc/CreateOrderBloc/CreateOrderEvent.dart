@@ -5,13 +5,24 @@ abstract class CreateOrderEvent extends Equatable {
   const CreateOrderEvent();
 }
 
-class ObPaymentClicked extends CreateOrderEvent {
-  final String lat;
-  final String lag;
+class OnPaymentClicked extends CreateOrderEvent {
+  final String restaurantId;
+  final String customerId;
+  final List menuData;
+  final String orderType;
+  final String paymentType;
+  final String orderStatus;
+  final int totalAmount;
+  final String comments;
+  final String timeSlot;
+  final String transMode;
+  final String fcmToken;
 
-  const ObPaymentClicked({required this.lat,required this.lag});
+  const OnPaymentClicked({required this.restaurantId, required this.customerId,
+  required this.menuData,required this.orderType,required this.paymentType,
+  required this.orderStatus,required this.totalAmount,required this.comments,required this.timeSlot,
+  required this.transMode,required this.fcmToken});
 
   @override
-  List<Object> get props => [lat,lag];
-
+  List<Object> get props => [restaurantId, customerId];
 }

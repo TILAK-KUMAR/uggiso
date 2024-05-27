@@ -162,4 +162,35 @@ class ApiProvider {
       return GetFavMenuModel.withError("Data not found / Connection issue");
     }
   }
+
+  Future<GetNearByRestaurantModel> createOrder(
+      String restaurantId,String customerId,
+      List menuData,String orderType,String paymentType,
+      String orderStatus,int totalAmount,String comments,
+      String timeSlot,String transMode,String fcmToken) async {
+    try {
+      Response response = await _dio.post(
+          '${_url}${Constants.createOrder}',
+          data: {
+            "restaurantId": restaurantId,
+            "customerId": customerId,
+            "menus": menuData,
+            "orderType":orderType,
+            "paymentType": paymentType,
+            "orderStatus": orderStatus,
+            "totalAmount": totalAmount,
+            "comments": comments,
+            "timeSlot": timeSlot,
+            "transMode":transMode,
+            "fcmToken":fcmToken
+          });
+      print("${response.data}");
+
+      return GetNearByRestaurantModel.fromJson(response.data);
+    } catch (error, stacktrace) {
+      print("Exception occured: $error stackTrace: $stacktrace");
+      return GetNearByRestaurantModel.withError(
+          "Data not found / Connection issue");
+    }
+  }
 }

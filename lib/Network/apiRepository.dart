@@ -57,5 +57,13 @@ class ApiRepository {
     return _provider.getFavMenuList(menuId);
   }
 
+  Future<GetNearByRestaurantModel> createOrder(String restaurantId,String customerId,
+      List menuData,String orderType,String paymentType,
+      String orderStatus,int totalAmount,String comments,
+      String timeSlot,String transMode,String fcmToken) {
+    return _provider.createOrder(restaurantId,customerId,menuData,orderType,paymentType,orderStatus,
+    totalAmount,comments,timeSlot,transMode,fcmToken);
+  }
+
 
 }
