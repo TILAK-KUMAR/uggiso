@@ -4,6 +4,7 @@ import 'package:uggiso/Model/GetNearByResaturantModel.dart';
 import 'package:uggiso/Model/MenuListModel.dart';
 import 'package:uggiso/Model/MyOrdersModel.dart';
 import 'package:uggiso/Model/RegisterUserModel.dart';
+import 'package:uggiso/Model/RestaurantByMenuTypeModel.dart';
 import 'package:uggiso/Model/RestaurantDetailsModel.dart';
 import 'package:uggiso/Model/VerifyOtpModel.dart';
 import 'package:uggiso/Model/otpModel.dart';
@@ -208,6 +209,18 @@ class ApiProvider {
     } catch (error, stacktrace) {
       print("Exception occured: $error stackTrace: $stacktrace");
       return MyOrdersModel.withError("Data not found / Connection issue");
+    }
+  }
+
+  Future<RestaurantByMenuTypeModel> getRestaurantDetailsByMenuType(String menuType) async {
+    try {
+      Response response = await _dio.get('${_url}${Constants.getRestaurantByMenuType}$menuType');
+      print("${response.data}");
+
+      return RestaurantByMenuTypeModel.fromJson(response.data);
+    } catch (error, stacktrace) {
+      print("Exception occured: $error stackTrace: $stacktrace");
+      return RestaurantByMenuTypeModel.withError("Data not found / Connection issue");
     }
   }
 }

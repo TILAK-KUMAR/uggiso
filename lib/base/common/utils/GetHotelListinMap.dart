@@ -5,8 +5,9 @@ import 'package:uggiso/Model/GetNearByResaturantModel.dart';
 
 class GetHotelListinMap extends StatefulWidget {
   final List<Payload>? payload;
+  final String userId;
 
-  GetHotelListinMap(this.payload, {super.key});
+  GetHotelListinMap(this.payload,this.userId, {super.key});
 
   @override
   State<GetHotelListinMap> createState() => _GetHotelListinMapState();

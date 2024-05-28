@@ -61,7 +61,7 @@ class _MenuItemCardState extends State<MenuItemCard> {
                 ),
                 const Gap(4),
                 Text(
-                  '${widget.listData.price.toString()}',
+                  'Rs. ${widget.listData.price.toString()}',
                   style: AppFonts.smallText,
                 ),
                 const Gap(4),

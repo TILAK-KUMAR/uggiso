@@ -16,8 +16,9 @@ import '../../base/common/utils/fonts.dart';
 
 class HotelListGrid extends StatelessWidget {
   final List<dynamic>? payload;
+  final String? userId;
 
-  HotelListGrid(this.payload, {super.key});
+  HotelListGrid(this.payload,this.userId, {super.key});
 
   final List<String> items = List.generate(10, (index) => 'Item $index');
   final HomeBloc _homeBloc = HomeBloc();
@@ -144,7 +145,7 @@ class HotelListGrid extends StatelessWidget {
                           return IconButton(
                               onPressed: () {
                                 _homeBloc.add(OnAddFavRestaurant(
-                                    userId:item?.ownerId,
+                                    userId:userId,
                                     restaurantId:item?.restaurantId));
                               },
                               icon: Image.asset(

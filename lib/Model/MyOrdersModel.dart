@@ -41,12 +41,12 @@ class MyOrderPayload {
   String? customerId;
   String? paymentType;
   String? orderStatus;
-  Null? timeSlot;
-  int? totalAmount;
-  int? discount;
+  String? timeSlot;
+  double? totalAmount;
+  double? discount;
   String? comments;
   String? orderDate;
-  Null? orderTime;
+  String? orderTime;
 
   MyOrderPayload(
       {this.orderId,

@@ -124,7 +124,7 @@ class _HomeTabState extends State<HomeTab> {
                             ),
                             const Gap(12),
                             _isShowMaps ? HotelListGrid(
-                                state.data.payload):GetHotelListinMap(state.data.payload) ,
+                                state.data.payload,userId):GetHotelListinMap(state.data.payload,userId) ,
                           ],
                         ),
                       ));

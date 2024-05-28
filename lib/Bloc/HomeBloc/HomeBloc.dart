@@ -31,6 +31,15 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     on<OnAddFavRestaurant>((event, emit) async {
       try {
         emit(LoadingHotelState());
+        print('this is userId : ${event.userId}');
+        print('this is restaurant ID : ${event.restaurantId}');
+        if (event.userId == null || event.restaurantId == null) {
+          // Handle the case where userId or restaurantId is null
+          print('this is userId : ${event.userId}');
+          print('this is restaurant ID : ${event.restaurantId}');
+          emit(ErrorState("userId or restaurantId is null"));
+          return;
+        }
         res = await _apiRepository.addFavHotel(event.userId!, event.restaurantId!);
         if (res == 'error') {
           emit(ErrorState(data.message.toString()));
