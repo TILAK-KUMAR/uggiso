@@ -3,6 +3,9 @@ buildscript {
     repositories {
         google()
         mavenCentral()
+        maven { url 'https://jitpack.io'
+            credentials { username 'jp_oshtn4lfqhsnjr688utjov34gq' }
+        }
     }
 
     dependencies {

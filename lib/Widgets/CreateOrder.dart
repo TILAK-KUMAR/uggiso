@@ -1,6 +1,7 @@
 import 'dart:ffi';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -33,9 +34,12 @@ class _CreateOrderState extends State<CreateOrder> {
   double item_sub_total = 0.0;
   double gst_charges = 18.0;
   String userId = '';
+  String userNumber = '';
+  String userName = '';
   List menuList = [];
   bool showLoader = false;
   final CreateOrderBloc _createOrderBloc = CreateOrderBloc();
+  static const platform = MethodChannel('com.sabpaisa.integration/native');
 
   @override
   void initState() {
@@ -80,146 +84,165 @@ class _CreateOrderState extends State<CreateOrder> {
       body: BlocProvider(
         create: (context) => _createOrderBloc,
         child: SingleChildScrollView(
-            child: BlocListener<CreateOrderBloc,CreateOrderState>(
-                listener: (BuildContext context, CreateOrderState state) {
-                  if (state is LoadingHotelState) {
-                    showLoader = true;
-                    CircularProgressIndicator();
-                  }
-                  if( state is onLoadedHotelState){
-                    print('this is response data : ${state.data}');
-                    Navigator.pushNamedAndRemoveUntil(context, AppRoutes.orderSuccessScreen,
-                          (Route<dynamic> route) => false);
-                  }
-                },
-              child: showLoader?Center(child: CircularProgressIndicator(color: AppColors.appPrimaryColor,)):Column(
-                        children: [
-              Container(
-                height: MediaQuery.of(context).size.height * 0.12,
-                decoration: const BoxDecoration(
-                  color: AppColors.white,
-                  borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(30),
-                    bottomRight: Radius.circular(30),
-                  ),
-                ),
-                child: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                  child: Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Image.asset(
-                            'assets/ic_home.png',
-                            width: 24,
-                            height: 24,
-                            color: AppColors.appPrimaryColor,
-                          ),
-                          SizedBox(
-                            width: 8,
-                          ),
-                          Text('Distance from Home', style: AppFonts.title)
-                        ],
+            child: BlocListener<CreateOrderBloc, CreateOrderState>(
+          listener: (BuildContext context, CreateOrderState state) {
+            if (state is LoadingHotelState) {
+              showLoader = true;
+              CircularProgressIndicator();
+            }
+            if (state is onLoadedHotelState) {
+              print('this is response data : ${state.data}');
+              Navigator.pushNamedAndRemoveUntil(
+                  context,
+                  AppRoutes.orderSuccessScreen,
+                  (Route<dynamic> route) => false);
+            }
+          },
+          child: showLoader
+              ? Center(
+                  child: CircularProgressIndicator(
+                  color: AppColors.appPrimaryColor,
+                ))
+              : Column(
+                  children: [
+                    Container(
+                      height: MediaQuery.of(context).size.height * 0.12,
+                      decoration: const BoxDecoration(
+                        color: AppColors.white,
+                        borderRadius: BorderRadius.only(
+                          bottomLeft: Radius.circular(30),
+                          bottomRight: Radius.circular(30),
+                        ),
                       ),
-                      Gap(12),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text(Strings.select_time_slot, style: AppFonts.title),
-                          Gap(24),
-                          RoundedContainer(
-                              width: MediaQuery.of(context).size.width * 0.4,
-                              height: MediaQuery.of(context).size.height * 0.05,
-                              color: AppColors.white,
-                              cornerRadius: 8,
-                              padding: 0,
-                              child: DropdownButtonFormField(
-                                decoration: const InputDecoration(
-                                  contentPadding:
-                                      EdgeInsets.symmetric(horizontal: 0),
-                                  border: InputBorder.none,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 16.0, vertical: 8.0),
+                        child: Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Image.asset(
+                                  'assets/ic_home.png',
+                                  width: 24,
+                                  height: 24,
+                                  color: AppColors.appPrimaryColor,
                                 ),
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 18),
-                                value: selectedSlot,
-                                menuMaxHeight:
-                                    MediaQuery.of(context).size.height * 0.4,
-                                icon: Image.asset(
-                                  'assets/ic_dropdown_arrow.png',
-                                  width: 12.0,
-                                  height: 12.0,
+                                SizedBox(
+                                  width: 8,
                                 ),
-                                items: Strings.time_slot.map((String value) {
-                                  return DropdownMenuItem(
-                                    value: value,
-                                    child: Text(value),
-                                  );
-                                }).toList(),
-                                onChanged: (String? newValue) {
-                                  setState(() {
-                                    selectedSlot = newValue!;
-                                  });
-                                },
-                              )),
-                        ],
+                                Text('Distance from Home',
+                                    style: AppFonts.title)
+                              ],
+                            ),
+                            Gap(12),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Text(Strings.select_time_slot,
+                                    style: AppFonts.title),
+                                Gap(24),
+                                RoundedContainer(
+                                    width:
+                                        MediaQuery.of(context).size.width * 0.4,
+                                    height: MediaQuery.of(context).size.height *
+                                        0.05,
+                                    color: AppColors.white,
+                                    cornerRadius: 8,
+                                    padding: 0,
+                                    child: DropdownButtonFormField(
+                                      decoration: const InputDecoration(
+                                        contentPadding:
+                                            EdgeInsets.symmetric(horizontal: 0),
+                                        border: InputBorder.none,
+                                      ),
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 18),
+                                      value: selectedSlot,
+                                      menuMaxHeight:
+                                          MediaQuery.of(context).size.height *
+                                              0.4,
+                                      icon: Image.asset(
+                                        'assets/ic_dropdown_arrow.png',
+                                        width: 12.0,
+                                        height: 12.0,
+                                      ),
+                                      items:
+                                          Strings.time_slot.map((String value) {
+                                        return DropdownMenuItem(
+                                          value: value,
+                                          child: Text(value),
+                                        );
+                                      }).toList(),
+                                      onChanged: (String? newValue) {
+                                        setState(() {
+                                          selectedSlot = newValue!;
+                                        });
+                                      },
+                                    )),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
-                    ],
-                  ),
-                ),
-              ),
-              Gap(18),
-              Text(
-                Strings.order_details,
-                style: AppFonts.subHeader,
-              ),
-              Gap(18),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: Container(
-                  padding: EdgeInsets.all(8),
-                  width: MediaQuery.of(context).size.width,
-                  decoration: BoxDecoration(
-                    color: AppColors.white,
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(
-                      color: AppColors.white,
-                      width: 1,
                     ),
-                  ),
-                  child: ListView.builder(
-                      itemCount: widget.orderlist.length,
-                      shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
-                      itemBuilder: (BuildContext context, int count) {
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 12.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              /*  Image.asset(
+                    Gap(18),
+                    Text(
+                      Strings.order_details,
+                      style: AppFonts.subHeader,
+                    ),
+                    Gap(18),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                      child: Container(
+                        padding: EdgeInsets.all(8),
+                        width: MediaQuery.of(context).size.width,
+                        decoration: BoxDecoration(
+                          color: AppColors.white,
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(
+                            color: AppColors.white,
+                            width: 1,
+                          ),
+                        ),
+                        child: ListView.builder(
+                            itemCount: widget.orderlist.length,
+                            shrinkWrap: true,
+                            physics: NeverScrollableScrollPhysics(),
+                            itemBuilder: (BuildContext context, int count) {
+                              return Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 12.0),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    /*  Image.asset(
                                   'assets/ic_veg.png',
                                   width: 12,
                                   height: 12,
                                 ),*/
-                              Gap(4),
-                              Container(
-                                  width: MediaQuery.of(context).size.width * 0.4,
-                                  child: Text(
-                                    '${widget.orderlist[count]['menuName']}',
-                                    style: AppFonts.title,
-                                  )),
-                              Gap(12),
-                              Container(
-                                  width: MediaQuery.of(context).size.width * 0.1,
-                                  child: Text(
-                                    '${widget.orderlist[count]['quantity']}',
-                                    style: AppFonts.title,
-                                  )),
-                              /* RoundedContainer(
+                                    Gap(4),
+                                    Container(
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                0.4,
+                                        child: Text(
+                                          '${widget.orderlist[count]['menuName']}',
+                                          style: AppFonts.title,
+                                        )),
+                                    Gap(12),
+                                    Container(
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                0.1,
+                                        child: Text(
+                                          '${widget.orderlist[count]['quantity']}',
+                                          style: AppFonts.title,
+                                        )),
+                                    /* RoundedContainer(
                                     width: MediaQuery.of(context).size.width * 0.22,
                                     height:
                                         MediaQuery.of(context).size.height * 0.04,
@@ -264,158 +287,160 @@ class _CreateOrderState extends State<CreateOrder> {
                                         ),
                                       ],
                                     )),*/
-                              InkWell(
-                                onTap: () {
-                                  Navigator.pop(context);
-                                },
-                                child: Image.asset(
-                                  'assets/ic_edit.png',
-                                  width: 12,
-                                  height: 18,
-                                ),
-                              ),
-                              /* Gap(12),
+                                    InkWell(
+                                      onTap: () {
+                                        Navigator.pop(context);
+                                      },
+                                      child: Image.asset(
+                                        'assets/ic_edit.png',
+                                        width: 12,
+                                        height: 18,
+                                      ),
+                                    ),
+                                    /* Gap(12),
                                 Image.asset(
                                   'assets/ic_delete.png',
                                   width: 18,
                                   height: 18,
                                 ),*/
-                              Gap(24),
-                              Expanded(
-                                child: Text(
-                                  'Rs.${widget.orderlist[count]['price']}',
-                                  textAlign: TextAlign.end,
+                                    Gap(24),
+                                    Expanded(
+                                      child: Text(
+                                        'Rs.${widget.orderlist[count]['price']}',
+                                        textAlign: TextAlign.end,
+                                        style: AppFonts.title,
+                                      ),
+                                    ),
+                                    Gap(18),
+                                  ],
+                                ),
+                              );
+                            }),
+                      ),
+                    ),
+                    Gap(18),
+                    Text(
+                      Strings.bill_details,
+                      style: AppFonts.subHeader,
+                    ),
+                    Gap(18),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                      child: Container(
+                        padding: EdgeInsets.all(8),
+                        width: MediaQuery.of(context).size.width,
+                        decoration: BoxDecoration(
+                          color: AppColors.white,
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(
+                            color: AppColors.white,
+                            width: 1,
+                          ),
+                        ),
+                        child: Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  Strings.item_total,
                                   style: AppFonts.title,
                                 ),
-                              ),
-                              Gap(18),
-                            ],
-                          ),
-                        );
-                      }),
-                ),
-              ),
-              Gap(18),
-              Text(
-                Strings.bill_details,
-                style: AppFonts.subHeader,
-              ),
-              Gap(18),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: Container(
-                  padding: EdgeInsets.all(8),
-                  width: MediaQuery.of(context).size.width,
-                  decoration: BoxDecoration(
-                    color: AppColors.white,
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(
-                      color: AppColors.white,
-                      width: 1,
+                                Text(
+                                  '${item_total}',
+                                  style: AppFonts.title,
+                                )
+                              ],
+                            ),
+                            Gap(18),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  Strings.gst_charges,
+                                  style: AppFonts.title,
+                                ),
+                                Text(
+                                  '$gst_charges',
+                                  style: AppFonts.title,
+                                )
+                              ],
+                            ),
+                            Gap(18),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  Strings.to_pay,
+                                  style: AppFonts.title.copyWith(
+                                      color: AppColors.appPrimaryColor),
+                                ),
+                                Text(
+                                  '$item_sub_total',
+                                  style: AppFonts.title,
+                                )
+                              ],
+                            )
+                          ],
+                        ),
+                      ),
                     ),
-                  ),
-                  child: Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            Strings.item_total,
-                            style: AppFonts.title,
+                    Gap(18),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                      child: Container(
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 8, vertical: 12),
+                        width: MediaQuery.of(context).size.width,
+                        decoration: BoxDecoration(
+                          color: AppColors.white,
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(
+                            color: AppColors.white,
+                            width: 1,
                           ),
-                          Text(
-                            '${item_total}',
-                            style: AppFonts.title,
-                          )
-                        ],
+                        ),
+                        child: Row(
+                          children: [
+                            Text(
+                              Strings.note,
+                              style: AppFonts.smallText
+                                  .copyWith(color: Colors.red),
+                            ),
+                            Gap(4),
+                            Container(
+                                width: MediaQuery.of(context).size.width * 0.75,
+                                child: Text(
+                                  Strings.note_desc,
+                                  style: AppFonts.smallText,
+                                )),
+                          ],
+                        ),
                       ),
-                      Gap(18),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            Strings.gst_charges,
-                            style: AppFonts.title,
-                          ),
-                          Text(
-                            '$gst_charges',
-                            style: AppFonts.title,
-                          )
-                        ],
-                      ),
-                      Gap(18),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            Strings.to_pay,
-                            style: AppFonts.title
-                                .copyWith(color: AppColors.appPrimaryColor),
-                          ),
-                          Text(
-                            '$item_sub_total',
-                            style: AppFonts.title,
-                          )
-                        ],
-                      )
-                    ],
-                  ),
-                ),
-              ),
-              Gap(18),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 8, vertical: 12),
-                  width: MediaQuery.of(context).size.width,
-                  decoration: BoxDecoration(
-                    color: AppColors.white,
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(
-                      color: AppColors.white,
-                      width: 1,
                     ),
-                  ),
-                  child: Row(
-                    children: [
-                      Text(
-                        Strings.note,
-                        style: AppFonts.smallText.copyWith(color: Colors.red),
+                    Gap(18),
+                    Text(
+                      Strings.payment_methods,
+                      style: AppFonts.subHeader,
+                    ),
+                    Gap(100),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                      child: RoundedElevatedButton(
+                        width: MediaQuery.of(context).size.width * 0.8,
+                        height: 40.0,
+                        text: 'PROCEED PAYMENT',
+                        textStyle: AppFonts.title,
+                        cornerRadius: 8,
+                        buttonColor: AppColors.appPrimaryColor,
+                        onPressed: () {
+                          createOrder();
+                        },
                       ),
-                      Gap(4),
-                      Container(
-                          width: MediaQuery.of(context).size.width * 0.75,
-                          child: Text(
-                            Strings.note_desc,
-                            style: AppFonts.smallText,
-                          )),
-                    ],
-                  ),
+                    )
+                  ],
                 ),
-              ),
-              Gap(18),
-              Text(
-                Strings.payment_methods,
-                style: AppFonts.subHeader,
-              ),
-              Gap(100),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: RoundedElevatedButton(
-                  width: MediaQuery.of(context).size.width * 0.8,
-                  height: 40.0,
-                  text: 'PROCEED PAYMENT',
-                  textStyle: AppFonts.title,
-                  cornerRadius: 8,
-                  buttonColor: AppColors.appPrimaryColor,
-                  onPressed: () {
-                    createOrder();
-                  },
-                ),
-              )
-                        ],
-                      ),
-            )),
+        )),
       ),
     );
   }
@@ -431,15 +456,37 @@ class _CreateOrderState extends State<CreateOrder> {
     final prefs = await SharedPreferences.getInstance();
     setState(() {
       userId = prefs.getString('userId') ?? '';
+      userNumber = prefs.getString('mobile_number') ?? '';
+      userName = prefs.getString('user_name') ?? '';
     });
   }
 
-  createOrder() {
+  createOrder() async {
     print('this is menu list : $menuList');
     print('this is rest id : ${widget.restaurantId!}');
     print('this is user id : $userId');
+    print('this is user name : $userName');
+    print('this is user number : $userNumber');
     print('this is total amount : ${item_sub_total}');
-    _createOrderBloc.add(OnPaymentClicked(
+    final List<Object?> result = await platform.invokeMethod('callSabPaisaSdk',
+        [userName, "lastname", "flutter@gmail.com", userNumber, item_sub_total]);
+
+    String txnStatus = result[0].toString();
+    String txnId = result[1].toString();
+
+    print('this is transaction status : $txnStatus');
+    print('this is transaction id : $txnId');
+    print('this is transaction result : $result');
+    /*Fluttertoast.showToast(
+        msg: txnStatus,
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 16.0);*/
+  }
+/*_createOrderBloc.add(OnPaymentClicked(
         restaurantId: widget.restaurantId!,
         customerId: userId,
         menuData: menuList,
@@ -450,6 +497,5 @@ class _CreateOrderState extends State<CreateOrder> {
         comments: 'Please do little more spicy',
         timeSlot: 'null',
         transMode: 'BIKE',
-        fcmToken: 'hfjhjdjhh'));
-  }
+        fcmToken: 'hfjhjdjhh'));*/
 }
