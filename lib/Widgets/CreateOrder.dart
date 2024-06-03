@@ -468,15 +468,15 @@ class _CreateOrderState extends State<CreateOrder> {
     print('this is user name : $userName');
     print('this is user number : $userNumber');
     print('this is total amount : ${item_sub_total}');
-    final List<Object?> result = await platform.invokeMethod('callSabPaisaSdk',
-        [userName, "lastname", "flutter@gmail.com", userNumber, item_sub_total]);
+    /*final List<Object?> result = await platform.invokeMethod('callSabPaisaSdk',
+        [userName, "lastname", "flutter@gmail.com", userNumber, item_sub_total.toString()]);*/
 
-    String txnStatus = result[0].toString();
-    String txnId = result[1].toString();
+    // String txnStatus = result[0].toString();
+    // String txnId = result[1].toString();
 
-    print('this is transaction status : $txnStatus');
-    print('this is transaction id : $txnId');
-    print('this is transaction result : $result');
+    // print('this is transaction status : $txnStatus');
+    // print('this is transaction id : $txnId');
+    // print('this is transaction result : $result');
     /*Fluttertoast.showToast(
         msg: txnStatus,
         toastLength: Toast.LENGTH_SHORT,
@@ -485,8 +485,7 @@ class _CreateOrderState extends State<CreateOrder> {
         backgroundColor: Colors.red,
         textColor: Colors.white,
         fontSize: 16.0);*/
-  }
-/*_createOrderBloc.add(OnPaymentClicked(
+    _createOrderBloc.add(OnPaymentClicked(
         restaurantId: widget.restaurantId!,
         customerId: userId,
         menuData: menuList,
@@ -497,5 +496,7 @@ class _CreateOrderState extends State<CreateOrder> {
         comments: 'Please do little more spicy',
         timeSlot: 'null',
         transMode: 'BIKE',
-        fcmToken: 'hfjhjdjhh'));*/
+        fcmToken: 'hfjhjdjhh'));
+  }
+
 }

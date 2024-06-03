@@ -48,6 +48,11 @@ class _SplashScreenState extends State<SplashScreen> {
     bool? _isUserLoggedIn = false;
     print('this is device id : $deviceId');
     LocationInfo _location = await LocationManager.getCurrentPosition();
+   /* print('this is location permission ${_location.permissionState}');
+    if(_location.permissionState == PermissionState.locationServiceDisabled){
+      LocationManager().openLocationSettings();
+      _location = await LocationManager.getCurrentPosition();
+    }*/
 
     prefs.setString('device_id', deviceId!);
     prefs.setDouble('user_longitude', _location.longitude);
@@ -65,6 +70,5 @@ class _SplashScreenState extends State<SplashScreen> {
     }
 
   }
-
 
 }

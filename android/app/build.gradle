@@ -2,6 +2,7 @@ plugins {
     id "com.android.application"
     id "kotlin-android"
     id "dev.flutter.flutter-gradle-plugin"
+    id 'com.google.gms.google-services'
 }
 
 
@@ -90,4 +91,8 @@ dependencies {
     implementation "androidx.core:core-ktx:1.9.0"
     implementation 'commons-codec:commons-codec:1.15'
     implementation 'com.airbnb.android:lottie:3.4.0'
+    implementation 'com.google.firebase:firebase-messaging:20.1.0'
+    implementation platform('com.google.firebase:firebase-bom:31.2.3')
 }
+
+apply plugin: 'com.google.gms.google-services'

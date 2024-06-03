@@ -61,18 +61,50 @@ class HotelListGrid extends StatelessWidget {
                 foodType: item.restaurantMenuType,
                 ratings: item.ratings,
                 landmark: item.landmark)),
-        child: Stack(
+        child: Column(
           children: [
-            Image.asset(
-              'assets/ic_no_hotel.png',
-              height: MediaQuery.of(c).size.height * 0.1,
-              width: MediaQuery.of(c).size.width,
-              fit: BoxFit.fill,
+            Stack(
+              children: [
+                Image.asset(
+                  'assets/ic_no_hotel.png',
+                  fit: BoxFit.fitWidth,
+                  height: MediaQuery.of(c).size.height * 0.1,
+                  width: double.infinity,
+                ),
+                Align(
+                  alignment: Alignment.topRight,
+                  child: BlocBuilder<HomeBloc, HomeState>(
+                      builder: (BuildContext context, HomeState state) {
+                        if (state is LoadingHotelState) {
+                          return CircularProgressIndicator(color: AppColors.appPrimaryColor,);
+                        } else if (state is onFavHotelAddedState) {
+                          return IconButton(
+                              onPressed: () {},
+                              icon: Image.asset(
+                                'assets/ic_heart_fill.png',
+                                width: 24,
+                                height: 24,
+                              ));
+                        } else {
+                          return IconButton(
+                              onPressed: () {
+                                _homeBloc.add(OnAddFavRestaurant(
+                                    userId:userId,
+                                    restaurantId:item?.restaurantId));
+                              },
+                              icon: Image.asset(
+                                'assets/ic_heart.png',
+                                width: 24,
+                                height: 24,
+                                color: AppColors.appPrimaryColor,
+                              ));
+                        }
+                      }),
+                ),
+              ],
             ),
             Container(
               width: MediaQuery.of(c).size.width * 0.42,
-              padding:
-                  EdgeInsets.only(top: MediaQuery.of(c).size.height * 0.08),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -129,34 +161,10 @@ class HotelListGrid extends StatelessWidget {
                                         .copyWith(color: AppColors.textGrey)),
                               ],
                             ),
-                      BlocBuilder<HomeBloc, HomeState>(
-                          builder: (BuildContext context, HomeState state) {
-                        if (state is LoadingHotelState) {
-                          return CircularProgressIndicator(color: AppColors.appPrimaryColor,);
-                        } else if (state is onFavHotelAddedState) {
-                          return IconButton(
-                              onPressed: () {},
-                              icon: Image.asset(
-                                'assets/ic_heart_fill.png',
-                                width: 24,
-                                height: 24,
-                              ));
-                        } else {
-                          return IconButton(
-                              onPressed: () {
-                                _homeBloc.add(OnAddFavRestaurant(
-                                    userId:userId,
-                                    restaurantId:item?.restaurantId));
-                              },
-                              icon: Image.asset(
-                                'assets/ic_heart.png',
-                                width: 24,
-                                height: 24,
-                              ));
-                        }
-                      }),
+
                     ],
-                  )
+                  ),
+
                 ],
               ),
             )
