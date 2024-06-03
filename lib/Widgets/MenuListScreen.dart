@@ -103,7 +103,7 @@ class _MenuListScreenState extends State<MenuListScreen> {
                   }
                 }
                 uniqueMenuList = uniqueMenuMap.values.toList();
-                Navigator.pushNamed(context, AppRoutes.createOrder,arguments: CreateOrderArgs(orderlist: uniqueMenuList, restaurantId: widget.restaurantId));
+                Navigator.pushNamed(context, AppRoutes.createOrder,arguments: CreateOrderArgs(orderlist: uniqueMenuList, restaurantId: widget.restaurantId,restaurantName: widget.restaurantName!));
               },
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10.0),

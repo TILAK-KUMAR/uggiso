@@ -167,11 +167,11 @@ class ApiProvider {
   }
 
   Future<OrderCheckoutModel> createOrder(
-      String restaurantId,String customerId,
+      String restaurantId, String restaurantName,String customerId,
       List menuData,String orderType,String paymentType,
       String orderStatus,int totalAmount,String comments,
       String timeSlot,String transMode,String fcmToken) async {
-    print('this is request data :{ restaurantId: $restaurantId,"customerId": $customerId,"menus": $menuData'
+    print('this is request data :{ restaurantId: $restaurantId, restaurantName: $restaurantName,"customerId": $customerId,"menus": $menuData'
         ',"orderType":$orderType,"paymentType": $paymentType,"orderStatus": $orderStatus,"totalAmount": $totalAmount'
         ',"comments": $comments,"timeSlot": $timeSlot,"transMode":$transMode,"fcmToken":$fcmToken');
     try {
@@ -179,6 +179,7 @@ class ApiProvider {
           '${_url}${Constants.createOrder}',
           data: {
             "restaurantId": restaurantId,
+            "restaurantName": restaurantName,
             "customerId": customerId,
             "menus": menuData,
             "orderType":orderType,
@@ -187,7 +188,7 @@ class ApiProvider {
             "totalAmount": totalAmount,
             "comments": comments,
             "timeSlot": null,
-            "transMode":transMode,
+            "travelMode":transMode,
             "fcmToken":fcmToken
           });
       print("${response.data}");

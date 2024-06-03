@@ -55,9 +55,12 @@ class _OrdersTabState extends State<OrdersTab> {
                 ),
               );
             } else if (state is ErrorState) {
-              return Text(
-                '${state.message}',
-                style: AppFonts.title,
+              return Center(
+                child: Text(
+                  '${state.message}',
+                  textAlign: TextAlign.center,
+                  style: AppFonts.title,
+                ),
               );
             } else if (state is OrderFetchedState) {
               return ShowOrderList(state.data);
@@ -88,11 +91,16 @@ class _OrdersTabState extends State<OrdersTab> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    '${data.payload?[count].orderId}',
+                    '${data.payload?[count].restaurantName}',
                     style: AppFonts.title,
                   ),
                   Divider(),
                   Gap(12),
+                  ListView.builder(
+                    itemCount: data.payload?[count].menus?.length,
+                      itemBuilder: (BuildContext context,int menuItem){
+                    return Text('${data.payload?[count].menus?[menuItem].menuName}');
+                  }),
                   Text(
                     'Status : ${data.payload?[count].orderStatus}',
                     style: AppFonts.title,

@@ -19,9 +19,10 @@ import 'ui-kit/RoundedContainer.dart';
 class CreateOrder extends StatefulWidget {
   final List<Map<String, dynamic>> orderlist;
   final String? restaurantId;
+  final String? restaurantName;
 
   const CreateOrder(
-      {Key? key, required this.orderlist, required this.restaurantId})
+      {Key? key, required this.orderlist, required this.restaurantId,required this.restaurantName})
       : super(key: key);
 
   @override
@@ -487,6 +488,7 @@ class _CreateOrderState extends State<CreateOrder> {
         fontSize: 16.0);*/
     _createOrderBloc.add(OnPaymentClicked(
         restaurantId: widget.restaurantId!,
+        restaurantName: widget.restaurantName!,
         customerId: userId,
         menuData: menuList,
         orderType: "PARCEL",

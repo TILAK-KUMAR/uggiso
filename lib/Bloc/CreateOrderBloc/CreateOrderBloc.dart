@@ -12,7 +12,7 @@ class CreateOrderBloc extends Bloc<CreateOrderEvent, CreateOrderState> {
     on<OnPaymentClicked>((event, emit) async {
       try {
         emit(LoadingHotelState());
-        data = await _apiRepository.createOrder(event.restaurantId, event.customerId,
+        data = await _apiRepository.createOrder(event.restaurantId,event.restaurantName, event.customerId,
             event.menuData,event.orderType,event.paymentType,event.orderStatus,event.totalAmount,
         event.comments,event.timeSlot,event.transMode,event.fcmToken);
         if(data.payload == null){

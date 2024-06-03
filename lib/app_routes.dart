@@ -90,7 +90,7 @@ class AppRoutes {
       case createOrder:
         final create_order_args = settings.arguments as CreateOrderArgs;
         return MaterialPageRoute(builder: (_) => CreateOrder(orderlist: create_order_args.orderlist,
-          restaurantId: create_order_args.restaurantId));
+          restaurantId: create_order_args.restaurantId,restaurantName: create_order_args.restaurantName,));
       case paymentOptions:
         return MaterialPageRoute(builder: (_) => const PaymentOptionsScreen());
       case paymentSuccessScreen:
