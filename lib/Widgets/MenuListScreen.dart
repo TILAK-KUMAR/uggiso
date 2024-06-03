@@ -18,6 +18,7 @@ class MenuListScreen extends StatefulWidget {
   final String? foodType;
   final double? ratings;
   final String? landmark;
+  final String? distance;
 
   const MenuListScreen(
       {super.key,
@@ -25,7 +26,8 @@ class MenuListScreen extends StatefulWidget {
       required this.restaurantName,
       required this.foodType,
       required this.ratings,
-      required this.landmark});
+      required this.landmark,
+      required this.distance});
 
   @override
   State<MenuListScreen> createState() => _MenuListScreenState();
@@ -55,7 +57,10 @@ class _MenuListScreenState extends State<MenuListScreen> {
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       appBar: AppBar(
         elevation: 0.0,
-        title: Text(widget.restaurantName!,style: AppFonts.appBarText,),
+        title: Text(
+          widget.restaurantName!,
+          style: AppFonts.appBarText,
+        ),
         leading: Padding(
             padding: const EdgeInsets.symmetric(vertical: 8.0),
             child: IconButton(
@@ -63,7 +68,6 @@ class _MenuListScreenState extends State<MenuListScreen> {
               icon: Image.asset('assets/ic_back_arrow.png'),
               onPressed: () {
                 Navigator.pop(context);
-
               },
             )),
         backgroundColor: AppColors.white,
@@ -92,8 +96,7 @@ class _MenuListScreenState extends State<MenuListScreen> {
           ? FloatingActionButton.extended(
               backgroundColor: AppColors.appPrimaryColor,
               onPressed: () {
-
-                List<Map<String, dynamic>> uniqueMenuList=[];
+                List<Map<String, dynamic>> uniqueMenuList = [];
                 uniqueMenuMap.clear();
                 for (var menu in cartItems) {
                   var menuId = menu['menuId'];
@@ -103,7 +106,11 @@ class _MenuListScreenState extends State<MenuListScreen> {
                   }
                 }
                 uniqueMenuList = uniqueMenuMap.values.toList();
-                Navigator.pushNamed(context, AppRoutes.createOrder,arguments: CreateOrderArgs(orderlist: uniqueMenuList, restaurantId: widget.restaurantId,restaurantName: widget.restaurantName!));
+                Navigator.pushNamed(context, AppRoutes.createOrder,
+                    arguments: CreateOrderArgs(
+                        orderlist: uniqueMenuList,
+                        restaurantId: widget.restaurantId,
+                        restaurantName: widget.restaurantName!));
               },
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10.0),
@@ -204,9 +211,25 @@ class _MenuListScreenState extends State<MenuListScreen> {
                       cornerRadius: 8,
                       color: AppColors.white,
                       borderColor: AppColors.appPrimaryColor,
-                      child: Text(
-                        widget.landmark!,
-                        style: AppFonts.subHeader,
+                      child: Row(
+                        children: [
+                          Flexible(
+                            flex:3,
+                            child: Text(
+                              '${widget.landmark!} | ',
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: AppFonts.subHeader,
+                            ),
+                          ),
+                          Flexible(
+                            flex: 1,
+                            child: Text(
+                              widget.distance!,
+                              style: AppFonts.subHeader,
+                            ),
+                          ),
+                        ],
                       ),
                     )
                   ],
@@ -393,13 +416,22 @@ class _MenuListScreenState extends State<MenuListScreen> {
                                               _showButton = true;
                                             });
                                             cartItems.add({
-                                              'menuId': state.data![index].menuId.toString(),
-                                              'menuName': state.data![index].menuName.toString(),
-                                              'menuType': state.data![index].menuType.toString(),
-                                              'price': state.data![index].price!,
-                                              'quantity':1
+                                              'menuId': state
+                                                  .data![index].menuId
+                                                  .toString(),
+                                              'menuName': state
+                                                  .data![index].menuName
+                                                  .toString(),
+                                              'menuType': state
+                                                  .data![index].menuType
+                                                  .toString(),
+                                              'price':
+                                                  state.data![index].price!,
+                                              'restaurantMenuType': state
+                                                  .data![index]
+                                                  .restaurantMenuType!,
+                                              'quantity': 1
                                             });
-
                                           },
                                           onEmptyCart: (value) {
                                             setState(() {
@@ -407,19 +439,28 @@ class _MenuListScreenState extends State<MenuListScreen> {
                                               if (_totalItemCount == 0)
                                                 _showButton = false;
                                             });
-                                            cartItems.removeWhere((item) => item['menuId'] == value);
-
+                                            cartItems.removeWhere((item) =>
+                                                item['menuId'] == value);
                                           },
-                                          onQuantityChanged: (int value){
+                                          onQuantityChanged: (int value) {
                                             cartItems.add({
-                                              'menuId': state.data![index].menuId.toString(),
-                                              'menuName': state.data![index].menuName.toString(),
-                                              'menuType': state.data![index].menuType.toString(),
-                                              'price': state.data![index].price!,
-                                              'quantity':value
+                                              'menuId': state
+                                                  .data![index].menuId
+                                                  .toString(),
+                                              'menuName': state
+                                                  .data![index].menuName
+                                                  .toString(),
+                                              'menuType': state
+                                                  .data![index].menuType
+                                                  .toString(),
+                                              'price':
+                                                  state.data![index].price!,
+                                              'restaurantMenuType': state
+                                                  .data![index]
+                                                  .restaurantMenuType!,
+                                              'quantity': value
                                             });
                                           },
-
                                         );
                                       }),
                                 );

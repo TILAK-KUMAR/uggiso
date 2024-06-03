@@ -55,7 +55,10 @@ class _CreateOrderState extends State<CreateOrder> {
         "quantity": widget.orderlist[i]['quantity'],
         "quantityAmount":
             (widget.orderlist[i]['price'] * widget.orderlist[i]['quantity']),
-        "parcelAmount": 5.0
+        "parcelAmount": 5.0,
+        "menuName": widget.orderlist[i]['menuName'],
+        "photo": null,
+        "restaurantMenuType": widget.orderlist[i]['restaurantMenuType']
       });
     }
   }

@@ -2,11 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:uggiso/Model/GetNearByResaturantModel.dart';
-import 'package:uggiso/Network/constants.dart';
-import 'package:uggiso/Widgets/Shimmer/HomeScreen.dart';
 import 'package:uggiso/Widgets/ui-kit/RoundedContainer.dart';
 import 'package:uggiso/base/common/utils/colors.dart';
-import 'package:uggiso/base/common/utils/strings.dart';
 import '../../Bloc/HomeBloc/HomeBloc.dart';
 import '../../Bloc/HomeBloc/HomeEvent.dart';
 import '../../Bloc/HomeBloc/HomeState.dart';
@@ -60,7 +57,8 @@ class HotelListGrid extends StatelessWidget {
                 name: item.restaurantName,
                 foodType: item.restaurantMenuType,
                 ratings: item.ratings,
-                landmark: item.landmark)),
+                landmark: item.landmark,
+            distance: item.distance)),
         child: Column(
           children: [
             Stack(
@@ -118,49 +116,88 @@ class HotelListGrid extends StatelessWidget {
                           style: AppFonts.title.copyWith(
                               color: AppColors.bottomTabInactiveColor),
                         ),
-                  const Gap(12),
-                  item?.restaurantMenuType == null
-                      ? Container()
-                      : Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            item?.restaurantMenuType == 'VEG'
-                                ? Image.asset(
-                                    'assets/ic_veg.png',
-                                    height: 12,
-                                    width: 12,
-                                  )
-                                : Image.asset(
-                                    'assets/ic_non_veg.png',
-                                    height: 12,
-                                    width: 12,
-                                  ),
-                            const Gap(4),
-                            Text(
-                              '${item?.restaurantMenuType}',
-                              style: AppFonts.smallText
-                                  .copyWith(fontWeight: FontWeight.w500),
-                            ),
-                          ],
-                        ),
-                  // Gap(12),
+                  const Gap(8),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      item?.ratings == null
-                          ? Container()
-                          : Row(
+                      Flexible(
+                        flex: 3,
+                        child: item?.restaurantMenuType == null
+                            ? Container()
+                            : Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  item?.restaurantMenuType == 'VEG'
+                                      ? Image.asset(
+                                          'assets/ic_veg.png',
+                                          height: 12,
+                                          width: 12,
+                                        )
+                                      : Image.asset(
+                                          'assets/ic_non_veg.png',
+                                          height: 12,
+                                          width: 12,
+                                        ),
+                                  const Gap(4),
+                                  Text(
+                                    '${item?.restaurantMenuType}',
+                                    style: AppFonts.smallText
+                                        .copyWith(fontWeight: FontWeight.w500),
+                                  ),
+                                ],
+                              ),
+                      ),
+                      Flexible(
+                        flex: 1,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            item?.ratings == null
+                                ? Container()
+                                : Row(
                               children: [
                                 Image.asset(
                                   'assets/ic_star.png',
-                                  height: 12,
-                                  width: 12,
+                                  height: 14,
+                                  width: 14,
                                 ),
-                                Text('4.5',
+                                Text('${item?.ratings}',
                                     style: AppFonts.smallText
-                                        .copyWith(color: AppColors.textGrey)),
+                                        .copyWith(color: AppColors.textColor)),
                               ],
                             ),
+
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                  // Gap(12),
+
+                  Gap(8),
+                  item?.distance==null || item?.duration==null?Container():Row(
+                    children: [
+                      Image.asset(
+                        'assets/ic_small_marker.png',
+                        height: 12,
+                        width: 12,
+                      ),
+                      Gap(4),
+
+                      Text('${item?.distance} | ',
+                          style: AppFonts.smallText
+                              .copyWith(color: AppColors.textGrey)),
+                      Gap(4),
+
+                      Image.asset(
+                        'assets/ic_clock.png',
+                        height: 12,
+                        width: 12,
+                      ),
+                      Gap(4),
+                      Text('${item?.duration}',
+                          style: AppFonts.smallText
+                              .copyWith(color: AppColors.textGrey)),
+
 
                     ],
                   ),

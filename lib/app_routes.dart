@@ -84,6 +84,7 @@ class AppRoutes {
                   foodType: args.foodType,
                   ratings: args.ratings,
                   landmark: args.landmark,
+              distance: args.distance
                 ));
       case saveCard:
         return MaterialPageRoute(builder: (_) => const AddCard());

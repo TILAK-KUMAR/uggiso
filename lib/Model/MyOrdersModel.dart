@@ -46,13 +46,13 @@ class Payload {
   String? orderType;
   String? travelMode;
   List<Menus>? menus;
-  Null? timeSlot;
-  int? totalAmount;
-  int? discount;
+  String? timeSlot;
+  double? totalAmount;
+  double? discount;
   String? comments;
   String? orderDate;
-  Null? orderTime;
-  Null? fcmToken;
+  String? orderTime;
+  String? fcmToken;
 
   Payload(
       {this.orderId,
@@ -124,12 +124,12 @@ class Menus {
   int? orderedMenuId;
   String? orderId;
   String? menuId;
-  Null? menuName;
-  Null? photo;
-  Null? restaurantMenuType;
-  int? quantityAmount;
+  String? menuName;
+  String? photo;
+  String? restaurantMenuType;
+  double? quantityAmount;
   int? quantity;
-  int? parcelAmount;
+  double? parcelAmount;
 
   Menus(
       {this.orderedMenuId,
