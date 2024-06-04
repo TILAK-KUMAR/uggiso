@@ -310,7 +310,7 @@ class _CreateOrderState extends State<CreateOrder> {
                                     Gap(24),
                                     Expanded(
                                       child: Text(
-                                        'Rs.${widget.orderlist[count]['price']}',
+                                        '₹ ${widget.orderlist[count]['price']}',
                                         textAlign: TextAlign.end,
                                         style: AppFonts.title,
                                       ),

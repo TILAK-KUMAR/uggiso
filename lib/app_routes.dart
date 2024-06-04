@@ -5,7 +5,6 @@ import 'package:uggiso/Widgets/HelpCenter.dart';
 import 'package:uggiso/Widgets/HomeLandingScreen.dart';
 import 'package:uggiso/Widgets/MenuListScreen.dart';
 import 'package:uggiso/Widgets/PaymentSuccessScreen.dart';
-import 'package:uggiso/Widgets/PlaceSearchScreen.dart';
 import 'package:uggiso/Widgets/ProfileTab.dart';
 import 'package:uggiso/Widgets/RegisterUserScreen.dart';
 import 'package:uggiso/Widgets/SettingsScreen.dart';
@@ -84,14 +83,20 @@ class AppRoutes {
                   foodType: args.foodType,
                   ratings: args.ratings,
                   landmark: args.landmark,
-              distance: args.distance
+                  distance: args.distance,
+                  duration: args.duration,
+                  payload: args.payload,
                 ));
       case saveCard:
         return MaterialPageRoute(builder: (_) => const AddCard());
       case createOrder:
         final create_order_args = settings.arguments as CreateOrderArgs;
-        return MaterialPageRoute(builder: (_) => CreateOrder(orderlist: create_order_args.orderlist,
-          restaurantId: create_order_args.restaurantId,restaurantName: create_order_args.restaurantName,));
+        return MaterialPageRoute(
+            builder: (_) => CreateOrder(
+                  orderlist: create_order_args.orderlist,
+                  restaurantId: create_order_args.restaurantId,
+                  restaurantName: create_order_args.restaurantName,
+                ));
       case paymentOptions:
         return MaterialPageRoute(builder: (_) => const PaymentOptionsScreen());
       case paymentSuccessScreen:

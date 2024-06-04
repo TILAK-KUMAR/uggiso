@@ -58,7 +58,9 @@ class HotelListGrid extends StatelessWidget {
                 foodType: item.restaurantMenuType,
                 ratings: item.ratings,
                 landmark: item.landmark,
-            distance: item.distance)),
+            distance: item.distance,
+            duration: item.duration,
+            payload: item)),
         child: Column(
           children: [
             Stack(

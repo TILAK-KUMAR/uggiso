@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../Model/AddFavoriteMenuModel.dart';
 import '../../Model/MenuListModel.dart';
 import '../../Network/NetworkError.dart';
 import '../../Network/apiRepository.dart';
@@ -9,6 +10,8 @@ import 'MenuListState.dart';
 class MenuListBloc extends Bloc<MenuListEvent, MenuListState> {
   MenuListBloc() : super(FetchListState()){
     final ApiRepository _apiRepository = ApiRepository();
+    AddFavoriteMenuModel? res;
+
 
     on<onInitialised>((event,emit)async{
       try{
@@ -22,6 +25,29 @@ class MenuListBloc extends Bloc<MenuListEvent, MenuListState> {
         }
       }on NetworkError {
         emit(ErrorState('this is network error'));
+      }
+    });
+
+    on<OnAddFavMenu>((event, emit) async {
+      try {
+        emit(FetchingState());
+        print('this is userId : ${event.userId}');
+        print('this is menu ID : ${event.menuId}');
+        if (event.userId == null || event.menuId == null) {
+          // Handle the case where userId or restaurantId is null
+          print('this is userId : ${event.userId}');
+          print('this is restaurant ID : ${event.menuId}');
+          emit(ErrorState("userId or restaurantId is null"));
+          return;
+        }
+        res = (await _apiRepository.addFavMenu(event.userId!, event.menuId!));
+        if (res == 'error') {
+          emit(ErrorState(res?.message));
+        } else {
+          emit(onFavMenuAddedState(res!));
+        }
+      } on NetworkError {
+        print('this is network error');
       }
     });
 

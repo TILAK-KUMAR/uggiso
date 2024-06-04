@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:uggiso/Bloc/MenuListBloc/MenuListBloc.dart';
 import 'package:uggiso/Bloc/MenuListBloc/MenuListState.dart';
+import 'package:uggiso/Model/GetNearByResaturantModel.dart';
 import 'package:uggiso/Widgets/ui-kit/RoundedContainer.dart';
 import 'package:uggiso/base/common/utils/CreateOrderArgs.dart';
 import 'package:uggiso/base/common/utils/strings.dart';
@@ -19,6 +20,8 @@ class MenuListScreen extends StatefulWidget {
   final double? ratings;
   final String? landmark;
   final String? distance;
+  final String? duration;
+  final Payload? payload;
 
   const MenuListScreen(
       {super.key,
@@ -27,7 +30,9 @@ class MenuListScreen extends StatefulWidget {
       required this.foodType,
       required this.ratings,
       required this.landmark,
-      required this.distance});
+      required this.distance,
+      required this.duration,
+      required this.payload});
 
   @override
   State<MenuListScreen> createState() => _MenuListScreenState();
@@ -212,9 +217,10 @@ class _MenuListScreenState extends State<MenuListScreen> {
                       color: AppColors.white,
                       borderColor: AppColors.appPrimaryColor,
                       child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Flexible(
-                            flex:3,
+                            flex:2,
                             child: Text(
                               '${widget.landmark!} | ',
                               maxLines: 1,
@@ -225,7 +231,14 @@ class _MenuListScreenState extends State<MenuListScreen> {
                           Flexible(
                             flex: 1,
                             child: Text(
-                              widget.distance!,
+                              '${widget.distance!} | ',
+                              style: AppFonts.subHeader,
+                            ),
+                          ),
+                          Flexible(
+                            flex: 1,
+                            child: Text(
+                              widget.duration!,
                               style: AppFonts.subHeader,
                             ),
                           ),

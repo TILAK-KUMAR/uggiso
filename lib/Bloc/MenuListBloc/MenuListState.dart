@@ -1,5 +1,7 @@
 import 'package:equatable/equatable.dart';
 
+import '../../Model/AddFavoriteMenuModel.dart';
+
 abstract class MenuListState extends Equatable {
   const MenuListState();
 
@@ -19,4 +21,9 @@ class FetchedListsState extends MenuListState {
 class ErrorState extends MenuListState {
   final String? message;
   const ErrorState(this.message);
+}
+
+class onFavMenuAddedState extends MenuListState {
+  final AddFavoriteMenuModel result;
+  onFavMenuAddedState(this.result);
 }

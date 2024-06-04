@@ -187,7 +187,7 @@ class _OrdersTabState extends State<OrdersTab> {
                             Flexible(
                               flex: 1,
                               child: Text(
-                                'Rs. ${data.payload?[count].totalAmount}',
+                                '₹ ${data.payload?[count].totalAmount}',
                                 style: AppFonts.smallText,
                               ),
                             ),

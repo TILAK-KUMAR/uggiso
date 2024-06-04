@@ -35,23 +35,35 @@ class _MenuItemCardState extends State<MenuItemCard> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Container(
-          width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height * 0.0005,
-          color: AppColors.borderColor,
-        ),
-        const Gap(12),
+        Divider(color: AppColors.borderColor,),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                widget.listData.bestSeller!?Container(
+                  padding: EdgeInsets.symmetric(horizontal: 8.0,vertical: 4.0),
+                  decoration: BoxDecoration(
+                    color: AppColors.appSecondaryColor,
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: Text(Strings.bestseller,style: AppFonts.smallText,)
+                ):Container(),
+                Gap(8),
                 Row(
                   children: [
-                    widget.listData.restaurantMenuType=='VEG'?Image.asset('assets/ic_veg.png',height: 12,
-                      width: 12,):Image.asset('assets/ic_non_veg.png',height: 12,
-                      width: 12,),
+                    widget.listData.restaurantMenuType == 'VEG'
+                        ? Image.asset(
+                            'assets/ic_veg.png',
+                            height: 12,
+                            width: 12,
+                          )
+                        : Image.asset(
+                            'assets/ic_non_veg.png',
+                            height: 12,
+                            width: 12,
+                          ),
                     Gap(4),
                     Text(
                       '${widget.listData.menuName}',
@@ -61,25 +73,30 @@ class _MenuItemCardState extends State<MenuItemCard> {
                 ),
                 const Gap(4),
                 Text(
-                  'Rs. ${widget.listData.price.toString()}',
+                  '₹ ${widget.listData.price.toString()}',
                   style: AppFonts.smallText,
                 ),
                 const Gap(4),
-                widget.listData.ratings == null
-                    ? Container()
-                    : Row(
-                        children: [
-                          Image.asset(
-                            'assets/ic_star.png',
-                            width: 12,
-                            height: 12,
+                Row(
+                  children: [
+                    widget.listData.ratings == null
+                        ? Container()
+                        : Row(
+                            children: [
+                              Image.asset(
+                                'assets/ic_star.png',
+                                width: 12,
+                                height: 12,
+                              ),
+                              const Gap(4),
+                              Text('${widget.listData.ratings.toString()}',
+                                  style: AppFonts.smallText
+                                      .copyWith(fontWeight: FontWeight.w500)),
+                            ],
                           ),
-                          const Gap(4),
-                          Text('${widget.listData.ratings.toString()}',
-                              style: AppFonts.smallText
-                                  .copyWith(fontWeight: FontWeight.w500)),
-                        ],
-                      ),
+
+                  ],
+                ),
               ],
             ),
             Container(
@@ -114,7 +131,7 @@ class _MenuItemCardState extends State<MenuItemCard> {
                                       });
 
                                       widget.onItemAdded();
-                                     /* cart.addItem(AddMenuItemToCart(
+                                      /* cart.addItem(AddMenuItemToCart(
                                           menuId: widget.listData.menuId.toString(),
                                           menuName: widget.listData.menuName.toString(),
                                           menuType: widget.listData.menuType.toString(),
@@ -134,19 +151,20 @@ class _MenuItemCardState extends State<MenuItemCard> {
                                     onTap: () {
                                       setState(() {
                                         _orderCount--;
-
                                       });
-                                      if(_orderCount==0){
-                                        widget.onEmptyCart(widget.listData.menuId.toString());
+                                      if (_orderCount == 0) {
+                                        widget.onEmptyCart(
+                                            widget.listData.menuId.toString());
                                         cart.removeItem(AddMenuItemToCart(
-                                          menuId: widget.listData.menuId.toString(),
-                                          menuName: widget.listData.menuName.toString(),
-                                          menuType: widget.listData.menuType.toString(),
-                                          price: widget.listData.price!));
-                                      }
-                                      else{
+                                            menuId: widget.listData.menuId
+                                                .toString(),
+                                            menuName: widget.listData.menuName
+                                                .toString(),
+                                            menuType: widget.listData.menuType
+                                                .toString(),
+                                            price: widget.listData.price!));
+                                      } else {
                                         widget.onQuantityChanged(_orderCount);
-
                                       }
                                     },
                                     child: Icon(
@@ -155,7 +173,6 @@ class _MenuItemCardState extends State<MenuItemCard> {
                                       size: 18,
                                     ),
                                   ),
-
                                   Text(
                                     '${_orderCount.toString()}',
                                     style: AppFonts.smallText.copyWith(
@@ -168,7 +185,7 @@ class _MenuItemCardState extends State<MenuItemCard> {
                                         _orderCount++;
                                       });
                                       widget.onQuantityChanged(_orderCount);
-                                     /* cart.addItem(AddMenuItemToCart(
+                                      /* cart.addItem(AddMenuItemToCart(
                                           menuId: widget.listData.menuId.toString(),
                                           menuName: widget.listData.menuName.toString(),
                                           menuType: widget.listData.menuType.toString(),
@@ -180,7 +197,6 @@ class _MenuItemCardState extends State<MenuItemCard> {
                                       size: 18,
                                     ),
                                   ),
-
                                 ],
                               )),
                   ),

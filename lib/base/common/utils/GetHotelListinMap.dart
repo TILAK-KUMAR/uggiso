@@ -22,7 +22,7 @@ class _GetHotelListinMapState extends State<GetHotelListinMap> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    _setMarkers();
+    getUserCurrentLocation();
 
   }
   @override
@@ -64,5 +64,7 @@ class _GetHotelListinMapState extends State<GetHotelListinMap> {
       lng = prefs.getDouble('user_longitude') ?? 0.0;
 
     });
+    _setMarkers();
+
   }
 }
