@@ -76,25 +76,6 @@ class _MenuListScreenState extends State<MenuListScreen> {
               },
             )),
         backgroundColor: AppColors.white,
-        /*actions: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            child: IconButton(
-                onPressed: () {},
-                icon: Image.asset(
-                  'assets/ic_heart.png',
-                  width: 24,
-                  height: 24,
-                )),
-          ),
-          IconButton(
-              onPressed: () {},
-              icon: Image.asset(
-                'assets/ic_heart_fill.png',
-                width: 24,
-                height: 24,
-              )),
-        ],*/
         centerTitle: true,
       ),
       floatingActionButton: _showButton

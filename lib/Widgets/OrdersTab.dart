@@ -72,7 +72,6 @@ class _OrdersTabState extends State<OrdersTab> {
   Widget ShowOrderList(MyOrdersModel data) => Padding(
         padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
         child: ListView.builder(
-            reverse: true,
             itemCount: data.payload?.length,
             itemBuilder: (BuildContext context, int count) {
               return Container(

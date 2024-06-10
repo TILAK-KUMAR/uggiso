@@ -50,6 +50,7 @@ class HotelListGrid extends StatelessWidget {
       borderColor: AppColors.white,
       height: MediaQuery.of(c).size.height,
       cornerRadius: 8,
+      padding: 0,
       child: InkWell(
         onTap: () => Navigator.pushNamed(c, AppRoutes.menuList,
             arguments: MenuListArgs(
@@ -71,36 +72,7 @@ class HotelListGrid extends StatelessWidget {
                   height: MediaQuery.of(c).size.height * 0.1,
                   width: double.infinity,
                 ),
-                Align(
-                  alignment: Alignment.topRight,
-                  child: BlocBuilder<HomeBloc, HomeState>(
-                      builder: (BuildContext context, HomeState state) {
-                        if (state is LoadingHotelState) {
-                          return CircularProgressIndicator(color: AppColors.appPrimaryColor,);
-                        } else if (state is onFavHotelAddedState) {
-                          return IconButton(
-                              onPressed: () {},
-                              icon: Image.asset(
-                                'assets/ic_heart_fill.png',
-                                width: 24,
-                                height: 24,
-                              ));
-                        } else {
-                          return IconButton(
-                              onPressed: () {
-                                _homeBloc.add(OnAddFavRestaurant(
-                                    userId:userId,
-                                    restaurantId:item?.restaurantId));
-                              },
-                              icon: Image.asset(
-                                'assets/ic_heart.png',
-                                width: 24,
-                                height: 24,
-                                color: AppColors.appPrimaryColor,
-                              ));
-                        }
-                      }),
-                ),
+
               ],
             ),
             Container(
@@ -108,9 +80,8 @@ class HotelListGrid extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const SizedBox(
-                    height: 18.0,
-                  ),
+                  const Gap(4),
+
                   item?.restaurantName == null
                       ? Container()
                       : Text(
@@ -118,7 +89,7 @@ class HotelListGrid extends StatelessWidget {
                           style: AppFonts.title.copyWith(
                               color: AppColors.bottomTabInactiveColor),
                         ),
-                  const Gap(8),
+                  const Gap(4),
                   Row(
                     children: [
                       Flexible(
@@ -199,11 +170,41 @@ class HotelListGrid extends StatelessWidget {
                       Text('${item?.duration}',
                           style: AppFonts.smallText
                               .copyWith(color: AppColors.textGrey)),
-
-
                     ],
                   ),
 
+                  Align(
+                    alignment: Alignment.bottomRight,
+                    child: BlocBuilder<HomeBloc, HomeState>(
+                        builder: (BuildContext context, HomeState state) {
+                          if (state is LoadingHotelState) {
+                            return CircularProgressIndicator(color: AppColors.appPrimaryColor,);
+                          } else if (state is onFavHotelAddedState) {
+                            return IconButton(
+                              padding: EdgeInsets.zero,
+                                onPressed: () {},
+                                icon: Image.asset(
+                                  'assets/ic_heart_fill.png',
+                                  width: 24,
+                                  height: 24,
+                                ));
+                          } else {
+                            return IconButton(
+                                padding: EdgeInsets.zero,
+                                onPressed: () {
+                                  _homeBloc.add(OnAddFavRestaurant(
+                                      userId:userId,
+                                      restaurantId:item?.restaurantId));
+                                },
+                                icon: Image.asset(
+                                  'assets/ic_heart.png',
+                                  width: 24,
+                                  height: 24,
+                                  color: AppColors.appPrimaryColor,
+                                ));
+                          }
+                        }),
+                  ),
                 ],
               ),
             )

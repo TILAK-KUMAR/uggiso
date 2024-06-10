@@ -35,21 +35,28 @@ class _MenuItemCardState extends State<MenuItemCard> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Divider(color: AppColors.borderColor,),
+        Divider(
+          color: AppColors.borderColor,
+        ),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                widget.listData.bestSeller!?Container(
-                  padding: EdgeInsets.symmetric(horizontal: 8.0,vertical: 4.0),
-                  decoration: BoxDecoration(
-                    color: AppColors.appSecondaryColor,
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: Text(Strings.bestseller,style: AppFonts.smallText,)
-                ):Container(),
+                widget.listData.bestSeller!
+                    ? Container(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 8.0, vertical: 4.0),
+                        decoration: BoxDecoration(
+                          color: AppColors.appSecondaryColor,
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: Text(
+                          Strings.bestseller,
+                          style: AppFonts.smallText,
+                        ))
+                    : Container(),
                 Gap(8),
                 Row(
                   children: [
@@ -94,7 +101,6 @@ class _MenuItemCardState extends State<MenuItemCard> {
                                       .copyWith(fontWeight: FontWeight.w500)),
                             ],
                           ),
-
                   ],
                 ),
               ],
@@ -103,16 +109,44 @@ class _MenuItemCardState extends State<MenuItemCard> {
               height: MediaQuery.of(context).size.height * 0.12,
               child: Stack(
                 children: [
-                  RoundedContainer(
-                      width: MediaQuery.of(context).size.width * 0.25,
-                      height: MediaQuery.of(context).size.height * 0.1,
-                      cornerRadius: 12,
-                      borderColor: AppColors.appPrimaryColor,
-                      child: Center(
-                          child: Image.asset(
-                        'assets/ic_no_image.png',
-                        fit: BoxFit.fill,
-                      ))),
+                  widget.listData.photo == null
+                      ? RoundedContainer(
+                          width: MediaQuery.of(context).size.width * 0.25,
+                          height: MediaQuery.of(context).size.height * 0.1,
+                          cornerRadius: 12,
+                          borderColor: AppColors.appPrimaryColor,
+                          child: Center(
+                              child: Image.asset(
+                            'assets/ic_no_image.png',
+                            fit: BoxFit.fill,
+                          )))
+                      : RoundedContainer(
+                          width: MediaQuery.of(context).size.width * 0.25,
+                          height: MediaQuery.of(context).size.height * 0.1,
+                          cornerRadius: 12,
+                          borderColor: AppColors.appPrimaryColor,
+                          padding: 0,
+                          child: Center(
+                            child: Image.network(
+                              widget.listData.photo.toString(),
+                              fit: BoxFit.fill,
+                              errorBuilder: (BuildContext context,
+                                  Object exception, StackTrace? stackTrace) {
+                                // Display a placeholder image or alternative content
+                                return SizedBox(
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.2,
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.08,
+                                  child: Center(
+                                    child: Image.asset(
+                                      'assets/ic_no_image.png',
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
+                          )),
                   Positioned(
                     top: MediaQuery.of(context).size.height *
                         0.08, // Adjust this value as needed
