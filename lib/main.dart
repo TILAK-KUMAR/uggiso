@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -11,10 +12,12 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
       options: const FirebaseOptions(
-          apiKey: 'AIzaSyCXfSKnMi_jvtwDIDT4AD9JxoKwJuzWkfQ',
-          appId: '1:741537959124:android:ee8a4ae8c6ee76cfd2bf41',
-          messagingSenderId: '9964367047',
-          projectId: 'uggiso-469cc'));
+          apiKey: 'AIzaSyDZwpGWvzkb9D8YHqYGaHn2QXPgW1YoLWs',
+          appId: '1:180656452731:android:6dab108216f2733b189ede',
+          messagingSenderId: '180656452731',
+          projectId: 'uggiso-customer',
+        storageBucket: 'gs://uggiso-customer.appspot.com',
+      ));
   /*try {
     await Firebase.initializeApp();
   } catch (e) {
@@ -32,12 +35,37 @@ void main() async {
     BlocProvider<VerifyOtpBloc>(
       create: (context) => VerifyOtpBloc(),
     ),
-  ], child: const MyApp()));
+  ], child: MyApp()));
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}); // Fix the constructor syntax
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
+}
 
+class _MyAppState extends State<MyApp> {
+  // final NotificationService _notificationService = NotificationService();
+  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance; // Fix the constructor syntax
+
+  @override
+  void initState() {
+    super.initState();
+
+    FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+    _firebaseMessaging.getToken().then((token) {
+      print('Token: $token');
+    });
+
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      print('onMessage: ${message.messageId}');
+      // Handle the notification when the app is in the foreground
+    });
+
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+      print('onMessageOpenedApp: $message');
+      // Handle the notification when the app is in the background and opened
+    });
+  }
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -58,19 +86,12 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       initialRoute: AppRoutes.initialRoute,
       onGenerateRoute: AppRoutes.generateRoute,
-      /* onLaunch: (Map<String, dynamic> message) async {
-        print('onLaunch: $message');
-        // Handle the notification
-      },
-      onResume: (Map<String, dynamic> message) async {
-        print('onResume: $message');
-        // Handle the notification
-      },*/
     );
   }
 
-  Future<void> myBackgroundMessageHandler(Map<String, dynamic> message) async {
-    print("Handling a background message: $message");
-    // Handle the notification when the app is in the background
+  Future<void> _firebaseMessagingBackgroundHandler(
+      RemoteMessage message) async {
+    print('Handling a background message: ${message.messageId}');
+    // Handle the notification when the app is in the background or terminated
   }
 }

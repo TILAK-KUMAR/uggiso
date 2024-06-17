@@ -1,4 +1,5 @@
 import 'package:device_uuid/device_uuid.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uggiso/app_routes.dart';
@@ -14,6 +15,9 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
   String? deviceId = '';
+  String? fcmToken = '';
+  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
+
 
   @override
   void initState() {
@@ -48,7 +52,9 @@ class _SplashScreenState extends State<SplashScreen> {
     bool? _isUserLoggedIn = false;
     print('this is device id : $deviceId');
     LocationInfo _location = await LocationManager.getCurrentPosition();
-   /* print('this is location permission ${_location.permissionState}');
+    initFirebaseMessaging();
+
+    /* print('this is location permission ${_location.permissionState}');
     if(_location.permissionState == PermissionState.locationServiceDisabled){
       LocationManager().openLocationSettings();
       _location = await LocationManager.getCurrentPosition();
@@ -69,6 +75,18 @@ class _SplashScreenState extends State<SplashScreen> {
 
     }
 
+  }
+  void initFirebaseMessaging() async{
+    final prefs = await SharedPreferences.getInstance();
+
+    _firebaseMessaging.getToken().then((token) {
+      print("FCM Token: $token");
+      prefs.setString('fcm_token', token!);
+
+      setState(() {
+        fcmToken = token;
+      });
+    });
   }
 
 }

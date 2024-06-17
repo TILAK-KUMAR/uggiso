@@ -83,10 +83,43 @@ class _FavMenuItemState extends State<FavMenuItem> {
                       height: MediaQuery.of(context).size.height * 0.1,
                       cornerRadius: 12,
                       borderColor: AppColors.appPrimaryColor,
-                      child: Center(
-                          child: Image.asset(
-                            'assets/ic_no_image.png',
-                            fit: BoxFit.fill,
+                      child: widget.listData.photo == null
+                          ? RoundedContainer(
+                          width: MediaQuery.of(context).size.width * 0.25,
+                          height: MediaQuery.of(context).size.height * 0.1,
+                          cornerRadius: 12,
+                          borderColor: AppColors.appPrimaryColor,
+                          child: Center(
+                              child: Image.asset(
+                                'assets/ic_no_image.png',
+                                fit: BoxFit.fill,
+                              )))
+                          : RoundedContainer(
+                          width: MediaQuery.of(context).size.width * 0.25,
+                          height: MediaQuery.of(context).size.height * 0.1,
+                          cornerRadius: 12,
+                          borderColor: AppColors.appPrimaryColor,
+                          padding: 0,
+                          child: Center(
+                            child: Image.network(
+                              widget.listData.photo.toString(),
+                              fit: BoxFit.fill,
+                              errorBuilder: (BuildContext context,
+                                  Object exception, StackTrace? stackTrace) {
+                                // Display a placeholder image or alternative content
+                                return SizedBox(
+                                  width:
+                                  MediaQuery.of(context).size.width * 0.2,
+                                  height: MediaQuery.of(context).size.height *
+                                      0.08,
+                                  child: Center(
+                                    child: Image.asset(
+                                      'assets/ic_no_image.png',
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
                           ))),
                   Positioned(
                     top: MediaQuery.of(context).size.height *

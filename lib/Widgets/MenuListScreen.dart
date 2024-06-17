@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uggiso/Bloc/MenuListBloc/MenuListBloc.dart';
 import 'package:uggiso/Bloc/MenuListBloc/MenuListState.dart';
 import 'package:uggiso/Model/GetNearByResaturantModel.dart';
@@ -47,6 +48,7 @@ class _MenuListScreenState extends State<MenuListScreen> {
   final MenuListBloc _menuListBloc = MenuListBloc();
   final List cartItems = [];
   Map<String, Map<String, dynamic>> uniqueMenuMap = {};
+  String userId='';
 
   @override
   void initState() {
@@ -455,6 +457,7 @@ class _MenuListScreenState extends State<MenuListScreen> {
                                               'quantity': value
                                             });
                                           },
+                                          userId: userId,
                                         );
                                       }),
                                 );
@@ -472,7 +475,11 @@ class _MenuListScreenState extends State<MenuListScreen> {
     );
   }
 
-  void loadData(String? restId) {
+  void loadData(String? restId) async{
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      userId = prefs.getString('userId') ?? '';
+    });
     _menuListBloc.add(onInitialised(id: restId));
   }
 }

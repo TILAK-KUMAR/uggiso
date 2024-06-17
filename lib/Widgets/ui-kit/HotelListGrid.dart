@@ -72,7 +72,23 @@ class HotelListGrid extends StatelessWidget {
                   height: MediaQuery.of(c).size.height * 0.1,
                   width: double.infinity,
                 ),
+                /*Image.network(
+                  menuList.photo.toString(),
 
+                  errorBuilder: (BuildContext context, Object exception,
+                      StackTrace? stackTrace) {
+                    // Display a placeholder image or alternative content
+                    return SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.2,
+                      height: MediaQuery.of(context).size.height * 0.08,
+                      child: Center(
+                        child: Image.asset(
+                          'assets/ic_no_image.png',
+                        ),
+                      ),
+                    );
+                  },
+                )*/
               ],
             ),
             Container(

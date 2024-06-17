@@ -15,4 +15,7 @@ class AppColors{
   static const Color bottomTabInactiveColor = Color(0xFF474642);
   static const Color borderColor = Color(0xFFC4C5C1);
   static const Color textGrey = Color(0xFF8C8C8C);
+  static const Color rewardsText = Color(0xFF828282);
+  static const Color textBlue = Color(0xFF2164B2);
+  static const Color textGreen = Color(0xFF3A6431);
 }

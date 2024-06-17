@@ -66,10 +66,19 @@ class _HomeTabState extends State<HomeTab> {
           ),
           elevation: 0,
           actions: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 12.0),
-              child: Image.asset(
+            IconButton(
+              onPressed: ()=>Navigator.pushNamed(context, AppRoutes.rewards),
+              icon: Image.asset(
                 'assets/ic_bell.png',
+                width: 28,
+                height: 28,
+                color: AppColors.white,
+              ),
+            ),
+            IconButton(
+              onPressed: ()=>Navigator.pushNamed(context, AppRoutes.rewards),
+              icon: Image.asset(
+                'assets/ic_wallet.png',
                 width: 28,
                 height: 28,
                 color: AppColors.white,

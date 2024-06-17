@@ -7,6 +7,7 @@ import 'package:uggiso/Widgets/MenuListScreen.dart';
 import 'package:uggiso/Widgets/PaymentSuccessScreen.dart';
 import 'package:uggiso/Widgets/ProfileTab.dart';
 import 'package:uggiso/Widgets/RegisterUserScreen.dart';
+import 'package:uggiso/Widgets/RewardsScreen.dart';
 import 'package:uggiso/Widgets/SettingsScreen.dart';
 import 'package:uggiso/Widgets/VerifyOtp.dart';
 import 'package:uggiso/base/common/utils/CreateOrderArgs.dart';
@@ -53,6 +54,8 @@ class AppRoutes {
   static const String orderSuccessScreen = '/order_success_screen';
 
   static const String profileScreen = '/profile_screen';
+
+  static const String rewards = '/rewards';
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -104,6 +107,9 @@ class AppRoutes {
 
       case orderSuccessScreen:
         return MaterialPageRoute(builder: (_) => const OrderSuccessScreen());
+
+      case rewards:
+        return MaterialPageRoute(builder: (_) => const RewardsScreen());
 
       case profileScreen:
         return MaterialPageRoute(builder: (_) => const ProfileTab());

@@ -3,6 +3,9 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uggiso/Model/GetNearByResaturantModel.dart';
 
+import '../../../app_routes.dart';
+import 'MenuListArgs.dart';
+
 class GetHotelListinMap extends StatefulWidget {
   final List<Payload>? payload;
   final String userId;
@@ -32,8 +35,9 @@ class _GetHotelListinMapState extends State<GetHotelListinMap> {
         onMapCreated: (controller) {
           _controller = controller;
         },
+
         initialCameraPosition:  CameraPosition(
-          target: LatLng(lat,lng),
+          target: LatLng(12.9913243,77.7301459),
           zoom: 10,
         ),
         markers: _markers,
@@ -43,13 +47,27 @@ class _GetHotelListinMapState extends State<GetHotelListinMap> {
 
   void _setMarkers() {
     if (widget.payload != null) {
+
       setState(() {
         _markers = widget.payload!.map((restaurant) {
+          print('this is restaurant lat lng : ${restaurant.lat} and ${restaurant.lng}');
           return Marker(
             markerId: MarkerId(restaurant.restaurantName!),
             position: LatLng(restaurant.lat!, restaurant.lng!),
+
             infoWindow: InfoWindow(
               title: restaurant.restaurantName!,
+              onTap: ()=>
+                Navigator.pushNamed(context, AppRoutes.menuList,
+                    arguments: MenuListArgs(
+                        restaurantId: restaurant.restaurantId,
+                        name: restaurant.restaurantName,
+                        foodType: restaurant.restaurantMenuType,
+                        ratings: restaurant.ratings,
+                        landmark: restaurant.landmark,
+                        distance: restaurant.distance,
+                        duration: restaurant.duration,
+                        payload: restaurant))
             ),
           );
         }).toSet();

@@ -93,9 +93,7 @@ class ApiProvider {
   Future<AddFavoriteMenuModel> addFavMenu(String userId, String menuId) async {
     try {
       Response response =
-          await _dio.post('${_url}${Constants.addFavMenu}', data: {
-        {"userId": userId, "menuId": menuId}
-      });
+          await _dio.post('${_url}${Constants.addFavMenu}', data: {"userId": userId, "menuId": menuId});
       print("${response.data}");
 
       return AddFavoriteMenuModel.fromJson(response.data);

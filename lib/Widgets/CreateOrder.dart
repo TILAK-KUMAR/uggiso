@@ -96,10 +96,8 @@ class _CreateOrderState extends State<CreateOrder> {
             }
             if (state is onLoadedHotelState) {
               print('this is response data : ${state.data}');
-              Navigator.pushNamedAndRemoveUntil(
-                  context,
-                  AppRoutes.orderSuccessScreen,
-                  (Route<dynamic> route) => false);
+              notifyRestaurant();
+
             }
           },
           child: showLoader
@@ -466,21 +464,21 @@ class _CreateOrderState extends State<CreateOrder> {
   }
 
   createOrder() async {
-    print('this is menu list : $menuList');
+    /*print('this is menu list : $menuList');
     print('this is rest id : ${widget.restaurantId!}');
     print('this is user id : $userId');
     print('this is user name : $userName');
     print('this is user number : $userNumber');
     print('this is total amount : ${item_sub_total}');
-    /*final List<Object?> result = await platform.invokeMethod('callSabPaisaSdk',
-        [userName, "lastname", "flutter@gmail.com", userNumber, item_sub_total.toString()]);*/
+    final List<Object?> result = await platform.invokeMethod('callSabPaisaSdk',
+        [userName, "lastname", "flutter@gmail.com", userNumber, item_sub_total.toString()]);
 
-    // String txnStatus = result[0].toString();
-    // String txnId = result[1].toString();
+    String txnStatus = result[0].toString();
+    String txnId = result[1].toString();
 
-    // print('this is transaction status : $txnStatus');
-    // print('this is transaction id : $txnId');
-    // print('this is transaction result : $result');
+    print('this is transaction status : $txnStatus');
+    print('this is transaction id : $txnId');
+    print('this is transaction result : $result');*/
     /*Fluttertoast.showToast(
         msg: txnStatus,
         toastLength: Toast.LENGTH_SHORT,
@@ -502,6 +500,47 @@ class _CreateOrderState extends State<CreateOrder> {
         timeSlot: 'null',
         transMode: 'BIKE',
         fcmToken: 'hfjhjdjhh'));
+  }
+
+  notifyRestaurant(){
+
+    Navigator.pushNamedAndRemoveUntil(
+        context,
+        AppRoutes.orderSuccessScreen,
+            (Route<dynamic> route) => false);
+  }
+
+  Future<void> sendPushNotification(String token, String title, String body) async {
+    final String serverKey = 'YOUR_FIREBASE_SERVER_KEY';
+    final String firebaseUrl = 'https://fcm.googleapis.com/fcm/send';
+
+    final Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'key=$serverKey',
+    };
+
+    final Map<String, dynamic> notificationData = {
+      'notification': {'title': title, 'body': body},
+      'priority': 'high',
+      'data': {'click_action': 'FLUTTER_NOTIFICATION_CLICK', 'id': '1', 'status': 'done'}
+    };
+
+    final Map<String, dynamic> requestData = {
+      'to': token,
+      'data': notificationData,
+    };
+
+    final http.Response response = await http.post(
+      Uri.parse(firebaseUrl),
+      headers: headers,
+      body: json.encode(requestData),
+    );
+
+    if (response.statusCode == 200) {
+      print('Notification sent successfully');
+    } else {
+      print('Notification could not be sent');
+    }
   }
 
 }

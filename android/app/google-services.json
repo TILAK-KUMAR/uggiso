@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "741537959124",
-    "project_id": "uggiso-469cc",
-    "storage_bucket": "uggiso-469cc.appspot.com"
+    "project_number": "180656452731",
+    "project_id": "uggiso-customer",
+    "storage_bucket": "uggiso-customer.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:741537959124:android:ee8a4ae8c6ee76cfd2bf41",
+        "mobilesdk_app_id": "1:180656452731:android:6dab108216f2733b189ede",
         "android_client_info": {
           "package_name": "com.uggiso.customer"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyCXfSKnMi_jvtwDIDT4AD9JxoKwJuzWkfQ"
+          "current_key": "AIzaSyDZwpGWvzkb9D8YHqYGaHn2QXPgW1YoLWs"
         }
       ],
       "services": {

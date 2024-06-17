@@ -10,7 +10,7 @@ import 'MenuListState.dart';
 class MenuListBloc extends Bloc<MenuListEvent, MenuListState> {
   MenuListBloc() : super(FetchListState()){
     final ApiRepository _apiRepository = ApiRepository();
-    AddFavoriteMenuModel? res;
+    AddFavoriteMenuModel? addFavoriteMenuModel;
 
 
     on<onInitialised>((event,emit)async{
@@ -40,11 +40,11 @@ class MenuListBloc extends Bloc<MenuListEvent, MenuListState> {
           emit(ErrorState("userId or restaurantId is null"));
           return;
         }
-        res = (await _apiRepository.addFavMenu(event.userId!, event.menuId!));
-        if (res == 'error') {
-          emit(ErrorState(res?.message));
+        addFavoriteMenuModel = (await _apiRepository.addFavMenu(event.userId!, event.menuId!));
+        if (addFavoriteMenuModel?.statusCode!=200) {
+          emit(ErrorState(addFavoriteMenuModel?.message));
         } else {
-          emit(onFavMenuAddedState(res!));
+          emit(onFavMenuAddedState(addFavoriteMenuModel!));
         }
       } on NetworkError {
         print('this is network error');
