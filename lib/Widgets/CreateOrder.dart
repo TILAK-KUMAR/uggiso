@@ -1,4 +1,4 @@
-import 'dart:ffi';
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -10,8 +10,9 @@ import 'package:uggiso/Bloc/CreateOrderBloc/CreateOrderState.dart';
 import 'package:uggiso/Widgets/ui-kit/RoundedElevatedButton.dart';
 import 'package:uggiso/base/common/utils/fonts.dart';
 import 'package:uggiso/base/common/utils/strings.dart';
-
+import 'package:http/http.dart' as http;
 import '../Bloc/CreateOrderBloc/CreateOrderBloc.dart';
+import '../Network/PushNotificationService.dart';
 import '../app_routes.dart';
 import '../base/common/utils/colors.dart';
 import 'ui-kit/RoundedContainer.dart';
@@ -487,7 +488,7 @@ class _CreateOrderState extends State<CreateOrder> {
         backgroundColor: Colors.red,
         textColor: Colors.white,
         fontSize: 16.0);*/
-    _createOrderBloc.add(OnPaymentClicked(
+   /* _createOrderBloc.add(OnPaymentClicked(
         restaurantId: widget.restaurantId!,
         restaurantName: widget.restaurantName!,
         customerId: userId,
@@ -499,7 +500,8 @@ class _CreateOrderState extends State<CreateOrder> {
         comments: 'Please do little more spicy',
         timeSlot: 'null',
         transMode: 'BIKE',
-        fcmToken: 'hfjhjdjhh'));
+        fcmToken: 'hfjhjdjhh'));*/
+    sendPushNotification('d17fBV_rQWeNdTmllOMB65:APA91bF0-oSGHyhvqtURTCib1qncAHcrX6wrrvUOLwaE1gZlaMDk-5FNdAMtDP1OJs2taB6VlJMidCNZlR_nyUAP0BVwJgJPihF53jwVh5ZyQL8gSwUvcOGkCu8jt6nlCKShakIY5qNT', 'order created', 'check for details');
   }
 
   notifyRestaurant(){
@@ -511,35 +513,47 @@ class _CreateOrderState extends State<CreateOrder> {
   }
 
   Future<void> sendPushNotification(String token, String title, String body) async {
-    final String serverKey = 'YOUR_FIREBASE_SERVER_KEY';
-    final String firebaseUrl = 'https://fcm.googleapis.com/fcm/send';
+    try {
+      final String serverKey = await PushNotificationService.getAccessToken();
+      await PushNotificationService().getEstimatedTravelTime(12.900740,77.764267);
 
-    final Map<String, String> headers = {
-      'Content-Type': 'application/json',
-      'Authorization': 'key=$serverKey',
-    };
+      const String firebaseUrl = 'https://fcm.googleapis.com/v1/projects/uggiso-customer/messages:send';
 
-    final Map<String, dynamic> notificationData = {
-      'notification': {'title': title, 'body': body},
-      'priority': 'high',
-      'data': {'click_action': 'FLUTTER_NOTIFICATION_CLICK', 'id': '1', 'status': 'done'}
-    };
+      final Map<String, String> headers = {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $serverKey',
+      };
 
-    final Map<String, dynamic> requestData = {
-      'to': token,
-      'data': notificationData,
-    };
+      final Map<String, dynamic> notificationData = {'title': title, 'body': body,};
 
-    final http.Response response = await http.post(
-      Uri.parse(firebaseUrl),
-      headers: headers,
-      body: json.encode(requestData),
-    );
+      final Map<String, dynamic> message = {
+        'message': {
+          'token': "d17fBV_rQWeNdTmllOMB65:APA91bF0-oSGHyhvqtURTCib1qncAHcrX6wrrvUOLwaE1gZlaMDk-5FNdAMtDP1OJs2taB6VlJMidCNZlR_nyUAP0BVwJgJPihF53jwVh5ZyQL8gSwUvcOGkCu8jt6nlCKShakIY5qNT",
+          'notification': notificationData,
+          'data': {
+            'click_action': 'FLUTTER_NOTIFICATION_CLICK',
+            'id': '1',
+            'status': 'done',
+          },
+        },
+      };
 
-    if (response.statusCode == 200) {
-      print('Notification sent successfully');
-    } else {
-      print('Notification could not be sent');
+
+      final http.Response response = await http.post(
+          Uri.parse(firebaseUrl),
+          headers: headers,
+          body: jsonEncode(message)
+      );
+
+      if (response.statusCode == 200) {
+        print('Notification sent successfully');
+      } else {
+        print('Notification could not be sent. Status code: ${response.statusCode}');
+        print('Response body: ${response.body}');
+      }
+    }catch(e){
+      print('An error occurred while sending the notification: $e');
+
     }
   }
 
