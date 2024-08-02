@@ -166,8 +166,7 @@ class Strings {
     '30-45 min'
   ];
 
-
-  static const List<String >pushNotificationScope = ['https://www.googleapis.com/auth/firebase.messaging',
-  'https://www.googleapis.com/auth/userinfo.email','https://www.googleapis.com/auth/firebase.database'];
+  /*static const List<String >pushNotificationScope = ['https://www.googleapis.com/auth/firebase.messaging',
+  'https://www.googleapis.com/auth/userinfo.email','https://www.googleapis.com/auth/firebase.database'];*/
 
 }
