@@ -515,15 +515,15 @@ class _CreateOrderState extends State<CreateOrder> {
     // sendPushNotification('', 'order created', 'check for details');
   }
 
-  notifyRestaurant(OrderCheckoutModel data){
+  /*notifyRestaurant(OrderCheckoutModel data){
     sendPushNotification(data.payload!.fcmToken.toString(), 'order created', 'check for details');
-   /* Navigator.pushNamedAndRemoveUntil(
+   *//* Navigator.pushNamedAndRemoveUntil(
         context,
         AppRoutes.orderSuccessScreen,
-            (Route<dynamic> route) => false);*/
-  }
+            (Route<dynamic> route) => false);*//*
+  }*/
 
-  Future<void> sendPushNotification(String token, String title, String body) async {
+ /* Future<void> sendPushNotification(String token, String title, String body) async {
     try {
       final String serverKey = await PushNotificationService.getAccessToken();
       print('this is fcm token : $serverKey');
@@ -567,6 +567,6 @@ class _CreateOrderState extends State<CreateOrder> {
       print('An error occurred while sending the notification: $e');
 
     }
-  }
+  }*/
 
 }
