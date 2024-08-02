@@ -128,7 +128,12 @@ class _MenuItemCardState extends State<MenuItemCard> {
                             height: 22,
                           ));
                     } else {
-                      return InkWell(
+                      return widget.listData.favourite==true?Image.asset(
+                        'assets/ic_heart_fill.png',
+                        width: 20,
+                        height: 20,
+                        color: AppColors.appPrimaryColor,
+                      ):InkWell(
                           onTap: () {
                             _menuListBloc.add(OnAddFavMenu(
                                 userId: widget.userId,

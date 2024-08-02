@@ -14,8 +14,12 @@ import '../../base/common/utils/fonts.dart';
 class HotelListGrid extends StatelessWidget {
   final List<dynamic>? payload;
   final String? userId;
+  final double? lat;
+  final double? lng;
+  final String? travelMode;
+  final double? distance;
 
-  HotelListGrid(this.payload,this.userId, {super.key});
+  HotelListGrid(this.payload,this.userId, this.lat,this.lng,this.travelMode,this.distance,{super.key});
 
   final List<String> items = List.generate(10, (index) => 'Item $index');
   final HomeBloc _homeBloc = HomeBloc();
@@ -24,21 +28,35 @@ class HotelListGrid extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => _homeBloc,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 8.0),
-        child: GridView.builder(
-          shrinkWrap: true,
+      child: BlocListener<HomeBloc,HomeState>(
+        listener: (BuildContext context, HomeState state) {
+          if(state is onFavHotelAddedState){
+            print('fav hotel added form grid  lat ');
 
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-            crossAxisSpacing: 10,
-            mainAxisSpacing: 10,
-            childAspectRatio: 0.9,
+            updateHotelData(userId!, lat!, lng!, distance!, travelMode!);
+          }
+          if(state is onFavHotelDeleteState){
+            print('fav hotel deleted form grid  lat ');
+            updateHotelData(userId!, lat!, lng!, distance!, travelMode!);
+
+          }
+        },
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 8.0),
+          child: GridView.builder(
+            shrinkWrap: true,
+
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              crossAxisSpacing: 10,
+              mainAxisSpacing: 10,
+              childAspectRatio: 0.9,
+            ),
+            itemCount: payload?.length,
+            itemBuilder: (context, index) {
+              return GridItem(context, payload?[index]);
+            },
           ),
-          itemCount: payload?.length,
-          itemBuilder: (context, index) {
-            return GridItem(context, payload?[index]);
-          },
         ),
       ),
     );
@@ -64,17 +82,13 @@ class HotelListGrid extends StatelessWidget {
             payload: item)),
         child: Column(
           children: [
-            Stack(
-              children: [
-                Image.asset(
-                  'assets/ic_no_hotel.png',
-                  fit: BoxFit.fitWidth,
-                  height: MediaQuery.of(c).size.height * 0.1,
-                  width: double.infinity,
-                ),
-                /*Image.network(
-                  menuList.photo.toString(),
-
+            Flexible(
+              flex: 6,
+              child: Container(
+                width: double.infinity,
+                padding: EdgeInsets.zero,
+                child: Image.network(
+                            item!.imageUrl.toString(),fit: BoxFit.fill,
                   errorBuilder: (BuildContext context, Object exception,
                       StackTrace? stackTrace) {
                     // Display a placeholder image or alternative content
@@ -83,148 +97,166 @@ class HotelListGrid extends StatelessWidget {
                       height: MediaQuery.of(context).size.height * 0.08,
                       child: Center(
                         child: Image.asset(
-                          'assets/ic_no_image.png',
+                          'assets/ic_no_hotel.png',fit: BoxFit.fitWidth,
                         ),
                       ),
                     );
                   },
-                )*/
-              ],
+                ),
+              ),
             ),
-            Container(
-              width: MediaQuery.of(c).size.width * 0.42,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Gap(4),
+            Flexible(
+              flex: 8,
+              child: Container(
+                width: MediaQuery.of(c).size.width * 0.42,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Gap(4),
 
-                  item?.restaurantName == null
-                      ? Container()
-                      : Text(
-                          '${item?.restaurantName}',
-                          style: AppFonts.title.copyWith(
-                              color: AppColors.bottomTabInactiveColor),
+                    item?.restaurantName == null
+                        ? Container()
+                        : Text(
+                            '${item?.restaurantName}',
+                            style: AppFonts.title.copyWith(
+                                color: AppColors.bottomTabInactiveColor),
+                          ),
+                    const Gap(4),
+                    Row(
+                      children: [
+                        Flexible(
+                          flex: 3,
+                          child: item?.restaurantMenuType == null
+                              ? Container()
+                              : Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    item?.restaurantMenuType == 'VEG'
+                                        ? Image.asset(
+                                            'assets/ic_veg.png',
+                                            height: 12,
+                                            width: 12,
+                                          )
+                                        : Image.asset(
+                                            'assets/ic_non_veg.png',
+                                            height: 12,
+                                            width: 12,
+                                          ),
+                                    const Gap(4),
+                                    Text(
+                                      '${item?.restaurantMenuType}',
+                                      style: AppFonts.smallText
+                                          .copyWith(fontWeight: FontWeight.w500),
+                                    ),
+                                  ],
+                                ),
                         ),
-                  const Gap(4),
-                  Row(
-                    children: [
-                      Flexible(
-                        flex: 3,
-                        child: item?.restaurantMenuType == null
-                            ? Container()
-                            : Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
+                        Flexible(
+                          flex: 1,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              item?.ratings == null
+                                  ? Container()
+                                  : Row(
                                 children: [
-                                  item?.restaurantMenuType == 'VEG'
-                                      ? Image.asset(
-                                          'assets/ic_veg.png',
-                                          height: 12,
-                                          width: 12,
-                                        )
-                                      : Image.asset(
-                                          'assets/ic_non_veg.png',
-                                          height: 12,
-                                          width: 12,
-                                        ),
-                                  const Gap(4),
-                                  Text(
-                                    '${item?.restaurantMenuType}',
-                                    style: AppFonts.smallText
-                                        .copyWith(fontWeight: FontWeight.w500),
+                                  Image.asset(
+                                    'assets/ic_star.png',
+                                    height: 14,
+                                    width: 14,
                                   ),
+                                  Text('${item?.ratings}',
+                                      style: AppFonts.smallText
+                                          .copyWith(color: AppColors.textColor)),
                                 ],
                               ),
-                      ),
-                      Flexible(
-                        flex: 1,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            item?.ratings == null
-                                ? Container()
-                                : Row(
-                              children: [
-                                Image.asset(
-                                  'assets/ic_star.png',
-                                  height: 14,
-                                  width: 14,
-                                ),
-                                Text('${item?.ratings}',
-                                    style: AppFonts.smallText
-                                        .copyWith(color: AppColors.textColor)),
-                              ],
-                            ),
 
-                          ],
+                            ],
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                  // Gap(12),
+                      ],
+                    ),
+                    // Gap(12),
 
-                  Gap(8),
-                  item?.distance==null || item?.duration==null?Container():Row(
-                    children: [
-                      Image.asset(
-                        'assets/ic_small_marker.png',
-                        height: 12,
-                        width: 12,
-                      ),
-                      Gap(4),
+                    Gap(8),
+                    item?.distance==null || item?.duration==null?Container():Row(
+                      children: [
+                        Image.asset(
+                          'assets/ic_small_marker.png',
+                          height: 12,
+                          width: 12,
+                        ),
+                        Gap(4),
 
-                      Text('${item?.distance} | ',
-                          style: AppFonts.smallText
-                              .copyWith(color: AppColors.textGrey)),
-                      Gap(4),
+                        Text('${item?.distance} | ',
+                            style: AppFonts.smallText
+                                .copyWith(color: AppColors.textGrey)),
+                        Gap(4),
 
-                      Image.asset(
-                        'assets/ic_clock.png',
-                        height: 12,
-                        width: 12,
-                      ),
-                      Gap(4),
-                      Text('${item?.duration}',
-                          style: AppFonts.smallText
-                              .copyWith(color: AppColors.textGrey)),
-                    ],
-                  ),
+                        Image.asset(
+                          'assets/ic_clock.png',
+                          height: 12,
+                          width: 12,
+                        ),
+                        Gap(4),
+                        Text('${item?.duration}',
+                            style: AppFonts.smallText
+                                .copyWith(color: AppColors.textGrey)),
+                      ],
+                    ),
 
-                  Align(
-                    alignment: Alignment.bottomRight,
-                    child: BlocBuilder<HomeBloc, HomeState>(
-                        builder: (BuildContext context, HomeState state) {
-                          if (state is LoadingHotelState) {
-                            return CircularProgressIndicator(color: AppColors.appPrimaryColor,);
-                          } else if (state is onFavHotelAddedState) {
-                            return IconButton(
-                              padding: EdgeInsets.zero,
-                                onPressed: () {},
-                                icon: Image.asset(
-                                  'assets/ic_heart_fill.png',
-                                  width: 24,
-                                  height: 24,
-                                ));
-                          } else {
-                            return IconButton(
+                    Align(
+                      alignment: Alignment.bottomRight,
+                      child: BlocBuilder<HomeBloc, HomeState>(
+                          builder: (BuildContext context, HomeState state) {
+                          if (state is onFavHotelAddedState) {
+                              return IconButton(
                                 padding: EdgeInsets.zero,
-                                onPressed: () {
-                                  _homeBloc.add(OnAddFavRestaurant(
-                                      userId:userId,
-                                      restaurantId:item?.restaurantId));
-                                },
-                                icon: Image.asset(
-                                  'assets/ic_heart.png',
-                                  width: 24,
-                                  height: 24,
-                                  color: AppColors.appPrimaryColor,
-                                ));
-                          }
-                        }),
-                  ),
-                ],
+                                  onPressed: () {
+                                    _homeBloc.add(OnDeleteFavRestaurant(
+                                        userId:userId));
+                                  },
+                                  icon: Image.asset(
+                                    'assets/ic_heart_fill.png',
+                                    width: 24,
+                                    height: 24,
+                                  ));
+                            } else {
+                              return item.favourite==true?IconButton(
+                                  padding: EdgeInsets.zero,
+                                  onPressed: () {
+                                    _homeBloc.add(OnDeleteFavRestaurant(
+                                        userId:userId));
+                                  },
+                                  icon: Image.asset(
+                                    'assets/ic_heart_fill.png',
+                                    width: 24,
+                                    height: 24,
+                                    color: AppColors.appPrimaryColor,
+                                  )):IconButton(
+                                  padding: EdgeInsets.zero,
+                                  onPressed: () {
+                                    _homeBloc.add(OnAddFavRestaurant(
+                                        userId:userId,
+                                        restaurantId:item?.restaurantId));
+                                  },
+                                  icon: Image.asset(
+                                    'assets/ic_heart.png',
+                                    width: 24,
+                                    height: 24,
+                                    color: AppColors.appPrimaryColor,
+                                  ));
+                            }
+                          }),
+                    ),
+                  ],
+                ),
               ),
             )
           ],
         ),
       ));
+  updateHotelData(String userId,double lat, double lng, double distance,String mode){
+    _homeBloc.add(
+        OnInitilised(userId:userId,lat: lat, lag: lng, distance: distance,mode: mode));  }
 }

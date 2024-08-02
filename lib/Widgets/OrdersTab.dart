@@ -32,51 +32,66 @@ class _OrdersTabState extends State<OrdersTab> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: AppColors.textFieldBg,
-        appBar: AppBar(
+      backgroundColor: AppColors.textFieldBg,
+      appBar: AppBar(
           elevation: 0,
-          leading: Container(),
-          backgroundColor: AppColors.appPrimaryColor,
-          title: const Text(
-            Strings.your_orders,
-            style: AppFonts.appBarText,
-          ),
-          centerTitle: true,
-        ),
-        body: BlocProvider(
-          create: (context) => _myOrderBloc,
-          child: BlocBuilder<MyOrderBloc, MyOrderState>(
-              builder: (BuildContext context, MyOrderState state) {
-            if (state is OrderFetchingState) {
-              return Center(
-                child: CircularProgressIndicator(
-                  color: AppColors.appPrimaryColor,
-                ),
-              );
-            } else if (state is ErrorState) {
-              return Center(
-                child: Text(
-                  '${state.message}',
-                  textAlign: TextAlign.center,
-                  style: AppFonts.title,
-                ),
-              );
-            } else if (state is OrderFetchedState) {
-              return ShowOrderList(state.data);
-            }
-            return Container();
-          }),
-        ));
+          leading:Padding(
+      padding: const EdgeInsets.symmetric(vertical: 10.0),
+      child: IconButton(
+        iconSize: 18,
+        icon: Image.asset('assets/ic_back_arrow.png'),
+        onPressed: () {
+          Navigator.pop(context);
+        },
+      ),
+    ),
+    backgroundColor: AppColors.appPrimaryColor,
+    title: const Text(
+    Strings.your_orders,
+    style: AppFonts.appBarText,
+    ),
+    centerTitle: true,
+    ),
+    body: BlocProvider(
+    create: (context) => _myOrderBloc,
+    child: BlocBuilder<MyOrderBloc, MyOrderState>(
+    builder: (BuildContext context, MyOrderState state) {
+    if (state is OrderFetchingState) {
+    return Center(
+    child: CircularProgressIndicator(
+    color: AppColors.appPrimaryColor,
+    ),
+    );
+    } else if (state is ErrorState) {
+    return Center(
+    child: Text(
+    '${state.message}',
+    textAlign: TextAlign.center,
+    style: AppFonts.title,
+    ),
+    );
+    } else if (state is OrderFetchedState) {
+    return ShowOrderList(state.data);
+    }
+    return Container();
+    })
+    ,
+    )
+    );
   }
 
-  Widget ShowOrderList(MyOrdersModel data) => Padding(
+  Widget ShowOrderList(MyOrdersModel data) =>
+      Padding(
         padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
         child: ListView.builder(
             itemCount: data.payload?.length,
             itemBuilder: (BuildContext context, int count) {
               return Container(
                   margin: EdgeInsets.only(top: 8.0),
-                  width: MediaQuery.of(context).size.width,
+                  width: MediaQuery
+                      .of(context)
+                      .size
+                      .width,
                   padding: EdgeInsets.all(4.0),
                   decoration: ShapeDecoration(
                     color: AppColors.white,
@@ -133,21 +148,23 @@ class _OrdersTabState extends State<OrdersTab> {
                               child: Row(
                                 children: [
                                   data.payload?[count].menus?[menuItem]
-                                              .restaurantMenuType ==
-                                          'VEG'
+                                      .restaurantMenuType ==
+                                      'VEG'
                                       ? Image.asset(
-                                          'assets/ic_veg.png',
-                                          height: 14,
-                                          width: 14,
-                                        )
+                                    'assets/ic_veg.png',
+                                    height: 14,
+                                    width: 14,
+                                  )
                                       : Image.asset(
-                                          'assets/ic_non_veg.png',
-                                          height: 14,
-                                          width: 14,
-                                        ),
+                                    'assets/ic_non_veg.png',
+                                    height: 14,
+                                    width: 14,
+                                  ),
                                   Gap(8),
                                   Text(
-                                    '${data.payload?[count].menus?[menuItem].quantity} x ${data.payload?[count].menus?[menuItem].menuName}',
+                                    '${data.payload?[count].menus?[menuItem]
+                                        .quantity} x ${data.payload?[count]
+                                        .menus?[menuItem].menuName}',
                                     style: AppFonts.title,
                                   ),
                                 ],
@@ -175,7 +192,8 @@ class _OrdersTabState extends State<OrdersTab> {
                                     ),
                                     TextSpan(
                                       text:
-                                          '${convertDate(data.payload![count].orderDate)}',
+                                      '${convertDate(
+                                          data.payload![count].orderDate)}',
                                       style: AppFonts
                                           .smallText, // Original style for the comments
                                     ),

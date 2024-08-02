@@ -110,8 +110,12 @@ class Strings {
   static const view_all_transactions = 'View all transactions';
   static const use_with_coupons = 'Use with coupons';
   static const learn_more = 'LEARN MORE';
-  static const uggiso_future_orders =
-      'Yay! Your Uggiso coins will be used for future orders';
+  static const uggiso_future_orders = 'Yay! Your Uggiso coins will be used for future orders';
+  static const share_your_referral = 'Share your referral with';
+  static const get_rewards = 'Get Rewards!';
+  static const rewards = 'Rewards';
+  static const enter_referral_number = 'Enter your Referral Mobile Number';
+
 
   static const List<Map<String, dynamic>> profileItemList = [
     {'image': 'assets/ic_orders.png', 'title': your_orders},
@@ -152,6 +156,7 @@ class Strings {
   ];
 
   static const List<double> distance_type = [5.0, 10.0, 15.0, 20.0, 25.0];
+  static const List<String> travel_mode = ["BIKE", "CAR", "WALK", "BUS"];
 
   static const List<String> time_slot = [
     '10-15 min',
@@ -161,19 +166,6 @@ class Strings {
     '30-45 min'
   ];
 
-  static const serverKeyJson = {
-    "type": "service_account",
-    "project_id": "uggiso-customer",
-    "private_key_id": "aad1044742083f95d0b4e111e42aae138928bd5d",
-    "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvwIBADANBgkqhkiG9w0BAQEFAASCBKkwggSlAgEAAoIBAQC5LW2Y5+ed9qlD\nl67qO4pgSsXwXFxLoEpLzY0MP7gzYwJ45AbqpVfa1An1zOxXDrbpoUX5pHx8HwI1\nnVVXPSwzfauYScbcNe8EjzOtfnT67rXbOFzy4HAnP8LQr7jUAAbNynYjbrpW7xCv\n7Wv93wNY0RLHf+PdElXOxvwSUNHinnQcQaMoEnvmt7lQQ9YrRAGOPG/v731RDkp/\nIDQRkUV8ShHLY0EaGNzv9fPHvSsgGQ3yESSytReW+PKst2cPQTE1qg+fhBkauNKB\ntV79PHw8NMAAv4hh+k0pnmsTAk/27hx4aXO4rAokUZtIMrOlZwUoauT0tSUUFI7D\n1v+fPBa/AgMBAAECggEAR4NVP4dTygvPq4RhLyFGW9CUp7IrjKM+/g5ISfIzs1ip\nxEEfsK+hAagAnrYAkdBjcE9xhCrzTkX1Zvo3UoUT1GDUi2/2heWoRGT/SqG7EItu\nnNYkA0IM3gOAO3KZWPoXppLpU963xMn3clGo8naVRtAbRgNMXvxtOflbsMEYhUEP\nCI76uA7bPKEPniR8B3cdZ6Oig56hwNaeccS1656RKm5Q2o3boQopI10x9YelC8cX\ncU3/tFCNGdYq/+ZQmkLhZrHWi1Yu+zAeQ+7GS2f/sU98Jaotl0G1p8wlhI9zarTL\n3hbfVo4HUQVkGsiuBULf3FqiiuPxhpxwsjHfSxJa9QKBgQDg/5kOO4VCvMOGFaUv\nSws6vNwrNuUe85cnAlbKE/kbtTRMOWhuizN1l+1dWkAJwWg/NsqlKCGgmO19MbyX\nkEHhkkzspA9D7TQCR3Du95EDYBux8bcFGUla+QhgQbomPOlZzAcxGMiGHXX01Nvb\nzqaJ4xEHLntvTzZ/gP5mP1ozTQKBgQDSsTgeJVM8woRk1wS6fSqSXXhrxf2yMlo5\nALJ05WPNGJHkc7Q/9KNC57c2AFBZ+RTMzkQ3nKie6AraiqERL40K8/YE5OIIoguM\nOwFb7/sTDSca0nKPA0ANA5zcilEhRi6W4KZHHw7iV29vmz/QUbK1gm3ejD9mg5y9\nhbBc1pFUOwKBgQCWgKKi8JF9SMMJJ+Vssyf5zGcBySCOCabsAxaG6cFSFW28JxKC\nDz8Gw++U6E+5ttPCpSX8P9HumR0TB3f9chN/jdtC16MWbs7BT4RtdNBdj6Y261bf\nZEC7R6WgrZaVCV2WIXIWF1vayk4izVebuqmPxoGXajJLDJOJyoFhZ7MwaQKBgQC/\nORs+uQ+v8LeqskBXZeyyhOUbo8oa5npejBRr5hpLdkZLevwYo9ddjOMKvwQudNP9\nAiSF+MhN2TqomPOQnoC7dSpPzNCdlz013APixo8w/loEjQZuaDvE1AeVXnA96+2z\nAFfJ6xVeNo8sU1J6pvu0o5lGSDHuv/sNQ/4KdK/YKwKBgQDV00l1EME3XiCwvkiy\naY4aNgtBZaF7HDSaDj/7/vEhKjtRfMNRlJYM57MmhL0QI0xRio+XsxQzhMJGiOH6\nLTx31bUL2srusCUCooJ4byWpkgCAnrtjGc7+X1UdHMR1z94i629McONzJXjpIm4q\nGjkSaSt8e5QnZvDV6L8/NX6T2w==\n-----END PRIVATE KEY-----\n",
-    "client_email": "uggisocustomerapp@uggiso-customer.iam.gserviceaccount.com",
-    "client_id": "100484727571640119364",
-    "auth_uri": "https://accounts.google.com/o/oauth2/auth",
-    "token_uri": "https://oauth2.googleapis.com/token",
-    "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
-    "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/uggisocustomerapp%40uggiso-customer.iam.gserviceaccount.com",
-    "universe_domain": "googleapis.com"
-  };
 
   static const List<String >pushNotificationScope = ['https://www.googleapis.com/auth/firebase.messaging',
   'https://www.googleapis.com/auth/userinfo.email','https://www.googleapis.com/auth/firebase.database'];

@@ -65,7 +65,6 @@ class _SplashScreenState extends State<SplashScreen> {
     prefs.setDouble('user_latitude', _location.latitude);
 
     _isUserLoggedIn = prefs.getBool('is_user_logged_in');
-    print('thisd is lat : ${_location.longitude} and ${_location.latitude}');
     if(_isUserLoggedIn==null || _isUserLoggedIn ==false){
       Navigator.popAndPushNamed(context, AppRoutes.introLanding);
 

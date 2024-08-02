@@ -7,12 +7,15 @@ import 'package:gap/gap.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uggiso/Bloc/CreateOrderBloc/CreateOrderEvent.dart';
 import 'package:uggiso/Bloc/CreateOrderBloc/CreateOrderState.dart';
+import 'package:uggiso/Model/OrderCheckoutModel.dart';
 import 'package:uggiso/Widgets/ui-kit/RoundedElevatedButton.dart';
+import 'package:uggiso/base/common/utils/background_service.dart';
 import 'package:uggiso/base/common/utils/fonts.dart';
 import 'package:uggiso/base/common/utils/strings.dart';
 import 'package:http/http.dart' as http;
 import '../Bloc/CreateOrderBloc/CreateOrderBloc.dart';
 import '../Network/PushNotificationService.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import '../app_routes.dart';
 import '../base/common/utils/colors.dart';
 import 'ui-kit/RoundedContainer.dart';
@@ -40,6 +43,8 @@ class _CreateOrderState extends State<CreateOrder> {
   String userName = '';
   List menuList = [];
   bool showLoader = false;
+  bool _isUggiso_coins_selected = false;
+  double uggiso_coin_count = 0.0;
   final CreateOrderBloc _createOrderBloc = CreateOrderBloc();
   static const platform = MethodChannel('com.sabpaisa.integration/native');
 
@@ -96,8 +101,11 @@ class _CreateOrderState extends State<CreateOrder> {
               CircularProgressIndicator();
             }
             if (state is onLoadedHotelState) {
-              print('this is response data : ${state.data}');
-              notifyRestaurant();
+              initializeService();
+              Navigator.pushNamedAndRemoveUntil(
+                  context,
+                  AppRoutes.orderSuccessScreen,
+                      (Route<dynamic> route) => false);
 
             }
           },
@@ -461,61 +469,65 @@ class _CreateOrderState extends State<CreateOrder> {
       userId = prefs.getString('userId') ?? '';
       userNumber = prefs.getString('mobile_number') ?? '';
       userName = prefs.getString('user_name') ?? '';
+      _isUggiso_coins_selected = prefs.getBool('use_coins_status')??false;
+      uggiso_coin_count = prefs.getDouble('use_coins_count')??0.0;
     });
   }
 
   createOrder() async {
-    /*print('this is menu list : $menuList');
+    print('this is menu list : $menuList');
     print('this is rest id : ${widget.restaurantId!}');
     print('this is user id : $userId');
     print('this is user name : $userName');
     print('this is user number : $userNumber');
     print('this is total amount : ${item_sub_total}');
     final List<Object?> result = await platform.invokeMethod('callSabPaisaSdk',
-        [userName, "lastname", "flutter@gmail.com", userNumber, item_sub_total.toString()]);
-
+        [userName, "", "", userNumber, item_sub_total.toString()]);
+    print('this is the transaction result : $result');
     String txnStatus = result[0].toString();
-    String txnId = result[1].toString();
 
-    print('this is transaction status : $txnStatus');
-    print('this is transaction id : $txnId');
-    print('this is transaction result : $result');*/
-    /*Fluttertoast.showToast(
-        msg: txnStatus,
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.CENTER,
-        timeInSecForIosWeb: 1,
-        backgroundColor: Colors.red,
-        textColor: Colors.white,
-        fontSize: 16.0);*/
-   /* _createOrderBloc.add(OnPaymentClicked(
-        restaurantId: widget.restaurantId!,
-        restaurantName: widget.restaurantName!,
-        customerId: userId,
-        menuData: menuList,
-        orderType: "PARCEL",
-        paymentType: 'UPI',
-        orderStatus: 'CREATED',
-        totalAmount: item_sub_total.toInt(),
-        comments: 'Please do little more spicy',
-        timeSlot: 'null',
-        transMode: 'BIKE',
-        fcmToken: 'hfjhjdjhh'));*/
-    sendPushNotification('d17fBV_rQWeNdTmllOMB65:APA91bF0-oSGHyhvqtURTCib1qncAHcrX6wrrvUOLwaE1gZlaMDk-5FNdAMtDP1OJs2taB6VlJMidCNZlR_nyUAP0BVwJgJPihF53jwVh5ZyQL8gSwUvcOGkCu8jt6nlCKShakIY5qNT', 'order created', 'check for details');
+    if(txnStatus == 'SUCCESS') {
+      _createOrderBloc.add(OnPaymentClicked(
+          restaurantId: widget.restaurantId!,
+          restaurantName: widget.restaurantName!,
+          customerId: userId,
+          menuData: menuList,
+          orderType: "PARCEL",
+          paymentType: 'UPI',
+          orderStatus: 'CREATED',
+          totalAmount: item_sub_total.toInt(),
+          comments: 'Please do little more spicy',
+          timeSlot: 'null',
+          transMode: 'BIKE'));
+    }
+    else{
+
+      Fluttertoast.showToast(
+          msg: txnStatus,
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.CENTER,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0
+      );
+    }
+    // sendPushNotification('', 'order created', 'check for details');
   }
 
-  notifyRestaurant(){
-
-    Navigator.pushNamedAndRemoveUntil(
+  notifyRestaurant(OrderCheckoutModel data){
+    sendPushNotification(data.payload!.fcmToken.toString(), 'order created', 'check for details');
+   /* Navigator.pushNamedAndRemoveUntil(
         context,
         AppRoutes.orderSuccessScreen,
-            (Route<dynamic> route) => false);
+            (Route<dynamic> route) => false);*/
   }
 
   Future<void> sendPushNotification(String token, String title, String body) async {
     try {
       final String serverKey = await PushNotificationService.getAccessToken();
-      await PushNotificationService().getEstimatedTravelTime(12.900740,77.764267);
+      print('this is fcm token : $serverKey');
+      // await PushNotificationService().getEstimatedTravelTime(12.900740,77.764267);
 
       const String firebaseUrl = 'https://fcm.googleapis.com/v1/projects/uggiso-customer/messages:send';
 
@@ -528,7 +540,7 @@ class _CreateOrderState extends State<CreateOrder> {
 
       final Map<String, dynamic> message = {
         'message': {
-          'token': "d17fBV_rQWeNdTmllOMB65:APA91bF0-oSGHyhvqtURTCib1qncAHcrX6wrrvUOLwaE1gZlaMDk-5FNdAMtDP1OJs2taB6VlJMidCNZlR_nyUAP0BVwJgJPihF53jwVh5ZyQL8gSwUvcOGkCu8jt6nlCKShakIY5qNT",
+          'token': 'eVZyDSCNRH-LuvLf9LsZc5:APA91bF89qJfhldrtURgGBRZWdaZq1aISob61yX_6wi_S99MIAKHeEIGZwt1dXm_pljvuBk-5dkom1XgofdcbEk-zo4UtQuIrFLuW4E1KuYVdTmIrpeHiRzfQdZWU-M2utcreR3EoOuL',
           'notification': notificationData,
           'data': {
             'click_action': 'FLUTTER_NOTIFICATION_CLICK',

@@ -17,12 +17,11 @@ class OnPaymentClicked extends CreateOrderEvent {
   final String comments;
   final String timeSlot;
   final String transMode;
-  final String fcmToken;
 
   const OnPaymentClicked({required this.restaurantId,required this.restaurantName, required this.customerId,
   required this.menuData,required this.orderType,required this.paymentType,
   required this.orderStatus,required this.totalAmount,required this.comments,required this.timeSlot,
-  required this.transMode,required this.fcmToken});
+  required this.transMode});
 
   @override
   List<Object> get props => [restaurantId, customerId];

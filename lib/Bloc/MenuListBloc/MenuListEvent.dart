@@ -5,16 +5,17 @@ abstract class MenuListEvent extends Equatable {
 }
 
 class onInitialised extends MenuListEvent {
-  final String? id;
+  final String? userId;
+  final String? restaurantId;
 
 
-  const onInitialised({required this.id});
-
-  @override
-  List<Object> get props => [id!];
+  const onInitialised({required this.userId,required this.restaurantId});
 
   @override
-  String toString() => 'OnButtonClicked { number: $id }';
+  List<Object> get props => [userId!,restaurantId!];
+
+  @override
+  String toString() => 'OnButtonClicked { number: $userId }';
 }
 
 class OnAddFavMenu extends MenuListEvent{

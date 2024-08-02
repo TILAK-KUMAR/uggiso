@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:uggiso/base/common/utils/colors.dart';
 import 'package:uggiso/base/common/utils/fonts.dart';
 
@@ -12,6 +13,8 @@ class TextFieldCurvedEdges extends StatelessWidget {
   final int length;
   final FocusNode? focusNode;
   final ValueChanged<String>? onSubmitted;
+  final String? inputFormatter;
+  final String? validatorType;
 
   const TextFieldCurvedEdges({
     Key? key,
@@ -23,7 +26,9 @@ class TextFieldCurvedEdges extends StatelessWidget {
     this.textAlign = TextAlign.start,
     this.length = 100,
     this.focusNode,
-    this.onSubmitted
+    this.onSubmitted,
+    this.inputFormatter = '',
+    this.validatorType = ''
 
   }): super(key: key);
 
@@ -37,7 +42,7 @@ class TextFieldCurvedEdges extends StatelessWidget {
       ),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
-        child: TextField(
+        child: TextFormField(
           style: AppFonts.title.copyWith(color: AppColors.black),
           controller: controller,
           cursorColor: AppColors.black,
@@ -46,7 +51,20 @@ class TextFieldCurvedEdges extends StatelessWidget {
           maxLength: length,
           maxLines: 1,
           focusNode: focusNode,
-          onSubmitted: onSubmitted,
+          onFieldSubmitted: onSubmitted,
+          inputFormatters: inputFormatter=='number'?<TextInputFormatter>[
+            FilteringTextInputFormatter.digitsOnly
+          ]:[],
+          validator: validatorType=='phone'?(value) {
+            if (value == null || value.isEmpty) {
+              return 'Please enter a mobile number';
+            }
+            // You can customize the regex pattern based on your requirements
+            if (!RegExp(r'^(0/91)?[6-9]\d{1}[0-9]\d{9}$').hasMatch(value)) {
+              return 'Please enter a valid 10 digit mobile number';
+            }
+            return null;
+          }:null,
           decoration: const InputDecoration(
             border: InputBorder.none,
             counterText: ''

@@ -5,7 +5,6 @@ class MenuListModel {
   String? timeStamp;
   String? error;
 
-
   MenuListModel({this.statusCode, this.message, this.payload, this.timeStamp});
 
   MenuListModel.fromJson(Map<String, dynamic> json) {
@@ -48,18 +47,23 @@ class Payload {
   double? price;
   bool? bestSeller;
   double? ratings;
+  double? parcelCharges;
+  bool? favourite;
 
   Payload(
       {this.menuId,
-        this.restaurantId,
-        this.menuName,
-        this.photo,
-        this.description,
-        this.menuType,
-        this.restaurantMenuType,
-        this.veg,
-        this.price,
-        this.bestSeller,this.ratings});
+      this.restaurantId,
+      this.menuName,
+      this.photo,
+      this.description,
+      this.menuType,
+      this.restaurantMenuType,
+      this.veg,
+      this.price,
+      this.bestSeller,
+      this.ratings,
+      this.parcelCharges,
+      this.favourite});
 
   Payload.fromJson(Map<String, dynamic> json) {
     menuId = json['menuId'];
@@ -73,6 +77,8 @@ class Payload {
     price = json['price'];
     bestSeller = json['bestSeller'];
     ratings = json['ratings'];
+    parcelCharges = json['parcelCharges'];
+    favourite = json['favourite'];
   }
 
   Map<String, dynamic> toJson() {
@@ -88,6 +94,8 @@ class Payload {
     data['price'] = this.price;
     data['bestSeller'] = this.bestSeller;
     data['ratings'] = this.ratings;
+    data['parcelCharges'] = this.parcelCharges;
+    data['favourite'] = this.favourite;
     return data;
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uggiso/Widgets/ui-kit/ProfileHeader.dart';
 import 'package:uggiso/Widgets/ui-kit/RoundedContainer.dart';
@@ -32,7 +33,7 @@ class _ProfileTabState extends State<ProfileTab> {
       appBar: AppBar(
         elevation: 0,
         leading: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8.0),
+          padding: const EdgeInsets.symmetric(vertical: 10.0),
           child: IconButton(
             iconSize: 18,
             icon: Image.asset('assets/ic_back_arrow.png'),
@@ -62,27 +63,30 @@ class _ProfileTabState extends State<ProfileTab> {
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            child: RoundedContainer(
-                width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height * 0.08,
-                child: Row(
-                  children: [
-                    SizedBox(
-                      width: 16.0,
-                    ),
-                    Text(
-                      "Refer Your Friends",
-                      style:
-                          AppFonts.title.copyWith(color: AppColors.textColor),
-                    )
-                  ],
-                ),
-                color: AppColors.appSecondaryColor,
-                borderColor: AppColors.textFieldBorderColor,
-                cornerRadius: 8),
-          ),
-          SizedBox(
-            height: 30,
+            child: InkWell(
+              onTap: (){Navigator.pushNamed(context, AppRoutes.rewards);},
+              child: RoundedContainer(
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height * 0.08,
+                  child: Row(
+                    children: [
+                      Image.asset(
+                        'assets/ic_coins.png',
+                        height: 24,
+                        width: 24,
+                      ),
+                      Gap(8),
+                      Text(
+                        "Use My Uggiso Coins",
+                        style:
+                            AppFonts.subHeader.copyWith(color: AppColors.appPrimaryColor),
+                      )
+                    ],
+                  ),
+                  color: AppColors.white,
+                  borderColor: AppColors.textFieldBorderColor,
+                  cornerRadius: 8),
+            ),
           ),
           Expanded(
             child: ListView.builder(
@@ -132,7 +136,7 @@ class _ProfileTabState extends State<ProfileTab> {
   goToNextPage(int index) {
     switch (index) {
       case 0:
-        return 'Unknown';
+        return Navigator.pushNamed(context, AppRoutes.myOrders);
 
       case 1:
         return Navigator.pushNamed(context, AppRoutes.settingsScreen);

@@ -39,7 +39,7 @@ class FavouritesBloc extends Bloc<FavouritesEvent, FavouritesState> {
 
       try{
         emit(LoadingState()) ;
-        menuData = await _apiRepository.getFavMenu(event.userId!);
+        menuData = await _apiRepository.getFavMenu(event.userId!,event.restaurantId!);
         if(menuData.statusCode == 200 && menuData.payload!.length>0){
           emit(onLoadedMenuState(menuData));
 

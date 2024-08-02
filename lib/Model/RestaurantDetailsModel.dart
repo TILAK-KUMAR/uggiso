@@ -51,7 +51,7 @@ class Payload {
   Null? imageUrl;
   Null? openTime;
   Null? closeTime;
-  Null? restaurantStatus;
+  Null? userStatus;
   Null? restaurantType;
   String? createdDate;
 
@@ -74,7 +74,7 @@ class Payload {
         this.imageUrl,
         this.openTime,
         this.closeTime,
-        this.restaurantStatus,
+        this.userStatus,
         this.restaurantType,
         this.createdDate});
 
@@ -97,7 +97,7 @@ class Payload {
     imageUrl = json['imageUrl'];
     openTime = json['openTime'];
     closeTime = json['closeTime'];
-    restaurantStatus = json['restaurantStatus'];
+    userStatus = json['userStatus'];
     restaurantType = json['restaurantType'];
     createdDate = json['createdDate'];
   }
@@ -122,7 +122,7 @@ class Payload {
     data['imageUrl'] = this.imageUrl;
     data['openTime'] = this.openTime;
     data['closeTime'] = this.closeTime;
-    data['restaurantStatus'] = this.restaurantStatus;
+    data['userStatus'] = this.userStatus;
     data['restaurantType'] = this.restaurantType;
     data['createdDate'] = this.createdDate;
     return data;

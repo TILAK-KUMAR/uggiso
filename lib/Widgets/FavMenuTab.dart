@@ -20,6 +20,7 @@ class _FavMenuTabState extends State<FavMenuTab> {
 
   final FavouritesBloc _favouritesBloc = FavouritesBloc();
   String? userId='';
+  String? restaurantId='';
   bool _showButton = false;
   int _totalItemCount = 0;
 
@@ -101,9 +102,10 @@ class _FavMenuTabState extends State<FavMenuTab> {
     final prefs = await SharedPreferences.getInstance();
     setState(() {
       userId = prefs.getString('userId') ?? '';
+      userId = prefs.getString('userId') ?? '';
     });
     print('this is user id : $userId');
-    _favouritesBloc.add(OnGetFavMenu(userId:userId));
+    _favouritesBloc.add(OnGetFavMenu(userId:userId,restaurantId: ''));
 
   }
 }

@@ -44,7 +44,7 @@ class _RegisterUserScreenState extends State<RegisterUserScreen> {
           if (state is onLoadedState) {
             // Navigate to the next screen when NavigationState is emitted
             saveUserDetails(_nameController.text,userDeviceId,fcmToken,state.userId);
-            Navigator.popAndPushNamed(context, AppRoutes.homeScreen);
+            Navigator.popAndPushNamed(context, AppRoutes.referenceScreen);
           } else if (state is ErrorState) {
 
           }
@@ -82,7 +82,7 @@ class _RegisterUserScreenState extends State<RegisterUserScreen> {
                   backgroundColor: AppColors.textFieldBg,
                   keyboardType: TextInputType.name,
                   borderColor: AppColors.textFieldBorderColor,
-                  borderRadius: 6,
+                  borderRadius: 6
                 ),
 
                 const SizedBox(height: 20.0),

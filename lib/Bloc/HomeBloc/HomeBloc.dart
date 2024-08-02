@@ -7,7 +7,7 @@ import 'package:uggiso/Network/apiRepository.dart';
 import '../../Model/GetNearByResaturantModel.dart';
 
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
-  late GetNearByRestaurantModel data;
+   GetNearByRestaurantModel? data;
   String? res;
 
   HomeBloc() : super(InitialState()) {
@@ -17,11 +17,11 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       try {
         emit(LoadingHotelState());
         data = await _apiRepository.getNearbyRestaurant(
-            event.userId,event.lat, event.lag, event.distance);
-        if (data.payload == null) {
-          emit(ErrorState(data.message.toString()));
+            event.userId,event.lat, event.lag, event.distance,event.mode);
+        if (data!.payload == null) {
+          emit(ErrorState(data!.message.toString()));
         } else {
-          emit(onLoadedHotelState(data));
+          emit(onLoadedHotelState(data!));
         }
       } on NetworkError {
         print('this is network error');
@@ -42,9 +42,33 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         }
         res = await _apiRepository.addFavHotel(event.userId!, event.restaurantId!);
         if (res == 'error') {
-          emit(ErrorState(data.message.toString()));
+          emit(ErrorState(data!.message.toString()));
         } else {
           emit(onFavHotelAddedState(res!));
+
+        }
+      } on NetworkError {
+        print('this is network error');
+      }
+    });
+
+    on<OnDeleteFavRestaurant>((event, emit) async {
+      try {
+        emit(LoadingHotelState());
+        print('this is userId : ${event.userId}');
+        if (event.userId == null) {
+          // Handle the case where userId or restaurantId is null
+          print('this is userId : ${event.userId}');
+          emit(ErrorState("userId or restaurantId is null"));
+          return;
+        }
+        res = await _apiRepository.deleteFavHotel(event.userId!);
+        if (res == 'error') {
+          emit(ErrorState(data!.message.toString()));
+        } else {
+          print('deleted success');
+          emit(onFavHotelDeleteState(res!));
+
         }
       } on NetworkError {
         print('this is network error');

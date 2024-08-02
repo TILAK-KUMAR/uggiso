@@ -41,10 +41,16 @@ class MainActivity : FlutterActivity(), IPaymentSuccessCallBack<TransactionRespo
                         .setAesApiKey("kaY9AIhuJZNvKGp2")
                         .setTransUserName("spuser_2013")
                         .setTransUserPassword("RIADA_SP336")
+                        .setIntermediateLoading(false)
                         .build()
                 SabPaisaGateway.setInitUrl("https://stage-securepay.sabpaisa.in/SabPaisa/sabPaisaInit?v=1")
                 SabPaisaGateway.setEndPointBaseUrl("https://sdkstaging.sabpaisa.in")
                 SabPaisaGateway.setTxnEnquiryEndpoint("https://stage-txnenquiry.sabpaisa.in")
+
+                //Live url
+/*                SabPaisaGateway.Companion.setInitUrlSabpaisa("https://securepay.sabpaisa.in/SabPaisa/sabPaisaInit?v=1");
+                SabPaisaGateway.Companion.setEndPointBaseUrlSabpaisa("https://securepay.sabpaisa.in");
+                SabPaisaGateway.Companion.setTxnEnquiryEndpointSabpaisa("https://txnenquiry.sabpaisa.in");*/
 
 
                 sabPaisaGateway1.init(this@MainActivity, this)

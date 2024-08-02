@@ -23,6 +23,11 @@ class onFavHotelAddedState extends HomeState {
   onFavHotelAddedState(this.result);
 }
 
+class onFavHotelDeleteState extends HomeState {
+  final String result;
+  onFavHotelDeleteState(this.result);
+}
+
 class ErrorState extends HomeState {
   final String message;
   ErrorState(this.message);

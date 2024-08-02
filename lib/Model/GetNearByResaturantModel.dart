@@ -49,6 +49,7 @@ class Payload {
   double? ratings;
   String? duration;
   String? distance;
+  String? imageUrl;
   bool? favourite;
 
   Payload(
@@ -63,6 +64,7 @@ class Payload {
         this.ratings,
         this.duration,
         this.distance,
+        this.imageUrl,
         this.favourite});
 
   Payload.fromJson(Map<String, dynamic> json) {
@@ -77,6 +79,7 @@ class Payload {
     ratings = json['ratings'];
     duration = json['duration'];
     distance = json['distance'];
+    imageUrl = json['imageUrl'];
     favourite = json['favourite'];
   }
 
@@ -93,6 +96,7 @@ class Payload {
     data['ratings'] = this.ratings;
     data['duration'] = this.duration;
     data['distance'] = this.distance;
+    data['imageUrl'] = this.imageUrl;
     data['favourite'] = this.favourite;
     return data;
   }

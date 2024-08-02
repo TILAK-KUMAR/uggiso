@@ -276,7 +276,7 @@ class _MenuListScreenState extends State<MenuListScreen> {
                       ],
                     ),
                     const Gap(12),
-                    Padding(
+                    widget.foodType == 'VEG'?Container():Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 8.0),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -480,6 +480,6 @@ class _MenuListScreenState extends State<MenuListScreen> {
     setState(() {
       userId = prefs.getString('userId') ?? '';
     });
-    _menuListBloc.add(onInitialised(id: restId));
+    _menuListBloc.add(onInitialised(userId: userId,restaurantId:widget.restaurantId ));
   }
 }

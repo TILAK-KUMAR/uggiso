@@ -16,7 +16,7 @@ class MenuListBloc extends Bloc<MenuListEvent, MenuListState> {
     on<onInitialised>((event,emit)async{
       try{
         emit(FetchingState()) ;
-        final res = await _apiRepository.getMenuList(event.id);
+        final res = await _apiRepository.getMenuList(event.userId,event.restaurantId);
         if(res.statusCode == 200) {
           final List<Payload>? items = res.payload; // Extract the list from the response
           emit(FetchedListsState(items));

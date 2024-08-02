@@ -75,7 +75,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               controller: _mobileController,
                               backgroundColor: AppColors.textFieldBg,
                               keyboardType: TextInputType.number,
-                              borderColor: AppColors.textFieldBorderColor),
+                              borderColor: AppColors.textFieldBorderColor,
+                            length: 10,
+                            inputFormatter: "number",
+                            validatorType: 'phone'),
                           isInvalidCredentials?Text(Strings.error_invalid_credientials,style:
                             AppFonts.smallText.copyWith(color: Colors.red),):SizedBox(),
                           const SizedBox(height: 20.0),
