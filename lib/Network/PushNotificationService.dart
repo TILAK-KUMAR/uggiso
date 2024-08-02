@@ -51,7 +51,7 @@ class PushNotificationService {
   Future<void> getEstimatedTravelTime(double originLat, double originLng) async {
     final double destinationLatitude = 12.934730;  // Replace with your destination latitude
     final double destinationLongitude = 77.690483;
-    final String url = '';
+    final String url = 'https://maps.googleapis.com/maps/api/distancematrix/json?units=metric&origins=$originLat,$originLng&destinations=$destinationLatitude,$destinationLongitude&key=AIzaSyB8UoTxemF5no_Va1aJn4x8s10VsFlLQHA';
 
     final response = await http.get(Uri.parse(url));
 
