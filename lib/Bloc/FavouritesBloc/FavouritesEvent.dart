@@ -15,9 +15,10 @@ class OnGetFavHotel extends FavouritesEvent {
 
 class OnGetFavMenu extends FavouritesEvent{
   final String? userId;
+  final String? restaurantId;
 
 
-  const OnGetFavMenu({required this.userId});
+  const OnGetFavMenu({required this.userId, required this.restaurantId});
 
   @override
   List<Object> get props => [userId!];

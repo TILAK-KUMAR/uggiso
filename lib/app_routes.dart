@@ -3,6 +3,7 @@ import 'package:uggiso/Widgets/AboutUsScreen.dart';
 import 'package:uggiso/Widgets/AddCard.dart';
 import 'package:uggiso/Widgets/HelpCenter.dart';
 import 'package:uggiso/Widgets/HomeLandingScreen.dart';
+import 'package:uggiso/Widgets/HomeTab.dart';
 import 'package:uggiso/Widgets/MenuListScreen.dart';
 import 'package:uggiso/Widgets/PaymentSuccessScreen.dart';
 import 'package:uggiso/Widgets/ProfileTab.dart';
@@ -11,13 +12,16 @@ import 'package:uggiso/Widgets/RewardsScreen.dart';
 import 'package:uggiso/Widgets/SettingsScreen.dart';
 import 'package:uggiso/Widgets/VerifyOtp.dart';
 import 'package:uggiso/base/common/utils/CreateOrderArgs.dart';
+import 'package:uggiso/base/common/utils/get_route_map.dart';
 import 'package:uggiso/widgets/IntroLandingScreen.dart';
 import 'package:uggiso/widgets/SignUpScreen.dart';
 import 'package:uggiso/widgets/splash.dart';
 
 import 'Widgets/CreateOrder.dart';
 import 'Widgets/OrderSuccessScreen.dart';
+import 'Widgets/OrdersTab.dart';
 import 'Widgets/PaymentOptionsScreen.dart';
+import 'Widgets/ReferralScreen.dart';
 import 'base/common/utils/MenuListArgs.dart';
 
 class AppRoutes {
@@ -55,7 +59,13 @@ class AppRoutes {
 
   static const String profileScreen = '/profile_screen';
 
+  static const String referenceScreen = '/referenceScreen';
+
   static const String rewards = '/rewards';
+
+  static const String myOrders = '/myOrders';
+
+  static const String getRouteMap = '/getRouteMap';
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -70,13 +80,15 @@ class AppRoutes {
       case registerUser:
         return MaterialPageRoute(builder: (_) => const RegisterUserScreen());
       case homeScreen:
-        return MaterialPageRoute(builder: (_) => const HomeLandingScreen());
+        return MaterialPageRoute(builder: (_) => const HomeTab());
       case settingsScreen:
         return MaterialPageRoute(builder: (_) => const SettingsScreen());
       case helpCenter:
         return MaterialPageRoute(builder: (_) => const HelpCenter());
       case aboutUs:
         return MaterialPageRoute(builder: (_) => const AboutUsScreen());
+      case myOrders:
+        return MaterialPageRoute(builder: (_) => const OrdersTab());
       case menuList:
         final args = settings.arguments as MenuListArgs;
         return MaterialPageRoute(
@@ -99,6 +111,8 @@ class AppRoutes {
                   orderlist: create_order_args.orderlist,
                   restaurantId: create_order_args.restaurantId,
                   restaurantName: create_order_args.restaurantName,
+                  restLat: create_order_args.restaurantLat,
+                  restLng: create_order_args.restaurantLng,
                 ));
       case paymentOptions:
         return MaterialPageRoute(builder: (_) => const PaymentOptionsScreen());
@@ -113,6 +127,13 @@ class AppRoutes {
 
       case profileScreen:
         return MaterialPageRoute(builder: (_) => const ProfileTab());
+
+      case referenceScreen:
+        return MaterialPageRoute(builder: (_) => const ReferralScreen());
+
+      case getRouteMap:
+        return MaterialPageRoute(builder: (_) => const GetRouteMap());
+
       default:
         // If there is no such named route in the switch statement, e.g. /randomRoute
         return MaterialPageRoute(builder: (_) {

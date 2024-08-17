@@ -23,24 +23,25 @@ class ProfileHeader extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(12.0),
       child: Container(
-        height: MediaQuery.of(context).size.height*0.25,
+
         decoration: const BoxDecoration(
           color: AppColors.white,
           borderRadius: BorderRadius.only(
-            bottomLeft: Radius.circular(30),
-            bottomRight: Radius.circular(30),
-            topRight: Radius.circular(30),
-            topLeft: Radius.circular(30),
+            bottomLeft: Radius.circular(18),
+            bottomRight: Radius.circular(18),
+            topRight: Radius.circular(18),
+            topLeft: Radius.circular(18),
           ),
       ),
-        padding: EdgeInsets.symmetric(horizontal: 18.0),
+        padding: EdgeInsets.symmetric(horizontal: 18.0,vertical: 12),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(height: 20),
             ProfileRow(context, imageUrl, userName, mail),
+
             SizedBox(height: 20),
+/*
             Text(
               Strings.saved_address,
               style: AppFonts.title.copyWith(color: AppColors.headerColor),
@@ -49,7 +50,7 @@ class ProfileHeader extends StatelessWidget {
             Text(
               address,
               style: AppFonts.subHeader.copyWith(color: AppColors.headerColor),
-            ),
+            ),*/
           ],
         ),
       ),

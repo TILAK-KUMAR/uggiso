@@ -17,6 +17,10 @@ class onLoadedState extends RegisterUserState {
   onLoadedState(this.userId);
 }
 
+class onReferalComplete extends RegisterUserState {
+  onReferalComplete();
+}
+
 class ErrorState extends RegisterUserState {
   final String? message;
   const ErrorState(this.message);

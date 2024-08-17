@@ -56,7 +56,7 @@ class _PlaceSearchScreenState extends State<PlaceSearchScreen> {
                 child: GooglePlaceAutoCompleteTextField(
                   textEditingController: TextEditingController(),
                   textStyle: AppFonts.title,
-                  googleAPIKey: Strings.searchKey,
+                  googleAPIKey: 'AIzaSyB8UoTxemF5no_Va1aJn4x8s10VsFlLQHA',
                   inputDecoration: InputDecoration(
                     hintText: 'Search for a place',
                     border: OutlineInputBorder(

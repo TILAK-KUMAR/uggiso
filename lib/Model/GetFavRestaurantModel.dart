@@ -54,7 +54,7 @@ class GetFavRestaurantPayload {
   String? imageUrl;
   Null? openTime;
   Null? closeTime;
-  String? restaurantStatus;
+  String? userStatus;
   String? restaurantMenuType;
   String? restaurantSize;
   Null? ratings;
@@ -78,7 +78,7 @@ class GetFavRestaurantPayload {
         this.imageUrl,
         this.openTime,
         this.closeTime,
-        this.restaurantStatus,
+        this.userStatus,
         this.restaurantMenuType,
         this.restaurantSize,
         this.ratings,
@@ -102,7 +102,7 @@ class GetFavRestaurantPayload {
     imageUrl = json['imageUrl'];
     openTime = json['openTime'];
     closeTime = json['closeTime'];
-    restaurantStatus = json['restaurantStatus'];
+    userStatus = json['userStatus'];
     restaurantMenuType = json['restaurantMenuType'];
     restaurantSize = json['restaurantSize'];
     ratings = json['ratings'];
@@ -128,7 +128,7 @@ class GetFavRestaurantPayload {
     data['imageUrl'] = this.imageUrl;
     data['openTime'] = this.openTime;
     data['closeTime'] = this.closeTime;
-    data['restaurantStatus'] = this.restaurantStatus;
+    data['userStatus'] = this.userStatus;
     data['restaurantMenuType'] = this.restaurantMenuType;
     data['restaurantSize'] = this.restaurantSize;
     data['ratings'] = this.ratings;

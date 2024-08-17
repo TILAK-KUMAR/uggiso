@@ -54,6 +54,7 @@ class _MenuListScreenState extends State<MenuListScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    print('restaurant lat : ${widget.payload?.lat} and restaurant lng : ${widget.payload?.lng}');
     if (widget.restaurantId != null) loadData(widget.restaurantId);
   }
 
@@ -98,7 +99,9 @@ class _MenuListScreenState extends State<MenuListScreen> {
                     arguments: CreateOrderArgs(
                         orderlist: uniqueMenuList,
                         restaurantId: widget.restaurantId,
-                        restaurantName: widget.restaurantName!));
+                        restaurantName: widget.restaurantName!,
+                    restaurantLat: widget.payload?.lat,
+                    restaurantLng: widget.payload?.lng));
               },
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10.0),
@@ -276,7 +279,7 @@ class _MenuListScreenState extends State<MenuListScreen> {
                       ],
                     ),
                     const Gap(12),
-                    Padding(
+                    widget.foodType == 'VEG'?Container():Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 8.0),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -480,6 +483,6 @@ class _MenuListScreenState extends State<MenuListScreen> {
     setState(() {
       userId = prefs.getString('userId') ?? '';
     });
-    _menuListBloc.add(onInitialised(id: restId));
+    _menuListBloc.add(onInitialised(userId: userId,restaurantId:widget.restaurantId ));
   }
 }

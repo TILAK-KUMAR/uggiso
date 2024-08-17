@@ -1,4 +1,4 @@
-import 'dart:ffi';
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -7,11 +7,15 @@ import 'package:gap/gap.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uggiso/Bloc/CreateOrderBloc/CreateOrderEvent.dart';
 import 'package:uggiso/Bloc/CreateOrderBloc/CreateOrderState.dart';
+import 'package:uggiso/Model/OrderCheckoutModel.dart';
 import 'package:uggiso/Widgets/ui-kit/RoundedElevatedButton.dart';
+import 'package:uggiso/base/common/utils/background_service.dart';
 import 'package:uggiso/base/common/utils/fonts.dart';
 import 'package:uggiso/base/common/utils/strings.dart';
-
+import 'package:http/http.dart' as http;
 import '../Bloc/CreateOrderBloc/CreateOrderBloc.dart';
+import '../Network/PushNotificationService.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import '../app_routes.dart';
 import '../base/common/utils/colors.dart';
 import 'ui-kit/RoundedContainer.dart';
@@ -20,9 +24,12 @@ class CreateOrder extends StatefulWidget {
   final List<Map<String, dynamic>> orderlist;
   final String? restaurantId;
   final String? restaurantName;
+  final double? restLat;
+  final double? restLng;
 
   const CreateOrder(
-      {Key? key, required this.orderlist, required this.restaurantId,required this.restaurantName})
+      {Key? key, required this.orderlist, required this.restaurantId,
+        required this.restaurantName,required this.restLat,required this.restLng})
       : super(key: key);
 
   @override
@@ -39,6 +46,9 @@ class _CreateOrderState extends State<CreateOrder> {
   String userName = '';
   List menuList = [];
   bool showLoader = false;
+  bool _isUggiso_coins_selected = false;
+  double uggiso_coin_count = 0.0;
+  String txnId = '';
   final CreateOrderBloc _createOrderBloc = CreateOrderBloc();
   static const platform = MethodChannel('com.sabpaisa.integration/native');
 
@@ -95,8 +105,16 @@ class _CreateOrderState extends State<CreateOrder> {
               CircularProgressIndicator();
             }
             if (state is onLoadedHotelState) {
-              print('this is response data : ${state.data}');
-              notifyRestaurant();
+              print('this is orderId  : ${state.data.payload?.orderId}');
+              _createOrderBloc.add(OnAddTransactionData(orderId:state.data.payload!.orderId!,
+                receiverId: state.data.payload!.restaurantId!,
+                senderId:state.data.payload!.customerId!,
+              status: "SUCCESS",transactionId: txnId));
+              initializeService(widget.restLat!,widget.restLng!,state.data.payload!.orderId!);
+              Navigator.pushNamedAndRemoveUntil(
+                  context,
+                  AppRoutes.orderSuccessScreen,
+                      (Route<dynamic> route) => false);
 
             }
           },
@@ -368,6 +386,20 @@ class _CreateOrderState extends State<CreateOrder> {
                                 )
                               ],
                             ),
+                            _isUggiso_coins_selected?Gap(18):Container(),
+                            _isUggiso_coins_selected?Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  Strings.uggiso_coins,
+                                  style: AppFonts.title,
+                                ),
+                                Text(
+                                  '- $uggiso_coin_count',
+                                  style: AppFonts.title,
+                                )
+                              ],
+                            ):Container(),
                             Gap(18),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -460,87 +492,130 @@ class _CreateOrderState extends State<CreateOrder> {
       userId = prefs.getString('userId') ?? '';
       userNumber = prefs.getString('mobile_number') ?? '';
       userName = prefs.getString('user_name') ?? '';
+      _isUggiso_coins_selected = prefs.getBool('use_coins_status')??false;
+      uggiso_coin_count = prefs.getDouble('use_coins_count')??0.0;
     });
+    print('uggiso coin status : ${_isUggiso_coins_selected}');
+    print('uggiso coin count : ${uggiso_coin_count}');
   }
 
   createOrder() async {
-    /*print('this is menu list : $menuList');
+    print('this is menu list : $menuList');
     print('this is rest id : ${widget.restaurantId!}');
     print('this is user id : $userId');
     print('this is user name : $userName');
     print('this is user number : $userNumber');
     print('this is total amount : ${item_sub_total}');
     final List<Object?> result = await platform.invokeMethod('callSabPaisaSdk',
-        [userName, "lastname", "flutter@gmail.com", userNumber, item_sub_total.toString()]);
+        [userName, "", "", userNumber, item_sub_total.toString()]);
+    print('this is the transaction result : $result');
+    print('this is the transaction result status: ${result[0].toString()}');
+    print('this is the transaction result txnId: ${result[1].toString()}');
 
     String txnStatus = result[0].toString();
-    String txnId = result[1].toString();
+    setState(() {
+      txnId = result[1].toString();
+    });
+    // _createOrderBloc.add(OnPaymentClicked(
+    //     restaurantId: widget.restaurantId!,
+    //     restaurantName: widget.restaurantName!,
+    //     customerId: userId,
+    //     menuData: menuList,
+    //     orderType: "PARCEL",
+    //     paymentType: 'UPI',
+    //     orderStatus: 'CREATED',
+    //     totalAmount: item_sub_total.toInt(),
+    //     comments: 'Please do little more spicy',
+    //     timeSlot: 'null',
+    //     transMode: 'BIKE'));
 
-    print('this is transaction status : $txnStatus');
-    print('this is transaction id : $txnId');
-    print('this is transaction result : $result');*/
-    /*Fluttertoast.showToast(
-        msg: txnStatus,
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.CENTER,
-        timeInSecForIosWeb: 1,
-        backgroundColor: Colors.red,
-        textColor: Colors.white,
-        fontSize: 16.0);*/
-    _createOrderBloc.add(OnPaymentClicked(
-        restaurantId: widget.restaurantId!,
-        restaurantName: widget.restaurantName!,
-        customerId: userId,
-        menuData: menuList,
-        orderType: "PARCEL",
-        paymentType: 'UPI',
-        orderStatus: 'CREATED',
-        totalAmount: item_sub_total.toInt(),
-        comments: 'Please do little more spicy',
-        timeSlot: 'null',
-        transMode: 'BIKE',
-        fcmToken: 'hfjhjdjhh'));
+    if(txnStatus == 'SUCCESS') {
+
+      _createOrderBloc.add(OnPaymentClicked(
+          restaurantId: widget.restaurantId!,
+          restaurantName: widget.restaurantName!,
+          customerId: userId,
+          menuData: menuList,
+          orderType: "PARCEL",
+          paymentType: 'UPI',
+          orderStatus: 'CREATED',
+          totalAmount: item_sub_total.toInt(),
+          comments: 'Please do little more spicy',
+          timeSlot: 'null',
+          transMode: 'BIKE'));
+
+    }
+    else{
+      _createOrderBloc.add(OnAddTransactionData(orderId:'',
+          receiverId: widget.restaurantId!,
+          senderId:userId,
+          status: result[0].toString(),transactionId: result[1].toString()));
+
+      Fluttertoast.showToast(
+          msg: txnStatus,
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.CENTER,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0
+      );
+    }
+    // sendPushNotification('', 'order created', 'check for details');
   }
 
-  notifyRestaurant(){
-
-    Navigator.pushNamedAndRemoveUntil(
+  /*notifyRestaurant(OrderCheckoutModel data){
+    sendPushNotification(data.payload!.fcmToken.toString(), 'order created', 'check for details');
+   *//* Navigator.pushNamedAndRemoveUntil(
         context,
         AppRoutes.orderSuccessScreen,
-            (Route<dynamic> route) => false);
-  }
+            (Route<dynamic> route) => false);*//*
+  }*/
 
-  Future<void> sendPushNotification(String token, String title, String body) async {
-    final String serverKey = 'YOUR_FIREBASE_SERVER_KEY';
-    final String firebaseUrl = 'https://fcm.googleapis.com/fcm/send';
+ /* Future<void> sendPushNotification(String token, String title, String body) async {
+    try {
+      final String serverKey = await PushNotificationService.getAccessToken();
+      print('this is fcm token : $serverKey');
+      // await PushNotificationService().getEstimatedTravelTime(12.900740,77.764267);
 
-    final Map<String, String> headers = {
-      'Content-Type': 'application/json',
-      'Authorization': 'key=$serverKey',
-    };
+      const String firebaseUrl = 'https://fcm.googleapis.com/v1/projects/uggiso-customer/messages:send';
 
-    final Map<String, dynamic> notificationData = {
-      'notification': {'title': title, 'body': body},
-      'priority': 'high',
-      'data': {'click_action': 'FLUTTER_NOTIFICATION_CLICK', 'id': '1', 'status': 'done'}
-    };
+      final Map<String, String> headers = {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $serverKey',
+      };
 
-    final Map<String, dynamic> requestData = {
-      'to': token,
-      'data': notificationData,
-    };
+      final Map<String, dynamic> notificationData = {'title': title, 'body': body,};
 
-    final http.Response response = await http.post(
-      Uri.parse(firebaseUrl),
-      headers: headers,
-      body: json.encode(requestData),
-    );
+      final Map<String, dynamic> message = {
+        'message': {
+          'token': 'eVZyDSCNRH-LuvLf9LsZc5:APA91bF89qJfhldrtURgGBRZWdaZq1aISob61yX_6wi_S99MIAKHeEIGZwt1dXm_pljvuBk-5dkom1XgofdcbEk-zo4UtQuIrFLuW4E1KuYVdTmIrpeHiRzfQdZWU-M2utcreR3EoOuL',
+          'notification': notificationData,
+          'data': {
+            'click_action': 'FLUTTER_NOTIFICATION_CLICK',
+            'id': '1',
+            'status': 'done',
+          },
+        },
+      };
 
-    if (response.statusCode == 200) {
-      print('Notification sent successfully');
-    } else {
-      print('Notification could not be sent');
+
+      final http.Response response = await http.post(
+          Uri.parse(firebaseUrl),
+          headers: headers,
+          body: jsonEncode(message)
+      );
+
+      if (response.statusCode == 200) {
+        print('Notification sent successfully');
+      } else {
+        print('Notification could not be sent. Status code: ${response.statusCode}');
+        print('Response body: ${response.body}');
+      }
+    }catch(e){
+      print('An error occurred while sending the notification: $e');
+
     }
-  }
+  }*/
 
 }

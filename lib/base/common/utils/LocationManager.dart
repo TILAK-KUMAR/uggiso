@@ -1,22 +1,6 @@
 import 'package:geolocator/geolocator.dart';
-///
-/// 🔥🔥🔥🔥🔥
-/// 🔥Note: Before calling this [getCurrentPosition] from caller, Please add below
-/// permission on respective platform.
-///
-/// 🔥Android:-
-/// <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-/// <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-///
-/// 🔥IOS:-
-/// <key>NSLocationWhenInUseUsageDescription</key>
-/// <string>This app needs access to location when open.</string>
-/// <key>NSLocationAlwaysUsageDescription</key>
-/// <string>This app needs access to location when in the background.</string>
-///
-/// 🔥🔥🔥🔥🔥🔥
-/// LocationManager this class is used to get current position
-///
+import 'package:permission_handler/permission_handler.dart';
+
 class LocationManager {
   /// Determine the current position of the device.
   ///
@@ -56,7 +40,9 @@ class LocationManager {
     }
 
     try {
-      var position = await Geolocator.getCurrentPosition();
+      var position = await Geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.high
+      );
       return LocationInfo(
         latitude: position.latitude,
         longitude: position.longitude,
@@ -68,6 +54,16 @@ class LocationManager {
         longitude: 0,
         permissionState: PermissionState.none,
       );
+    }
+  }
+
+  Future<void> _requestPermission() async {
+    var status = await Permission.location.request();
+    if (status.isDenied) {
+      return Future.error('Location permissions are denied.');
+    }
+    if (status.isPermanentlyDenied) {
+      await openAppSettings();
     }
   }
 

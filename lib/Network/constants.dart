@@ -10,9 +10,17 @@ class Constants{
   static String addFavMenu = 'favmenu/savefavmenu';
   static String addFavRestaurant = 'favrestaurant/savefavrestaurant';
   static String restaurantNearBy = 'restaurant/nearfoods';
-  static String getFavMenu = 'favmenu/';
+  static String getFavMenu = 'menu/restofavs';
   static String getFavRestaurant = 'favrestaurant/';
   static String createOrder = 'order/create';
   static String myOrders = 'order/myorders/';
   static String getRestaurantByMenuType = 'restaurant/bymenutype/';
+  static String getMyWallet = 'user/mywallet/';
+  static String saveIntroducers = 'referer/saveIntroducers';
+  static String paymentDetails = 'payment/addpays';
+  static String restaurantOnway = 'restaurant/onway';
+  static String update_order_status = 'order/orderStatus';
+  static String update_device = 'user/updatedevice';
+  static String remove_fav_restaurant = 'favrestaurant/removefavresto';
+  static String remove_fav_menu = 'favmenu/removefavmenu';
 }

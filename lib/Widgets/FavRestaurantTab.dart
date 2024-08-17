@@ -49,7 +49,8 @@ class _FavRestaurantTabState extends State<FavRestaurantTab> {
                 padding: const EdgeInsets.only(top:16.0),
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                  child: HotelListGrid(state.data.payload,userId),
+                  // child: HotelListGrid(state.data.payload,userId),
+                  child: Container(),
                 ),
               );
             }

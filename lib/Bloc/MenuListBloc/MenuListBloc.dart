@@ -2,6 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../Model/AddFavoriteMenuModel.dart';
 import '../../Model/MenuListModel.dart';
+import '../../Model/RemoveFavRestaurantModel.dart';
 import '../../Network/NetworkError.dart';
 import '../../Network/apiRepository.dart';
 import 'MenuListEvent.dart';
@@ -11,12 +12,13 @@ class MenuListBloc extends Bloc<MenuListEvent, MenuListState> {
   MenuListBloc() : super(FetchListState()){
     final ApiRepository _apiRepository = ApiRepository();
     AddFavoriteMenuModel? addFavoriteMenuModel;
+    RemoveFavRestaurantModel? data;
 
 
     on<onInitialised>((event,emit)async{
       try{
         emit(FetchingState()) ;
-        final res = await _apiRepository.getMenuList(event.id);
+        final res = await _apiRepository.getMenuList(event.userId,event.restaurantId);
         if(res.statusCode == 200) {
           final List<Payload>? items = res.payload; // Extract the list from the response
           emit(FetchedListsState(items));
@@ -45,6 +47,29 @@ class MenuListBloc extends Bloc<MenuListEvent, MenuListState> {
           emit(ErrorState(addFavoriteMenuModel?.message));
         } else {
           emit(onFavMenuAddedState(addFavoriteMenuModel!));
+        }
+      } on NetworkError {
+        print('this is network error');
+      }
+    });
+
+    on<OnDeleteFavMenu>((event, emit) async {
+      try {
+        emit(FetchingState());
+        print('this is userId : ${event.userId}');
+        print('this is menu ID : ${event.menuId}');
+        if (event.userId == null || event.menuId == null) {
+          // Handle the case where userId or restaurantId is null
+          print('this is userId : ${event.userId}');
+          print('this is restaurant ID : ${event.menuId}');
+          emit(ErrorState("userId or restaurantId is null"));
+          return;
+        }
+        data = (await _apiRepository.removeFavMenu(event.userId!, event.menuId!));
+        if (data?.statusCode!=200) {
+          emit(ErrorState(data?.message));
+        } else {
+          emit(onDeleteMenuAddedState(data!));
         }
       } on NetworkError {
         print('this is network error');
