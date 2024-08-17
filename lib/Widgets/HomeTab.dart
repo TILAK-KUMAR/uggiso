@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
@@ -64,133 +66,136 @@ class _HomeTabState extends State<HomeTab> {
             }
           }
         },
-        child: Scaffold(
-          backgroundColor: AppColors.textFieldBorderColor,
-          appBar: AppBar(
-            backgroundColor: AppColors.appPrimaryColor,
-            leading: IconButton(
-              onPressed:(){
-                Navigator.pushNamed(context, AppRoutes.profileScreen);
-
-              },
-              icon:Image.asset(
-                'assets/ic_person.png',
-                width: 24, // Adjust width as needed
-                height: 24,
-                color: AppColors.white,// Adjust height as needed
+        child: WillPopScope(
+          onWillPop: ()=>exit(0),
+          child: Scaffold(
+            backgroundColor: AppColors.textFieldBorderColor,
+            appBar: AppBar(
+              backgroundColor: AppColors.appPrimaryColor,
+              leading: IconButton(
+                onPressed:(){
+                  Navigator.pushNamed(context, AppRoutes.profileScreen);
+          
+                },
+                icon:Image.asset(
+                  'assets/ic_person.png',
+                  width: 24, // Adjust width as needed
+                  height: 24,
+                  color: AppColors.white,// Adjust height as needed
+                ),
               ),
-            ),
-            elevation: 0,
-            actions: [
-             /* IconButton(
-                onPressed: ()=>Navigator.pushNamed(context, AppRoutes.rewards),
-                icon: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Image.asset(
-                    'assets/ic_bell.png',
+              elevation: 0,
+              actions: [
+               /* IconButton(
+                  onPressed: ()=>Navigator.pushNamed(context, AppRoutes.rewards),
+                  icon: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Image.asset(
+                      'assets/ic_bell.png',
+                      color: AppColors.white,
+                    ),
+                  ),
+                ),*/
+                /*IconButton(
+                  onPressed: ()=>Navigator.pushNamed(context, AppRoutes.rewards),
+                  icon: Image.asset(
+                    'assets/ic_wallet.png',
+                    width: 28,
+                    height: 28,
                     color: AppColors.white,
                   ),
-                ),
-              ),*/
-              /*IconButton(
-                onPressed: ()=>Navigator.pushNamed(context, AppRoutes.rewards),
-                icon: Image.asset(
-                  'assets/ic_wallet.png',
-                  width: 28,
-                  height: 28,
-                  color: AppColors.white,
-                ),
-              )*/
-            ],
-          ),
-          floatingActionButton: FloatingActionButton(
-            backgroundColor: AppColors.appPrimaryColor,
-            onPressed: () {
-              setState(() {
-                if (_isShowMaps) {
-                  _isShowMaps = false;
-                } else {
-                  _isShowMaps = true;
-                }
-              });
-            },
-            tooltip: 'Increment',
-            elevation: 8.0,
-            child: _isShowMaps
-                ? const Icon(
-              Icons.location_on,
-              color: AppColors.white,
-              size: 32,
-            )
-                : const Icon(
-              Icons.list_alt_rounded,
-              color: AppColors.white,
-              size: 32,
+                )*/
+              ],
             ),
-          ),
-          body: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              HomeHeaderContainer(),
-              BlocBuilder<HomeBloc, HomeState>(
-                builder: (BuildContext context, HomeState state) {
-                  if (state is onLoadedHotelState) {
-                    print('this is state data : ${state.data.payload}');
-                    return Expanded(
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Gap(24),
-                              const Text(
-                                Strings.near_by_restaurants,
-                                style: AppFonts.subHeader,
-                              ),
-                              const Gap(12),
-                              _isShowMaps ? HotelListGrid(
-                                  state.data.payload,userId,latitude,longitude,selectedMode,selectedDistance):GetHotelListinMap(state.data.payload,userId) ,
-                            ],
-                          ),
-                        ));
-                    // Navigator.pushNamed(context, AppRoutes.verifyOtp);
-                  } else if (state is ErrorState) {
-                    // isInvalidCredentials =
-
-                    return Expanded(
-                      child: Column(
-                        children: [
-                          Gap(MediaQuery
-                              .of(context)
-                              .size
-                              .height * 0.2),
-                          Image.asset(
-                            'assets/ic_no_hotel.png',
-                            width: 100,
-                            height: 100,
-                            fit: BoxFit.fitWidth,
-                          ),
-                          const Gap(20),
-                          Container(
-                            child: Center(
-                              child: Text(
-                                '${state.message}',
-                                style: AppFonts.title,
+            floatingActionButton: FloatingActionButton(
+              backgroundColor: AppColors.appPrimaryColor,
+              onPressed: () {
+                setState(() {
+                  if (_isShowMaps) {
+                    _isShowMaps = false;
+                  } else {
+                    _isShowMaps = true;
+                  }
+                });
+              },
+              tooltip: 'Increment',
+              elevation: 8.0,
+              child: _isShowMaps
+                  ? const Icon(
+                Icons.location_on,
+                color: AppColors.white,
+                size: 32,
+              )
+                  : const Icon(
+                Icons.list_alt_rounded,
+                color: AppColors.white,
+                size: 32,
+              ),
+            ),
+            body: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                HomeHeaderContainer(),
+                BlocBuilder<HomeBloc, HomeState>(
+                  builder: (BuildContext context, HomeState state) {
+                    if (state is onLoadedHotelState) {
+                      print('this is state data : ${state.data.payload}');
+                      return Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Gap(24),
+                                const Text(
+                                  Strings.near_by_restaurants,
+                                  style: AppFonts.subHeader,
+                                ),
+                                const Gap(12),
+                                _isShowMaps ? HotelListGrid(
+                                    state.data.payload,userId,latitude,longitude,selectedMode,selectedDistance):GetHotelListinMap(state.data.payload,userId) ,
+                              ],
+                            ),
+                          ));
+                      // Navigator.pushNamed(context, AppRoutes.verifyOtp);
+                    } else if (state is ErrorState) {
+                      // isInvalidCredentials =
+          
+                      return Expanded(
+                        child: Column(
+                          children: [
+                            Gap(MediaQuery
+                                .of(context)
+                                .size
+                                .height * 0.2),
+                            Image.asset(
+                              'assets/ic_no_hotel.png',
+                              width: 100,
+                              height: 100,
+                              fit: BoxFit.fitWidth,
+                            ),
+                            const Gap(20),
+                            Container(
+                              child: Center(
+                                child: Text(
+                                  '${state.message}',
+                                  style: AppFonts.title,
+                                ),
                               ),
                             ),
-                          ),
-                        ],
-                      ),
-                    );
-                  } else if (state is LoadingHotelState) {
-                    return const HomeScreen();
-                  } else {
-                    return Container();
-                  }
-                },
-              ),
-            ],
+                          ],
+                        ),
+                      );
+                    } else if (state is LoadingHotelState) {
+                      return const HomeScreen();
+                    } else {
+                      return Container();
+                    }
+                  },
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -357,19 +362,24 @@ class _HomeTabState extends State<HomeTab> {
                   SizedBox(width: 8,),
                   Flexible(
                     flex: 2,
-                    child: RoundedContainer(
-                        width: MediaQuery
-                            .of(context)
-                            .size
-                            .width,
-                        height: MediaQuery
-                            .of(context)
-                            .size
-                            .height * 0.05,
-                        color: AppColors.white,
-                        cornerRadius: 8,
-                        padding: 0,
-                        child:Center(child: const Text('By Route', style: AppFonts.title,))),
+                    child: InkWell(
+                      onTap: (){
+                        Navigator.pushNamed(context, AppRoutes.getRouteMap);
+                      },
+                      child: RoundedContainer(
+                          width: MediaQuery
+                              .of(context)
+                              .size
+                              .width,
+                          height: MediaQuery
+                              .of(context)
+                              .size
+                              .height * 0.05,
+                          color: AppColors.white,
+                          cornerRadius: 8,
+                          padding: 0,
+                          child:Center(child: const Text('By Route', style: AppFonts.title,))),
+                    ),
                   ),
                 ],
               ),

@@ -19,4 +19,8 @@ class Constants{
   static String saveIntroducers = 'referer/saveIntroducers';
   static String paymentDetails = 'payment/addpays';
   static String restaurantOnway = 'restaurant/onway';
+  static String update_order_status = 'order/orderStatus';
+  static String update_device = 'user/updatedevice';
+  static String remove_fav_restaurant = 'favrestaurant/removefavresto';
+  static String remove_fav_menu = 'favmenu/removefavmenu';
 }

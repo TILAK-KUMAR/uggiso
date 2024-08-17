@@ -121,18 +121,29 @@ class _MenuItemCardState extends State<MenuItemCard> {
                               strokeAlign: -4));
                     } else if (state is onFavMenuAddedState) {
                       return InkWell(
-                          onTap: () {},
+                          onTap: () {
+                            _menuListBloc.add(OnDeleteFavMenu(
+                                userId: widget.userId,
+                                menuId: widget.listData.menuId));
+                          },
                           child: Image.asset(
                             'assets/ic_heart_fill.png',
                             width: 22,
                             height: 22,
                           ));
                     } else {
-                      return widget.listData.favourite==true?Image.asset(
-                        'assets/ic_heart_fill.png',
-                        width: 20,
-                        height: 20,
-                        color: AppColors.appPrimaryColor,
+                      return widget.listData.favourite==true?InkWell(
+                        onTap: () {
+                          _menuListBloc.add(OnDeleteFavMenu(
+                              userId: widget.userId,
+                              menuId: widget.listData.menuId));
+                        },
+                        child: Image.asset(
+                          'assets/ic_heart_fill.png',
+                          width: 20,
+                          height: 20,
+                          color: AppColors.appPrimaryColor,
+                        ),
                       ):InkWell(
                           onTap: () {
                             _menuListBloc.add(OnAddFavMenu(

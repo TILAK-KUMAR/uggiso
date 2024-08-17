@@ -28,3 +28,14 @@ class OnAddFavMenu extends MenuListEvent{
   @override
   List<Object> get props => [userId!,menuId!];
 }
+
+class OnDeleteFavMenu extends MenuListEvent{
+  final String? userId;
+  final String? menuId;
+
+
+  const OnDeleteFavMenu({required this.userId,required this.menuId});
+
+  @override
+  List<Object> get props => [userId!,menuId!];
+}

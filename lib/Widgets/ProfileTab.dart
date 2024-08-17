@@ -55,7 +55,7 @@ class _ProfileTabState extends State<ProfileTab> {
           ProfileHeader(
             userName: userName,
             mail: userNumber,
-            address: 'Varthur Bangalore',
+            address: '',
             imageUrl: 'assets/ic_person.png',
           ),
           SizedBox(

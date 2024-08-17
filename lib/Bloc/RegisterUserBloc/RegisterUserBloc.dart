@@ -21,7 +21,7 @@ class RegisterUserBloc extends Bloc<RegisterUserEvent, RegisterUserState> {
         if(event.name.isNotEmpty) {
           //String name,String number,String userType,String deviceId,String token
          data =  await _apiRepository.registerUser(event.name,event.number,
-              'CUSTOMER',event.deviceId,event.token);
+              'CUSTOMER',event.deviceId,event.token,event.status);
          if(data.payload!=null ||data.payload?.userId!=null && data.statusCode==200){
            emit(onLoadedState(data.payload!.userId!));
          }

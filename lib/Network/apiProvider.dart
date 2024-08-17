@@ -3,9 +3,11 @@ import 'package:uggiso/Model/AddFavoriteMenuModel.dart';
 import 'package:uggiso/Model/GetNearByResaturantModel.dart';
 import 'package:uggiso/Model/MenuListModel.dart';
 import 'package:uggiso/Model/MyOrdersModel.dart';
+import 'package:uggiso/Model/PaymentDetailsModel.dart';
 import 'package:uggiso/Model/RegisterUserModel.dart';
 import 'package:uggiso/Model/RestaurantByMenuTypeModel.dart';
 import 'package:uggiso/Model/RestaurantDetailsModel.dart';
+import 'package:uggiso/Model/UpdateOrderModel.dart';
 import 'package:uggiso/Model/VerifyOtpModel.dart';
 import 'package:uggiso/Model/otpModel.dart';
 import 'package:uggiso/Network/constants.dart';
@@ -13,6 +15,7 @@ import 'package:uggiso/Network/constants.dart';
 import '../Model/GetFavMenuModel.dart';
 import '../Model/GetFavRestaurantModel.dart';
 import '../Model/OrderCheckoutModel.dart';
+import '../Model/RemoveFavRestaurantModel.dart';
 import '../Model/SaveIntroducerModel.dart';
 import '../Model/WalletDetailsModel.dart';
 
@@ -47,13 +50,14 @@ class ApiProvider {
   }
 
   Future<RegisterUserModel> registerUser(String name, String number,
-      String userType, String deviceId, String token) async {
+      String userType, String deviceId, String token, String status) async {
     try {
       Response response =
           await _dio.post('${_url}${Constants.registerUser}', data: {
         "name": name,
         "phoneNumber": number,
         "userType": userType,
+        "userStatus": status,
         "deviceData": deviceId,
         "fcmToken": token
       });
@@ -331,39 +335,101 @@ class ApiProvider {
     }
   }
 
-/*  Future<void> paymentDetails(
-      String orderId,String receiverId,String senderId,String payerName,String status,
-      String statusCode,String responseCode,String sabpaisaTxnId,String bankName,String bankMessage,
-      String bankTxnId,String sabpaisaErrorCode,String refundStatusCode,String bankErrorCode, String transactionId,
-      String chargeBackStatus,String settlementStatus) async {
+  Future<UpdateOrderModel> updateOrderStatus(
+      String orderId,String orderStatus) async {
     try {
-      Response response = await _dio.post('${_url}${Constants.saveIntroducers}',
+      Response response = await _dio.put('${_url}${Constants.update_order_status}',
+          data: {
+            "orderId": orderId,
+            "orderStatus": orderStatus
+
+          });
+      print("${response.data}");
+
+      return UpdateOrderModel.fromJson(response.data);
+    } catch (error, stacktrace) {
+      print("Exception occured: $error stackTrace: $stacktrace");
+      return UpdateOrderModel.withError(
+          "Data not found / Connection issue");
+    }
+  }
+
+  Future<UpdateOrderModel> updateDevice(
+      String orderId,String orderStatus) async {
+    try {
+      Response response = await _dio.put('${_url}${Constants.update_device}',
+          data: {
+            "userId": orderId,
+            "deviceData": orderStatus,
+            "fcmToken": orderStatus,
+            "deviceUserType": "CUSTOMER"
+
+          });
+      print("${response.data}");
+
+      return UpdateOrderModel.fromJson(response.data);
+    } catch (error, stacktrace) {
+      print("Exception occured: $error stackTrace: $stacktrace");
+      return UpdateOrderModel.withError(
+          "Data not found / Connection issue");
+    }
+  }
+
+  Future<RemoveFavRestaurantModel> removeFavRestaurant(
+      String userId, String restaurantId) async {
+    try {
+      Response response = await _dio.delete('${_url}${Constants.remove_fav_restaurant}',
+          data: {
+            "userId": userId,
+            "restaurantId": restaurantId,
+          });
+      print("${response.data}");
+
+      return RemoveFavRestaurantModel.fromJson(response.data);
+    } catch (error, stacktrace) {
+      print("Exception occured: $error stackTrace: $stacktrace");
+      return RemoveFavRestaurantModel.withError(
+          "Data not found / Connection issue");
+    }
+  }
+  Future<RemoveFavRestaurantModel> removeFavMenu(
+      String userId, String menuId) async {
+    try {
+      Response response = await _dio.delete('${_url}${Constants.remove_fav_restaurant}',
+          data: {
+            "userId": userId,
+            "menuId": menuId,
+          });
+      print("${response.data}");
+
+      return RemoveFavRestaurantModel.fromJson(response.data);
+    } catch (error, stacktrace) {
+      print("Exception occured: $error stackTrace: $stacktrace");
+      return RemoveFavRestaurantModel.withError(
+          "Data not found / Connection issue");
+    }
+  }
+
+  Future<PaymentDetailsModel> addPayDetails(
+      String orderId, String receiverId,String senderId,String status,String transactionId) async {
+    try {
+      Response response = await _dio.post('${_url}${Constants.paymentDetails}',
           data: {
             "orderId":orderId,
             "receiverId": receiverId,
             "senderId": senderId,
-            "payerName": payerName,
             "status": status,
-            "statusCode": statusCode,
-            "responseCode": responseCode,
-            "sabpaisaTxnId": sabpaisaTxnId,
-            "bankName": bankName,
-            "bankMessage": bankMessage,
-            "bankTxnId": bankTxnId,
-            "sabpaisaErrorCode": sabpaisaErrorCode,
-            "refundStatusCode": refundStatusCode,
-            "bankErrorCode": bankErrorCode,
-            "transactionId": transactionId,
-            "chargeBackStatus": chargeBackStatus,
-            "settlementStatus": settlementStatus
+            "statusCode": "200",
+            "transactionId": transactionId
           });
       print("${response.data}");
 
-      return SaveIntroducerModel.fromJson(response.data);
+      return PaymentDetailsModel.fromJson(response.data);
     } catch (error, stacktrace) {
       print("Exception occured: $error stackTrace: $stacktrace");
-      return SaveIntroducerModel.withError(
+      return PaymentDetailsModel.withError(
           "Data not found / Connection issue");
     }
-  }*/
+  }
+
 }

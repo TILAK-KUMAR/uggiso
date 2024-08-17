@@ -23,6 +23,7 @@ class HotelListGrid extends StatelessWidget {
 
   final List<String> items = List.generate(10, (index) => 'Item $index');
   final HomeBloc _homeBloc = HomeBloc();
+  bool _isFavAdded = false;
 
   @override
   Widget build(BuildContext context) {
@@ -40,23 +41,54 @@ class HotelListGrid extends StatelessWidget {
             updateHotelData(userId!, lat!, lng!, distance!, travelMode!);
 
           }
+          if(state is onLoadedHotelState){
+            print('this is loaded state : ${state.data.payload?.first.favourite}');
+          }
         },
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8.0),
-          child: GridView.builder(
-            shrinkWrap: true,
+        child: BlocBuilder<HomeBloc,HomeState>(
+          builder: (context,state) {
+            if(state is LoadingHotelState){
+              return Center(child: CircularProgressIndicator(color: AppColors.appPrimaryColor,),);
+            }
+            else if(state is onLoadedHotelState){
+              return Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8.0),
+                child: GridView.builder(
+                  shrinkWrap: true,
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    crossAxisSpacing: 10,
+                    mainAxisSpacing: 10,
+                    childAspectRatio: 0.9,
+                  ),
+                  itemCount:state.data.payload?.length,
+                  itemBuilder: (context, index) {
+                    return GridItem(context, state.data.payload?[index]);
+                  },
+                ),
+              );
+            }
+              else{
+              return Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8.0),
+                child: GridView.builder(
+                  shrinkWrap: true,
 
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              crossAxisSpacing: 10,
-              mainAxisSpacing: 10,
-              childAspectRatio: 0.9,
-            ),
-            itemCount: payload?.length,
-            itemBuilder: (context, index) {
-              return GridItem(context, payload?[index]);
-            },
-          ),
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    crossAxisSpacing: 10,
+                    mainAxisSpacing: 10,
+                    childAspectRatio: 0.9,
+                  ),
+                  itemCount: payload?.length,
+                  itemBuilder: (context, index) {
+                    return GridItem(context, payload?[index]);
+                  },
+                ),
+              );
+            }
+
+          }
         ),
       ),
     );
@@ -207,26 +239,11 @@ class HotelListGrid extends StatelessWidget {
 
                     Align(
                       alignment: Alignment.bottomRight,
-                      child: BlocBuilder<HomeBloc, HomeState>(
-                          builder: (BuildContext context, HomeState state) {
-                          if (state is onFavHotelAddedState) {
-                              return IconButton(
-                                padding: EdgeInsets.zero,
-                                  onPressed: () {
-                                    _homeBloc.add(OnDeleteFavRestaurant(
-                                        userId:userId));
-                                  },
-                                  icon: Image.asset(
-                                    'assets/ic_heart_fill.png',
-                                    width: 24,
-                                    height: 24,
-                                  ));
-                            } else {
-                              return item.favourite==true?IconButton(
+                      child: item.favourite==true?IconButton(
                                   padding: EdgeInsets.zero,
                                   onPressed: () {
                                     _homeBloc.add(OnDeleteFavRestaurant(
-                                        userId:userId));
+                                        userId:userId,restaurantId: item.restaurantId));
                                   },
                                   icon: Image.asset(
                                     'assets/ic_heart_fill.png',
@@ -245,9 +262,9 @@ class HotelListGrid extends StatelessWidget {
                                     width: 24,
                                     height: 24,
                                     color: AppColors.appPrimaryColor,
-                                  ));
-                            }
-                          }),
+                                  )
+
+                          ),
                     ),
                   ],
                 ),
@@ -258,5 +275,5 @@ class HotelListGrid extends StatelessWidget {
       ));
   updateHotelData(String userId,double lat, double lng, double distance,String mode){
     _homeBloc.add(
-        OnInitilised(userId:userId,lat: lat, lag: lng, distance: distance,mode: mode));  }
+        OnUpdateFavOrder(userId:userId,lat: lat, lag: lng, distance: distance,mode: mode));  }
 }

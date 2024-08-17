@@ -24,9 +24,12 @@ class CreateOrder extends StatefulWidget {
   final List<Map<String, dynamic>> orderlist;
   final String? restaurantId;
   final String? restaurantName;
+  final double? restLat;
+  final double? restLng;
 
   const CreateOrder(
-      {Key? key, required this.orderlist, required this.restaurantId,required this.restaurantName})
+      {Key? key, required this.orderlist, required this.restaurantId,
+        required this.restaurantName,required this.restLat,required this.restLng})
       : super(key: key);
 
   @override
@@ -45,6 +48,7 @@ class _CreateOrderState extends State<CreateOrder> {
   bool showLoader = false;
   bool _isUggiso_coins_selected = false;
   double uggiso_coin_count = 0.0;
+  String txnId = '';
   final CreateOrderBloc _createOrderBloc = CreateOrderBloc();
   static const platform = MethodChannel('com.sabpaisa.integration/native');
 
@@ -101,7 +105,12 @@ class _CreateOrderState extends State<CreateOrder> {
               CircularProgressIndicator();
             }
             if (state is onLoadedHotelState) {
-              initializeService();
+              print('this is orderId  : ${state.data.payload?.orderId}');
+              _createOrderBloc.add(OnAddTransactionData(orderId:state.data.payload!.orderId!,
+                receiverId: state.data.payload!.restaurantId!,
+                senderId:state.data.payload!.customerId!,
+              status: "SUCCESS",transactionId: txnId));
+              initializeService(widget.restLat!,widget.restLng!,state.data.payload!.orderId!);
               Navigator.pushNamedAndRemoveUntil(
                   context,
                   AppRoutes.orderSuccessScreen,
@@ -377,6 +386,20 @@ class _CreateOrderState extends State<CreateOrder> {
                                 )
                               ],
                             ),
+                            _isUggiso_coins_selected?Gap(18):Container(),
+                            _isUggiso_coins_selected?Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  Strings.uggiso_coins,
+                                  style: AppFonts.title,
+                                ),
+                                Text(
+                                  '- $uggiso_coin_count',
+                                  style: AppFonts.title,
+                                )
+                              ],
+                            ):Container(),
                             Gap(18),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -472,6 +495,8 @@ class _CreateOrderState extends State<CreateOrder> {
       _isUggiso_coins_selected = prefs.getBool('use_coins_status')??false;
       uggiso_coin_count = prefs.getDouble('use_coins_count')??0.0;
     });
+    print('uggiso coin status : ${_isUggiso_coins_selected}');
+    print('uggiso coin count : ${uggiso_coin_count}');
   }
 
   createOrder() async {
@@ -484,9 +509,28 @@ class _CreateOrderState extends State<CreateOrder> {
     final List<Object?> result = await platform.invokeMethod('callSabPaisaSdk',
         [userName, "", "", userNumber, item_sub_total.toString()]);
     print('this is the transaction result : $result');
+    print('this is the transaction result status: ${result[0].toString()}');
+    print('this is the transaction result txnId: ${result[1].toString()}');
+
     String txnStatus = result[0].toString();
+    setState(() {
+      txnId = result[1].toString();
+    });
+    // _createOrderBloc.add(OnPaymentClicked(
+    //     restaurantId: widget.restaurantId!,
+    //     restaurantName: widget.restaurantName!,
+    //     customerId: userId,
+    //     menuData: menuList,
+    //     orderType: "PARCEL",
+    //     paymentType: 'UPI',
+    //     orderStatus: 'CREATED',
+    //     totalAmount: item_sub_total.toInt(),
+    //     comments: 'Please do little more spicy',
+    //     timeSlot: 'null',
+    //     transMode: 'BIKE'));
 
     if(txnStatus == 'SUCCESS') {
+
       _createOrderBloc.add(OnPaymentClicked(
           restaurantId: widget.restaurantId!,
           restaurantName: widget.restaurantName!,
@@ -499,8 +543,13 @@ class _CreateOrderState extends State<CreateOrder> {
           comments: 'Please do little more spicy',
           timeSlot: 'null',
           transMode: 'BIKE'));
+
     }
     else{
+      _createOrderBloc.add(OnAddTransactionData(orderId:'',
+          receiverId: widget.restaurantId!,
+          senderId:userId,
+          status: result[0].toString(),transactionId: result[1].toString()));
 
       Fluttertoast.showToast(
           msg: txnStatus,

@@ -3,8 +3,10 @@ import 'package:http/http.dart';
 import 'package:uggiso/Model/AddFavoriteMenuModel.dart';
 import 'package:uggiso/Model/MenuListModel.dart';
 import 'package:uggiso/Model/MyOrdersModel.dart';
+import 'package:uggiso/Model/PaymentDetailsModel.dart';
 import 'package:uggiso/Model/RegisterUserModel.dart';
 import 'package:uggiso/Model/RestaurantDetailsModel.dart';
+import 'package:uggiso/Model/UpdateOrderModel.dart';
 import 'package:uggiso/Model/VerifyOtpModel.dart';
 import 'package:uggiso/Model/otpModel.dart';
 import 'package:uggiso/Network/apiProvider.dart';
@@ -13,6 +15,7 @@ import '../Model/GetFavMenuModel.dart';
 import '../Model/GetFavRestaurantModel.dart';
 import '../Model/GetNearByResaturantModel.dart';
 import '../Model/OrderCheckoutModel.dart';
+import '../Model/RemoveFavRestaurantModel.dart';
 import '../Model/RestaurantByMenuTypeModel.dart';
 import '../Model/SaveIntroducerModel.dart';
 import '../Model/WalletDetailsModel.dart';
@@ -30,8 +33,8 @@ class ApiRepository {
     return _provider.verifyOtp(number,otp);
   }
 
-  Future<RegisterUserModel> registerUser(String name,String number,String userType,String deviceId,String token) {
-    return _provider.registerUser(name,number,userType,deviceId,token);
+  Future<RegisterUserModel> registerUser(String name,String number,String userType,String deviceId,String token, String status) {
+    return _provider.registerUser(name,number,userType,deviceId,token,status);
   }
 
   Future<RestaurantDetailsModel> getResaturantDetails(String id) {
@@ -93,13 +96,21 @@ class ApiRepository {
     return _provider.getRestaurantOnway( userId,originLat, originLang, destinationLat,destinationLang,mode);
   }
 
-/*  Future<void> paymentDetails(String orderId,String receiverId,String senderId,String payerName,String status,
-      String statusCode,String responseCode,String sabpaisaTxnId,String bankName,String bankMessage,
-      String bankTxnId,String sabpaisaErrorCode,String refundStatusCode,String bankErrorCode, String transactionId,
-      String chargeBackStatus,String settlementStatus) {
-    return _provider.paymentDetails(orderId,receiverId,senderId,payerName,status,statusCode,responseCode,sabpaisaTxnId,
-        bankName,bankMessage,bankTxnId,sabpaisaErrorCode,refundStatusCode,bankErrorCode,transactionId,chargeBackStatus,settlementStatus);
-  }*/
+  Future<UpdateOrderModel> updateOrderStatus(String orderId,String orderStatus) {
+    return _provider.updateOrderStatus( orderId,orderStatus);
+  }
+
+  Future<RemoveFavRestaurantModel> removeFavRestaurant(String userId, String restaurantId) {
+    return _provider.removeFavRestaurant( userId,restaurantId);
+  }
+
+  Future<RemoveFavRestaurantModel> removeFavMenu(String userId, String menuId) {
+    return _provider.removeFavMenu( userId,menuId);
+  }
+
+  Future<PaymentDetailsModel> addPayDetails(String orderId, String receiverId,String senderId,String status,String transactionId) {
+    return _provider.addPayDetails( orderId,receiverId,senderId,status,transactionId);
+  }
 
 
 }

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uggiso/Bloc/RegisterUserBloc/RegisterUserEvent.dart';
 import 'package:uggiso/Widgets/ui-kit/RoundedElevatedButton.dart';
 import 'package:uggiso/Widgets/ui-kit/TextFieldCurvedEdges.dart';
-
 import '../Bloc/RegisterUserBloc/RegisterUserBloc.dart';
 import '../Bloc/RegisterUserBloc/RegisterUserState.dart';
 import '../app_routes.dart';
@@ -41,7 +41,16 @@ class _ReferralScreenState extends State<ReferralScreen> {
 
             Navigator.popAndPushNamed(context, AppRoutes.homeScreen);
           } else if (state is ErrorState) {
-
+            _numberController.clear();
+            Fluttertoast.showToast(
+                msg: state.message.toString(),
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.BOTTOM,
+                timeInSecForIosWeb: 1,
+                backgroundColor: Colors.red,
+                textColor: Colors.white,
+                fontSize: 16.0
+            );
           }
         },
         child: Scaffold(
@@ -50,6 +59,25 @@ class _ReferralScreenState extends State<ReferralScreen> {
                   leading: Container(),
                   backgroundColor: AppColors.white,
                   elevation: 0.0,
+                  title: Align(
+                    alignment: Alignment.centerRight,
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.pushReplacementNamed(context, AppRoutes.homeScreen);
+                      },
+                      child:  Padding(
+                        padding: EdgeInsets.all(16.0),
+                        child: Align(
+                          alignment: Alignment.topRight,
+                          child: Text(
+                            textAlign: TextAlign.center,
+                            Strings.skip,
+                            style: AppFonts.subHeader,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
                 ),
                 body: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -85,6 +113,7 @@ class _ReferralScreenState extends State<ReferralScreen> {
                               keyboardType: TextInputType.number,
                               borderColor: AppColors.textFieldBorderColor,
                               borderRadius: 6,
+                              length: 10,
                             ),
                             const SizedBox(height: 20.0),
                             Expanded(

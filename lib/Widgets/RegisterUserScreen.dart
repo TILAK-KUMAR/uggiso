@@ -98,7 +98,7 @@ class _RegisterUserScreenState extends State<RegisterUserScreen> {
                         onPressed: () {
                           _registerUserBloc.add(
                               OnRegisterButtonClicked(name:_nameController.text,number:userContactNumber,
-                              deviceId:userDeviceId,token: "FcmTokenId"));
+                              deviceId:userDeviceId,token: "FcmTokenId",status: "ACTIVE"));
                         },
                         cornerRadius: 6.0,
                         buttonColor: AppColors.appPrimaryColor,

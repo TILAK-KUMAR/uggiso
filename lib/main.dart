@@ -8,10 +8,6 @@ import 'package:uggiso/Bloc/VerifyOtpBloc/VerifyOtpBloc.dart';
 import 'package:uggiso/app_routes.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-
-import 'base/common/utils/background_service.dart';
-
-
 void main() async {
 
   WidgetsFlutterBinding.ensureInitialized();

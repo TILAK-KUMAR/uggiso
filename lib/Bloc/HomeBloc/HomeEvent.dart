@@ -18,6 +18,19 @@ class OnInitilised extends HomeEvent {
 
 }
 
+class OnUpdateFavOrder extends HomeEvent {
+  final double lat;
+  final double lag;
+  final double distance;
+  final String userId;
+  final String mode;
+
+  const OnUpdateFavOrder({required this.userId,required this.lat,required this.lag,required this.distance,required this.mode});
+  @override
+  List<Object> get props => [lat,lag];
+
+}
+
 class OnAddFavRestaurant extends HomeEvent{
   final String? userId;
   final String? restaurantId;
@@ -31,9 +44,10 @@ class OnAddFavRestaurant extends HomeEvent{
 
 class OnDeleteFavRestaurant extends HomeEvent{
   final String? userId;
+  final String? restaurantId;
 
 
-  const OnDeleteFavRestaurant({required this.userId});
+  const OnDeleteFavRestaurant({required this.userId, required this.restaurantId});
 
   @override
   List<Object> get props => [userId!];

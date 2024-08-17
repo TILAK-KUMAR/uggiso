@@ -3,6 +3,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:gap/gap.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uggiso/Bloc/VerifyOtpBloc/VerifyOtpBloc.dart';
 import 'package:uggiso/Bloc/VerifyOtpBloc/VerifyOtpState.dart';
@@ -32,6 +34,7 @@ class _VerifyOtpState extends State<VerifyOtp> {
   bool isResendButtonEnable = false;
   int _secondsRemaining = 30;
   String userContactNumber = '';
+  String fcmToken = '';
   late FocusNode focusNode_1;
   late FocusNode focusNode_2;
   late FocusNode focusNode_3;
@@ -83,12 +86,34 @@ class _VerifyOtpState extends State<VerifyOtp> {
               // Navigate to the next screen when NavigationState is emitted
               Navigator.popAndPushNamed(context, AppRoutes.registerUser);
             } else if (state is ErrorState) {
-              // isInvalidCredentials = true;
+              // clearData();
+              Fluttertoast.showToast(
+                  msg: state.message.toString(),
+                  toastLength: Toast.LENGTH_SHORT,
+                  gravity: ToastGravity.BOTTOM,
+                  timeInSecForIosWeb: 1,
+                  backgroundColor: AppColors.textGrey,
+                  textColor: Colors.white,
+                  fontSize: 16.0);
             } else if (state is onResendOTPSuccessState) {
               otpController_1.clear();
               otpController_2.clear();
               otpController_3.clear();
               otpController_4.clear();
+            } else if (state is userAlreadyRegistered) {
+              Fluttertoast.showToast(
+                  msg: state.data!.message.toString(),
+                  toastLength: Toast.LENGTH_SHORT,
+                  gravity: ToastGravity.BOTTOM,
+                  timeInSecForIosWeb: 1,
+                  backgroundColor: AppColors.textGrey,
+                  textColor: Colors.white,
+                  fontSize: 16.0);
+              saveUserDetails(state.data!.payload!.name!,state.data!.payload!.userId!);
+              Navigator.pushReplacementNamed(context, AppRoutes.homeScreen);
+
+              // Navigator.popUntil(context, ModalRoute.withName('/home_screen'));
+
             }
           },
         ));
@@ -107,13 +132,6 @@ class _VerifyOtpState extends State<VerifyOtp> {
               color: AppColors.appPrimaryColor,
             ),
           );
-        } else if (state is ErrorState) {
-          return Center(
-            child: Text(
-              '${state.message}',
-              style: AppFonts.title,
-            ),
-          );
         } else {
           return mainWidget();
         }
@@ -121,8 +139,7 @@ class _VerifyOtpState extends State<VerifyOtp> {
 
   Widget mainWidget() => Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        child: ListView(
           children: [
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 36.0),
@@ -213,25 +230,29 @@ class _VerifyOtpState extends State<VerifyOtp> {
                                 .copyWith(color: AppColors.textColor)),
                       )),
             Expanded(
-              child: Container(
+              child: Align(
                 alignment: Alignment.bottomCenter,
-                padding: const EdgeInsets.only(bottom: 30),
-                child: RoundedElevatedButton(
-                    width: MediaQuery.of(context).size.width,
-                    height: 40.0,
-                    text: Strings.verify,
-                    onPressed: () {
-                      String otp = otpController_1.text +
-                          otpController_2.text +
-                          otpController_3.text +
-                          otpController_4.text;
-                      _verifyOtpBloc.add(
-                          OnButtonClicked(number: userContactNumber, otp: otp));
-                    },
-                    cornerRadius: 6.0,
-                    buttonColor: AppColors.appPrimaryColor,
-                    textStyle:
-                        AppFonts.header.copyWith(color: AppColors.black)),
+                child: Container(
+                  height: MediaQuery.of(context).size.height * 0.35,
+                  alignment: Alignment.bottomCenter,
+                  padding: const EdgeInsets.only(bottom: 30),
+                  child: RoundedElevatedButton(
+                      width: MediaQuery.of(context).size.width,
+                      height: 40.0,
+                      text: Strings.verify,
+                      onPressed: () {
+                        String otp = otpController_1.text +
+                            otpController_2.text +
+                            otpController_3.text +
+                            otpController_4.text;
+                        _verifyOtpBloc.add(OnButtonClicked(
+                            number: userContactNumber, otp: otp));
+                      },
+                      cornerRadius: 6.0,
+                      buttonColor: AppColors.appPrimaryColor,
+                      textStyle:
+                          AppFonts.header.copyWith(color: AppColors.black)),
+                ),
               ),
             ),
           ],
@@ -258,14 +279,7 @@ class _VerifyOtpState extends State<VerifyOtp> {
 
   @override
   void dispose() {
-    otpController_1.dispose();
-    otpController_2.dispose();
-    otpController_3.dispose();
-    otpController_4.dispose();
-    focusNode_1.dispose();
-    focusNode_2.dispose();
-    focusNode_3.dispose();
-    focusNode_4.dispose();
+    clearData();
     super.dispose();
   }
 
@@ -294,6 +308,26 @@ class _VerifyOtpState extends State<VerifyOtp> {
     final prefs = await SharedPreferences.getInstance();
     setState(() {
       userContactNumber = prefs.getString('mobile_number') ?? '';
+      fcmToken = prefs.getString('fcm_token')??'';
+
     });
+  }
+  void saveUserDetails(String name,String userId ) async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setString('user_name', name);
+    prefs.setString('userId', userId);
+    prefs.setString('fcm_token', fcmToken);
+    prefs.setBool('is_user_logged_in', true);
+  }
+
+  clearData() {
+    otpController_1.dispose();
+    otpController_2.dispose();
+    otpController_3.dispose();
+    otpController_4.dispose();
+    focusNode_1.dispose();
+    focusNode_2.dispose();
+    focusNode_3.dispose();
+    focusNode_4.dispose();
   }
 }

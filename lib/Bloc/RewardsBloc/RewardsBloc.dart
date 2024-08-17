@@ -20,13 +20,9 @@ class RewardsBloc extends Bloc<RewardsEvent, Rewardsstate> {
         if(event.userId.isNotEmpty) {
           //String name,String number,String userType,String deviceId,String token
           data =  await _apiRepository.getWalletDetails(event.userId);
-          if(data.statusCode==200){
             print('wallet details api response: ${data.payload}');
             emit(onLoadedState(data));
-          }
-          else{
-            emit(ErrorState(data.message));
-          }
+
         }
         else{
           emit(ErrorState('Enter Valid Credentials'));

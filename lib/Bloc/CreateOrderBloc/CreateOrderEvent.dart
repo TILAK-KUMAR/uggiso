@@ -26,3 +26,17 @@ class OnPaymentClicked extends CreateOrderEvent {
   @override
   List<Object> get props => [restaurantId, customerId];
 }
+
+class OnAddTransactionData extends CreateOrderEvent {
+  final String orderId;
+  final String receiverId;
+  final String senderId;
+  final String status;
+  final String transactionId;
+
+  const OnAddTransactionData({required this.orderId,required this.receiverId, required this.senderId,
+    required this.status,required this.transactionId});
+
+  @override
+  List<Object> get props => [orderId, receiverId];
+}

@@ -12,6 +12,7 @@ import 'package:uggiso/Widgets/RewardsScreen.dart';
 import 'package:uggiso/Widgets/SettingsScreen.dart';
 import 'package:uggiso/Widgets/VerifyOtp.dart';
 import 'package:uggiso/base/common/utils/CreateOrderArgs.dart';
+import 'package:uggiso/base/common/utils/get_route_map.dart';
 import 'package:uggiso/widgets/IntroLandingScreen.dart';
 import 'package:uggiso/widgets/SignUpScreen.dart';
 import 'package:uggiso/widgets/splash.dart';
@@ -64,6 +65,8 @@ class AppRoutes {
 
   static const String myOrders = '/myOrders';
 
+  static const String getRouteMap = '/getRouteMap';
+
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
       case '/':
@@ -108,6 +111,8 @@ class AppRoutes {
                   orderlist: create_order_args.orderlist,
                   restaurantId: create_order_args.restaurantId,
                   restaurantName: create_order_args.restaurantName,
+                  restLat: create_order_args.restaurantLat,
+                  restLng: create_order_args.restaurantLng,
                 ));
       case paymentOptions:
         return MaterialPageRoute(builder: (_) => const PaymentOptionsScreen());
@@ -123,8 +128,12 @@ class AppRoutes {
       case profileScreen:
         return MaterialPageRoute(builder: (_) => const ProfileTab());
 
-        case referenceScreen:
+      case referenceScreen:
         return MaterialPageRoute(builder: (_) => const ReferralScreen());
+
+      case getRouteMap:
+        return MaterialPageRoute(builder: (_) => const GetRouteMap());
+
       default:
         // If there is no such named route in the switch statement, e.g. /randomRoute
         return MaterialPageRoute(builder: (_) {

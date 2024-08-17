@@ -41,7 +41,7 @@ class ProfileHeader extends StatelessWidget {
             ProfileRow(context, imageUrl, userName, mail),
 
             SizedBox(height: 20),
-
+/*
             Text(
               Strings.saved_address,
               style: AppFonts.title.copyWith(color: AppColors.headerColor),
@@ -50,7 +50,7 @@ class ProfileHeader extends StatelessWidget {
             Text(
               address,
               style: AppFonts.subHeader.copyWith(color: AppColors.headerColor),
-            ),
+            ),*/
           ],
         ),
       ),

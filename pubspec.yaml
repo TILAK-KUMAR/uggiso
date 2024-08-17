@@ -64,6 +64,7 @@ dependencies:
   flutter_background_service_ios: ^5.0.1
   flutter_local_notifications: ^17.2.1+2
   fluttertoast: ^8.2.6
+  google_maps_polyline: ^1.0.3
 
 
 dev_dependencies:

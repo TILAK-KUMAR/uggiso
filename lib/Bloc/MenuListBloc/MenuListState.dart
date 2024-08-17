@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:uggiso/Model/RemoveFavRestaurantModel.dart';
 
 import '../../Model/AddFavoriteMenuModel.dart';
 
@@ -26,4 +27,9 @@ class ErrorState extends MenuListState {
 class onFavMenuAddedState extends MenuListState {
   final AddFavoriteMenuModel result;
   onFavMenuAddedState(this.result);
+}
+
+class onDeleteMenuAddedState extends MenuListState {
+  final RemoveFavRestaurantModel result;
+  onDeleteMenuAddedState(this.result);
 }

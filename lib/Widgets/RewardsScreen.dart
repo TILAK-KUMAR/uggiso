@@ -253,13 +253,13 @@ class _RewardsScreenState extends State<RewardsScreen> {
                                                 .copyWith(color: AppColors
                                                 .appPrimaryColor),
                                           ),
-                                          state.data.payload!.balance!.toInt()>0?Text(
+                                          state.data.payload!=null && state.data.payload!.balance!.toInt()>0?Text(
                                             '${state.data.payload!.balance!}',
                                             style: AppFonts.header1
                                                 .copyWith(
                                                 color: AppColors.rewardsText),
                                           ):Text(
-                                            '0',
+                                            '0.0',
                                             style: AppFonts.header1
                                                 .copyWith(
                                                 color: AppColors.rewardsText),
@@ -300,7 +300,7 @@ class _RewardsScreenState extends State<RewardsScreen> {
                                                         switchValue = value;
                                                       });
                                                       print('this is the value : $value');
-                                                      saveRewardsDetails(value,state.data.payload!.balance??0.0);
+                                                      // saveRewardsDetails(value,state.data.payload!.balance??0.0);
                                                     },
                                                     inactiveTrackColor: AppColors
                                                         .grey,
