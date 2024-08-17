@@ -1,7 +1,6 @@
 class Strings {
   static const appName = 'Uggiso';
   static const appVersion = 'v1.0.0';
-
   static const ordering_made_easy = 'Ordering Made Easy!';
   static const get_ready_to_explore =
       'Get Ready to explore delicious dishes from your favourite restaurants';

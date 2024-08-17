@@ -425,7 +425,7 @@ class _HomeTabState extends State<HomeTab> {
             Flexible(
               flex: 3,
               child: SearchPlaceAutoCompletedTextField(
-                  googleAPIKey: Strings.searchKey,
+                  googleAPIKey: 'AIzaSyB8UoTxemF5no_Va1aJn4x8s10VsFlLQHA',
                   textStyle: AppFonts.title,
                   countries: ['in'],
                   isLatLngRequired: true,
