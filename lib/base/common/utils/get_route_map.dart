@@ -158,7 +158,7 @@ class _GetRouteMapState extends State<GetRouteMap> {
             Flexible(
               flex: 3,
               child: SearchPlaceAutoCompletedTextField(
-                  googleAPIKey: 'AIzaSyB8UoTxemF5no_Va1aJn4x8s10VsFlLQHA',
+                  googleAPIKey: '',
                   textStyle: AppFonts.title,
                   countries: ['in'],
                   isLatLngRequired: true,
